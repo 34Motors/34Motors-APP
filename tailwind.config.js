@@ -61,8 +61,42 @@ module.exports = {
           12: "#30007D",
         },
       },
+      fontWeight: {
+        body: {
+          1: "600",
+          "2-400": "400",
+          "2-500": "500",
+        },
+        button: {
+          "big-text": "700",
+          "medium-text": "400",
+        },
+        input: {
+          placeholder: "400",
+          label: "500",
+        },
+        heading: {
+          1: "700",
+          2: "600",
+          "3-600": "600",
+          "3-500": "500",
+          "4-600": "600",
+          "4-500": "500",
+          "5-600": "600",
+          "5-500": "500",
+          "6-600": "600",
+          "6-500": "500",
+          "7-600": "600",
+          "7-500": "500",
+        },
+      },
+      fontFamily: {
+        lexend: ["Lexend", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+      }
     },
   },
-  
+
   plugins: [],
 };
