@@ -26,7 +26,7 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full container px-4 flex justify-between items-center bg-white h-[80px] sticky top-0 border-b-2 border-gray-200`}
+      className={`w-full container px-4 flex justify-between items-center bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
     >
       <Image width={200} src={logo} alt="Logo 34 Motors" />
       {isMobile ? (
@@ -42,14 +42,14 @@ const Header = () => {
       ) : (
         <div className="flex items-center gap-11">
           <div
-            className={`border-l-2 border-gray-300 h-[79px] drop-shadow-md`}
+            className={`border-l-2 border-grey-6 h-[79px] drop-shadow-md`}
           ></div>
-          <Link href={"/login"} className={`text-gray-600`}>
+          <Link href={"/login"} className={`text-grey-2 text-heading7 font-600`}>
             Fazer Login
           </Link>
           <Link
             href={"/register"}
-            className={`text-gray-800 border-2 py-3 px-7 rounded`}
+            className={`text-grey-0 border-2 border-grey-4 py-3 px-7 rounded text-heading7 font-600`}
           >
             Cadastrar
           </Link>
@@ -59,12 +59,12 @@ const Header = () => {
         <ul
           className={`absolute w-full bg-white right-0 top-20 h-[184px] flex flex-col items-center px-3 py-9 gap-11 text-black`}
         >
-          <Link href={"/login"} className={`text-gray-600`}>
+          <Link href={"/login"} className={`text-grey-2 text-heading7 font-600 `}>
             Fazer Login
           </Link>
           <Link
             href={"/register"}
-            className={`w-full text-center text-gray-800 border-2 py-3 px-7 rounded`}
+            className={`w-full text-center text-grey-0 border-2 border-grey-4 py-3 px-7 rounded text-heading7 font-600`}
           >
             Cadastrar
           </Link>
