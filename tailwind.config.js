@@ -6,15 +6,7 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    container: {
-      center: true,
-    },
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       colors: {
         brand: {
           1: "#4529E6",
@@ -61,42 +53,29 @@ module.exports = {
           12: "#30007D",
         },
       },
+      // Ex: text-heading1 font-500
+      fontSize: {
+          heading1: "44px",
+          heading2: "36px",
+          heading3: "32px",
+          heading4: "28px",
+          heading5: "24px",
+          heading6: "20px",
+          heading7: "16px",
+        },
       fontWeight: {
-        body: {
-          1: "600",
-          "2-400": "400",
-          "2-500": "500",
-        },
-        button: {
-          "big-text": "700",
-          "medium-text": "400",
-        },
-        input: {
-          placeholder: "400",
-          label: "500",
-        },
-        heading: {
-          1: "700",
-          2: "600",
-          "3-600": "600",
-          "3-500": "500",
-          "4-600": "600",
-          "4-500": "500",
-          "5-600": "600",
-          "5-500": "500",
-          "6-600": "600",
-          "6-500": "500",
-          "7-600": "600",
-          "7-500": "500",
-        },
+        400: "400",
+        500: "500",
+        600: "600",
+        700: "700",
       },
       fontFamily: {
         lexend: ["Lexend", "sans-serif"],
         inter: ["Inter", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
-      }
+      },
     },
   },
 
   plugins: [],
 };
+
