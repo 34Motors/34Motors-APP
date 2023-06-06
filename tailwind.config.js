@@ -62,6 +62,12 @@ module.exports = {
           heading5: "24px",
           heading6: "20px",
           heading7: "16px",
+          body1: "16px",
+          body2: "14px",
+          buttonBigText: "16px",
+          buttonMediumText: "14",
+          inputPlaceholder: "16px",
+          inputLabel: "14px",
         },
       fontWeight: {
         400: "400",
