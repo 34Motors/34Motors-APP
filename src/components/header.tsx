@@ -21,16 +21,16 @@ const  Header = () => {
 
   return (
     <div
-      className={`w-full flex justify-between items-center bg-white h-[80px] sticky top-0 `}
+      className={`w-full flex justify-between items-center bg-grey-10 h-[80px] sticky top-0 `}
     >
       <Image width={200} src={logo} alt="Logo 34 Motors" />
       {isMobile ? (
           <IoMdMenu className={`text-black text-3xl`} />
       ) : (
         <div className="flex items-center gap-11">
-          <div className={`border-l-2 border-gray-300 h-[80px]`}></div>
-          <Link href={"/"} className={`text-gray-600`}>Fazer Login</Link>
-          <Link href={"/register"} className={`text-gray-800 border-2 py-3 px-7 rounded`}>Cadastrar</Link>
+          <div className={`border-l-2 border-grey-6 h-[80px]`}></div>
+          <Link href={"/"} className={`text-grey-2`}>Fazer Login</Link>
+          <Link href={"/register"} className={`text-grey-0 border-2 border-grey-4 py-3 px-7 rounded`}>Cadastrar</Link>
         </div>
       )}
     </div>
