@@ -5,7 +5,6 @@ interface UserBadgeProps {
 }
 
 export const UserBadge = ({ bg_color, initials_color, name_color }: UserBadgeProps) => {
-  console.log(bg_color, initials_color)
   return (
     <div className="flex gap-2 items-center font-inter font-500">
       <div
