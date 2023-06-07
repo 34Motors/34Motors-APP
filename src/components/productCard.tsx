@@ -1,7 +1,7 @@
-import carImage from "../../assets/img/MaseratiExample.png"
+import carImage from "../assets/img/MaseratiExample.png"
 import Image from "next/image";
-import { CardDetail } from "../CardDetail";
-import { UserBadge } from "../UserBadge";
+import { CardDetail } from "./cardDetail";
+import { UserBadge } from "./userBadge";
 
 export const ProductCard = () => {
   return (
