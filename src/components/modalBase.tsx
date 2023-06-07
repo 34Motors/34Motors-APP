@@ -29,6 +29,7 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
     <div
       ref={blockClosing ? null : ref}
       className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center`}
+      onClick={toggleModal}
     >
       {children}
     </div>,
