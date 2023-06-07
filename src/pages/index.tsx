@@ -39,22 +39,22 @@ const Home = () => {
       <Header />
       <section className="w-full h-" style={{ width: "100%", height: "36rem" }}>
         <div className="relative h-full">
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black flex flex-col items-center justify-center text-white h-full">
-            <h1 className="text-heading1 font-lexend font-700">Motors Shop</h1>
-            <h2 className="text-heading2 font-lexend font-600">
+          <Image
+            src={coverImg}
+            alt="Imagem de capa"
+            className="h-full w- object-contain absolute inset-0 z-[-3]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black flex flex-col items-center justify-center text-white">
+            <h3 className="text-heading3 font-lexend font-700 text-center">
+              Motors Shop
+            </h3>
+            <h5 className="text-heading5 font-lexend font-600 text-center">
               A melhor plataforma de anúncios de carros do país
-            </h2>
-          </div>
-          <div className="flex items-center justify-center h-full">
-            <Image
-              src={coverImg}
-              alt="Imagem de capa"
-              className="h-full w-full object-contain"
-            />
+            </h5>
           </div>
         </div>
       </section>
-      <main className="w-full">
+      <main className="w-full mx-auto my-12 px-5">
         <ListCards
           listCardsData={listCardsData}
           currentPage={currentPage}

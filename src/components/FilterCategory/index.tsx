@@ -12,11 +12,12 @@ interface Category {
 
 const listCategory: Category[] = [
   { id: 1, nome: "Ano", var: ["2000", "1997", "2003"] },
-  { id: 2, nome: "Ano", var: ["2000", "1997", "2003"] },
-  { id: 3, nome: "Ano", var: ["2000", "1997", "2003"] },
-  { id: 4, nome: "Ano", var: ["2000", "1997", "2003"] },
-  { id: 5, nome: "Preço", var: ["Mínimo", "Máximo"] },
-  { id: 6, nome: "km", var: ["Mínimo", "Máximo"] },
+  { id: 2, nome: "Marca", var: ["2000", "1997", "2003"] },
+  { id: 3, nome: "Cor", var: ["2000", "1997", "2003"] },
+  { id: 4, nome: "Modelo", var: ["2000", "1997", "2003"] },
+  { id: 4, nome: "Combustível", var: ["Gasolina", "Etanol", "Diesel"] },
+  { id: 6, nome: "Preço", var: ["Mínimo", "Máximo"] },
+  { id: 7, nome: "km", var: ["Mínimo", "Máximo"] },
 ];
 
 const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
@@ -30,7 +31,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
     <aside>
       {isMobile ? (
         <>
-          <button onClick={handleToggleModal}>Filtros</button>
+          <button onClick={handleToggleModal} className="w-full btn-big bg-brand-2 my-12">Filtros</button>
           {isModalOpen && (
             <div>
               {listCategory.map((category) => (

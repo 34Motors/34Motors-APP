@@ -17,12 +17,10 @@ export const ListCards: React.FC<ListCardsProps> = ({
   const currentCards = listCardsData.slice(indexOfFirstCard, indexOfLastCard);
 
   return (
-    <div>
-      <ul>
+    <div className="flex justify-center">
+      <ul className="flex overflow-x-auto space-x-3">
         {currentCards.map((card, index) => (
-          <li key={index}>
-            {card}
-          </li>
+          <li key={index}>{card}</li>
         ))}
       </ul>
     </div>

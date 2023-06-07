@@ -24,8 +24,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <section>
-      <div>
+    <section className="w-auto mx-auto">
+      <div className="flex space-x-3 justify-center">
         {currentPage > 1 && (
           <button disabled={currentPage === 1} onClick={handlePreviousPage}>
             Anterior
