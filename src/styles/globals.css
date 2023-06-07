@@ -1,22 +1,5 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("./buttons.css");
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&family=Inter:wght@400;500&family=Poppins:wght@400;600&display=swap");
-
-.btn-big {
-  border-width: 1.5px;
-  border-style: solid;
-  padding: 10px 15px;
-}
-
-.btn-medium {
-  border-width: 1px;
-  border-style: solid;
-  padding: 10px;
-}
-
-.input {
-  padding: 10px;
-  border-width: 1.5px;
-  border-style: solid;
-}
