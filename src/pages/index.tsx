@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import FiltroCategory from "@/components/FilterCategory";
+import FiltroCategory from "@/components/filterCategory";
 import Footer from "@/components/footer";
-import { ListCards } from "@/components/ListCards.tsx";
+import { ListCards } from "@/components/listCards";
 import Header from "@/components/header";
-import { ProductCard } from "@/components/ProductCard";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/pagination";
 import coverImg from "../../src/assets/img/cover-car.png";
+import { ProductCard } from "@/components/productCard";
 
 const listCardsData = Array.from({ length: 15 }, (_, index) => (
   <ProductCard key={index + 1} />
@@ -44,8 +44,8 @@ const Home = () => {
             alt="Imagem de capa"
             className="h-full w- object-contain absolute inset-0 z-[-3]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black flex flex-col items-center justify-center text-white">
-            <h3 className="text-heading3 font-lexend font-700 text-center">
+          <div className="px-7 absolute inset-0 bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black flex flex-col items-center justify-center text-grey-10">
+            <h3 className="mb-5 text-heading3 font-lexend font-700 text-center">
               Motors Shop
             </h3>
             <h5 className="text-heading5 font-lexend font-600 text-center">

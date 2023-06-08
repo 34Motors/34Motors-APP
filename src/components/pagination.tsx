@@ -27,19 +27,23 @@ export const Pagination: React.FC<PaginationProps> = ({
     <section className="w-auto mx-auto">
       <div className="flex space-x-3 justify-center">
         {currentPage > 1 && (
-          <button disabled={currentPage === 1} onClick={handlePreviousPage}>
+          <button
+            disabled={currentPage === 1}
+            onClick={handlePreviousPage}
+            className="text-brand-2 font-lexend font-600 text-heading5"
+          >
             Anterior
           </button>
         )}
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button key={index} onClick={() => onPageChange(index + 1)}>
-            {index + 1}
-          </button>
-        ))}
+        <p className="font-lexend font-600 text-heading5 text-grey-3">
+          {currentPage} <span className=" text-grey-4"> de {totalPages}</span>
+        </p>
+
         {currentPage < totalPages && (
           <button
             disabled={currentPage === totalPages}
             onClick={handleNextPage}
+            className="text-brand-2 font-lexend font-600 text-heading5"
           >
             Seguinte
           </button>

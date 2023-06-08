@@ -1,5 +1,4 @@
 import React from "react";
-import { ProductCard } from "../ProductCard";
 
 interface ListCardsProps {
   listCardsData: React.ReactNode[];
@@ -18,7 +17,7 @@ export const ListCards: React.FC<ListCardsProps> = ({
 
   return (
     <div className="flex justify-center">
-      <ul className="flex overflow-x-auto space-x-3">
+      <ul className="flex overflow-x-auto space-x-3 py-2">
         {currentCards.map((card, index) => (
           <li key={index}>{card}</li>
         ))}
