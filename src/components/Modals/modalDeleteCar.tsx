@@ -39,12 +39,11 @@ const ModalDeleteCar = ({ toggleModal }: ModalDeleteCarProps) => {
           >
             Cancelar
           </button>
-          <Link
-            href={"/login"}
+          <button
             className={`bg-alert-2 py-3 px-6 rounded  text-body2 font-600 text-alert-0`}
           >
             Sim, excluir anúncio
-          </Link>
+          </button>
         </div>
       </div>
     </ModalBase>
