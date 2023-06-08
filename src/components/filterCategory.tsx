@@ -57,15 +57,24 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                     <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
                       {category.nome}
                     </h4>
-                    <ul className="overflow-y-auto space-y-1 ml-3">
-                      {category.var.map((categorySpecific) => (
-                        <li key={categorySpecific}>
-                          <button className="font-lexend font-500 text-heading6 text-grey-3 text-lexend">
-                            {categorySpecific}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className={"overflow-y-auto space-y-1 ml-3"}>
+                      <ul className={"overflow-y-auto space-y-1 ml-3"}>
+                        {category.var.map((categorySpecific) => (
+                          <li key={categorySpecific}>
+                            <button
+                              className={`font-lexend font-500 text-heading6 text-grey-3 ${
+                                categorySpecific === "Mínimo" ||
+                                categorySpecific === "Máximo"
+                                  ? "bg-grey-4 text-heading7 font-600 px-5 py-2"
+                                  : ""
+                              }`}
+                            >
+                              {categorySpecific}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 ))}
                 <div className="text-center mt-4">
@@ -83,7 +92,16 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
               <ul>
                 {category.var.map((categorySpecific) => (
                   <li key={categorySpecific}>
-                    <button>{categorySpecific}</button>
+                    <button
+                      className={`font-lexend font-500 text-heading6 text-grey-3 ${
+                        categorySpecific === "Mínimo" ||
+                        categorySpecific === "Máximo"
+                          ? "bg-grey-4 text-heading7 font-600 px-5 py-2"
+                          : ""
+                      }`}
+                    >
+                      {categorySpecific}
+                    </button>
                   </li>
                 ))}
               </ul>
