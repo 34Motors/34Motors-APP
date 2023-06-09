@@ -168,20 +168,20 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex justify-end gap-3 ${inter.className}`}>
               <button
                 onClick={toggleModal}
-                className={`bg-grey-6 py-3 px-6 rounded text-body2 font-600 text-grey2`}
+                className={`btn-negative py-3 px-6 rounded text-body2 font-600`}
               >
                 Cancelar
               </button>
 
               <button
-                className={`bg-alert-2 py-3 px-6 rounded  text-body2 font-600 text-alert-0`}
+                className={`btn-alert py-3 px-6 rounded  text-body2 font-600`}
               >
                 Excluir perfil
               </button>
 
               <button
                 type="submit"
-                className={`bg-brand-3 py-3 px-6 rounded  text-body2 font-600 text-brand-4`}
+                className={`btn-brand bg-brand-1 py-3 px-6 rounded text-body2 font-600`}
               >
                 Salvar alterações
               </button>

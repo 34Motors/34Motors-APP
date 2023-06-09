@@ -37,7 +37,7 @@ const ModalSuccessCreateAccount = ({
           </p>
           <Link
             href={"/login"}
-            className={`bg-brand-1 py-3 px-5 rounded w-[132px] text-body2 font-600 text-grey-whiteFixed ${inter.className}`}
+            className={`btn-brand py-3 px-5 rounded w-[132px] text-body2 font-600 ${inter.className}`}
           >
             Ir para o login
           </Link>
