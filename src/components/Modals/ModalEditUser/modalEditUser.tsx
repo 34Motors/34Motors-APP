@@ -67,7 +67,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="name"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 Nome
               </label>
@@ -76,7 +76,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="name"
                 placeholder="Exemplo Silva"
                 {...register("name")}
-                className={`px-4 h-12 rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input w-full`}
               />
               {errors.name?.message && <small>{errors.name.message}</small>}
             </div>
@@ -84,7 +84,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="email"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 E-mail
               </label>
@@ -93,7 +93,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="email"
                 placeholder="exemplo@mail.com"
                 {...register("email")}
-                className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
               {errors.email?.message && <small>{errors.email.message}</small>}
             </div>
@@ -101,7 +101,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="cpf"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 CPF
               </label>
@@ -110,7 +110,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="cpf"
                 placeholder="100.200.300-40"
                 {...register("cpf")}
-                className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
               {errors.cpf?.message && <small>{errors.cpf.message}</small>}
             </div>
@@ -118,7 +118,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="phone"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 Celular
               </label>
@@ -127,7 +127,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="phone"
                 placeholder="83 12345 6789"
                 {...register("phone")}
-                className={`px-4 h-12 rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
               {errors.phone?.message && <small>{errors.phone.message}</small>}
             </div>
@@ -135,7 +135,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="birthDate"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 Data de nascimento
               </label>
@@ -144,7 +144,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="birthDate"
                 placeholder="DD/MM/AAAA"
                 {...register("birthDate")}
-                className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
               {errors.birthDate?.message && <small>{errors.birthDate.message}</small>}
             </div>
@@ -152,7 +152,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="description"
-                className={`text-body2 font-500 text-grey-1 w-full ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 Descrição
               </label>
@@ -160,7 +160,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 id="description"
                 placeholder="Conte um pouco sobre você..."
                 {...register("description")}
-                className={`px-4 py-2 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
               {errors.description?.message && <small>{errors.description.message}</small>}
             </div>
