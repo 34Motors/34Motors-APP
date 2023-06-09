@@ -1,12 +1,10 @@
 import React from "react";
-
 interface ListCardsProps {
   listCardsData: React.ReactNode[];
   currentPage: number;
   cardsPerPage: number;
   isMobile: boolean;
 }
-
 export const ListCards: React.FC<ListCardsProps> = ({
   listCardsData,
   currentPage,
@@ -16,18 +14,17 @@ export const ListCards: React.FC<ListCardsProps> = ({
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = listCardsData.slice(indexOfFirstCard, indexOfLastCard);
-
   return (
-    <div className="flex justify-center md:items-center">
+    <div className="flex justify-center items-center md:items-center">
       <ul
-        className={`md:w-full flex overflow-x-auto gap-3 md:justify-between ${
-          isMobile
-            ? ""
-            : "flex flex-wrap"
+        className={`w-full md:w-full flex overflow-x-auto gap-3 md:gap-12 md:justify-center md:self-center${
+          isMobile ? "" : "flex flex-wrap"
         }`}
       >
         {currentCards.map((card, index) => (
-          <li key={index}>{card}</li>
+          <li key={index} className="min-w-[312px] md:w-[40%] md:max-w-[312px]">
+            {card}
+          </li>
         ))}
       </ul>
     </div>

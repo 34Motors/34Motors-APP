@@ -1,16 +1,13 @@
 import Image from "next/image";
 import React, { useState } from "react";
-
 interface FiltroCategoryProps {
   isMobile: boolean;
 }
-
 interface Category {
   id: number;
   nome: string;
   var: string[];
 }
-
 const listCategory: Category[] = [
   { id: 1, nome: "Ano", var: ["2000", "1997", "2003"] },
   { id: 2, nome: "Marca", var: ["2000", "1997", "2003"] },
@@ -20,14 +17,11 @@ const listCategory: Category[] = [
   { id: 6, nome: "Preço", var: ["Mínimo", "Máximo"] },
   { id: 7, nome: "km", var: ["Mínimo", "Máximo"] },
 ];
-
 const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const handleToggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-
   const renderFilterContent = () => {
     if (isMobile) {
       return (
@@ -95,10 +89,12 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
       );
     } else {
       return (
-        <div>
+        <div className="md:ml-4">
           {listCategory.map((category) => (
             <div key={category.id}>
-              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">{category.nome}</h4>
+              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+                {category.nome}
+              </h4>
               {category.nome !== "km" && category.nome !== "Preço" ? (
                 <ul>
                   {category.var.map((categorySpecific) => (
@@ -110,7 +106,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                   ))}
                 </ul>
               ) : (
-                <div className="w-4/5 flex">
+                <div className="flex gap-2">
                   {category.var.map((specificValue) => (
                     <input
                       key={specificValue}
@@ -123,13 +119,13 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
               )}
             </div>
           ))}
-          <button className="w-full mt-5 btn-big bg-brand-2 text-white">Limpar Filtro</button>
+          <button className="w-full mt-5 btn-big bg-brand-2 text-white">
+            Limpar Filtro
+          </button>
         </div>
       );
     }
   };
-
   return <aside>{renderFilterContent()}</aside>;
 };
-
 export default FiltroCategory;
