@@ -1,21 +1,14 @@
 import React from "react";
-import { MdPassword } from "react-icons/md";
 
-export const DefaultFieldset = ({ id, name }: any) => {
+export const DefaultFieldset = ({ label, id, inputProps }: any) => {
   const type = id != "password" ? "text" : "password";
 
   return (
     <fieldset>
       <label htmlFor={id} className="default-label">
-        {name}
+        {label}
       </label>
-      <input
-        type={type}
-        name={name}
-        id={id}
-        placeholder={name}
-        className="default-input"
-      />
+      <input className="default-input" type={type} {...inputProps} />
     </fieldset>
   );
 };
