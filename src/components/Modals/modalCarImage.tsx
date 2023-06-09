@@ -16,7 +16,7 @@ const ModalCarImage = ({ toggleModal }: ModalCarImageProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl min-w-[30%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 ${lexend.className}`}>Imagem do Veículo</h3>
