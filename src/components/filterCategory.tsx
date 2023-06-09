@@ -28,9 +28,9 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
     setIsModalOpen(!isModalOpen);
   };
 
-  return (
-    <aside>
-      {isMobile ? (
+  const renderFilterContent = () => {
+    if (isMobile) {
+      return (
         <>
           <button
             onClick={handleToggleModal}
@@ -57,60 +57,79 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                     <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
                       {category.nome}
                     </h4>
-                    <div className={"overflow-y-auto space-y-1 ml-3"}>
-                      <ul className={"overflow-y-auto space-y-1 ml-3"}>
-                        {category.var.map((categorySpecific) => (
-                          <li key={categorySpecific}>
-                            <button
-                              className={`font-lexend font-500 text-heading6 text-grey-3 ${
-                                categorySpecific === "Mínimo" ||
-                                categorySpecific === "Máximo"
-                                  ? "bg-grey-4 text-heading7 font-600 px-5 py-2"
-                                  : ""
-                              }`}
-                            >
-                              {categorySpecific}
-                            </button>
-                          </li>
+                    {category.nome !== "km" && category.nome !== "Preço" ? (
+                      <div className="overflow-y-auto space-y-1 ml-3">
+                        <ul className="overflow-y-auto space-y-1 ml-3">
+                          {category.var.map((categorySpecific) => (
+                            <li key={categorySpecific}>
+                              <button className="font-lexend font-500 text-heading6 text-grey-3">
+                                {categorySpecific}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <div className="w-4/5 flex">
+                        {category.var.map((specificValue) => (
+                          <input
+                            key={specificValue}
+                            type="text"
+                            placeholder={specificValue}
+                            className="w-2/5 font-lexend font-500 text-heading6 text-grey-3"
+                          />
                         ))}
-                      </ul>
-                    </div>
+                      </div>
+                    )}
                   </div>
                 ))}
                 <div className="text-center mt-4">
-                  <button className="w-full btn-big bg-brand-2">Filtrar</button>
+                  <button className="w-full btn-big bg-brand-2">
+                    Ver Anúncios
+                  </button>
                 </div>
               </div>
             </div>
           )}
         </>
-      ) : (
+      );
+    } else {
+      return (
         <div>
           {listCategory.map((category) => (
             <div key={category.id}>
-              <h4>{category.nome}</h4>
-              <ul>
-                {category.var.map((categorySpecific) => (
-                  <li key={categorySpecific}>
-                    <button
-                      className={`font-lexend font-500 text-heading6 text-grey-3 ${
-                        categorySpecific === "Mínimo" ||
-                        categorySpecific === "Máximo"
-                          ? "bg-grey-4 text-heading7 font-600 px-5 py-2"
-                          : ""
-                      }`}
-                    >
-                      {categorySpecific}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">{category.nome}</h4>
+              {category.nome !== "km" && category.nome !== "Preço" ? (
+                <ul>
+                  {category.var.map((categorySpecific) => (
+                    <li key={categorySpecific}>
+                      <button className="font-lexend font-500 text-heading6 text-grey-3">
+                        {categorySpecific}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="w-4/5 flex">
+                  {category.var.map((specificValue) => (
+                    <input
+                      key={specificValue}
+                      type="text"
+                      placeholder={specificValue}
+                      className="w-2/5 font-lexend font-500 text-heading6 text-grey-3"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           ))}
+          <button className="w-full btn-big bg-brand-2">Limpar Filtro</button>
         </div>
-      )}
-    </aside>
-  );
+      );
+    }
+  };
+
+  return <aside>{renderFilterContent()}</aside>;
 };
 
 export default FiltroCategory;
