@@ -55,7 +55,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <main className="w-full mx-auto my-12 px-5">
+      <main className="w-full md:px-4 mx-auto my-12 px-5">
         {!isMobile && (
           <div className="grid grid-cols-4 gap-8">
             <div className="col-start-1 row-span-1">

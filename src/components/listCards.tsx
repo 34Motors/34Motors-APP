@@ -18,9 +18,9 @@ export const ListCards: React.FC<ListCardsProps> = ({
   const currentCards = listCardsData.slice(indexOfFirstCard, indexOfLastCard);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center md:items-center">
       <ul
-        className={`flex overflow-x-auto justify-between gap-3 ${
+        className={`md:w-full flex overflow-x-auto gap-3 md:justify-between ${
           isMobile
             ? ""
             : "flex flex-wrap"

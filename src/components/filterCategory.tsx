@@ -34,7 +34,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
         <>
           <button
             onClick={handleToggleModal}
-            className="w-full btn-big bg-brand-2 my-12"
+            className="w-full btn-big bg-brand-2 text-white my-12"
           >
             Filtros
           </button>
@@ -84,7 +84,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                   </div>
                 ))}
                 <div className="text-center mt-4">
-                  <button className="w-full btn-big bg-brand-2">
+                  <button className="w-full mt-5 btn-big bg-brand-2 text-white">
                     Ver Anúncios
                   </button>
                 </div>
@@ -123,7 +123,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
               )}
             </div>
           ))}
-          <button className="w-full btn-big bg-brand-2">Limpar Filtro</button>
+          <button className="w-full mt-5 btn-big bg-brand-2 text-white">Limpar Filtro</button>
         </div>
       );
     }
