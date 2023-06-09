@@ -1,6 +1,6 @@
 import React from "react";
 import ModalBase from "./modalBase";
-import carImage from "../assets/img/MaseratiExample.png";
+import carImage from "../../assets/img/MaseratiExample.png";
 import { IoMdClose } from "react-icons/io";
 import Image from "next/image";
 import { Inter, Lexend } from "next/font/google";
@@ -16,7 +16,7 @@ const ModalCarImage = ({ toggleModal }: ModalCarImageProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl min-w-[50%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl min-w-[30%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 ${lexend.className}`}>Imagem do Veículo</h3>
