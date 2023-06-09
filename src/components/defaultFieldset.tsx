@@ -8,7 +8,7 @@ export const DefaultFieldset = ({ label, id, inputProps }: any) => {
       <label htmlFor={id} className="default-label">
         {label}
       </label>
-      <input className="default-input" type={type} {...inputProps} />
+      <input id={id} className="default-input" type={type} {...inputProps} />
     </fieldset>
   );
 };
