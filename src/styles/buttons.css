@@ -1,0 +1,57 @@
+@tailwind components;
+
+button {
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@layer components {
+  .btn-big {
+    @apply font-600 border-[1.5px] py-[12px] px-[28px] text-buttonBigText rounded;
+  }
+
+  .btn-medium {
+    @apply font-600 border-[1.5px] py-[8px] px-[20px] text-buttonMediumText rounded;
+  }
+
+  .btn-grey1 {
+    @apply bg-grey-0 border-grey-0 text-grey-whiteFixed hover:bg-grey-1 hover:border-grey-1;
+  }
+
+  .btn-negative {
+    @apply bg-grey-6 border-grey-6 text-grey-2 hover:bg-grey-5 hover:border-grey-5;
+  }
+
+  .btn-brand {
+    @apply bg-brand-1 border-brand-1 text-grey-whiteFixed hover:bg-brand-2 hover:border-brand-2 disabled:bg-brand-3;
+  }
+  .btn-brand-white {
+    @apply bg-brand-4 border-brand-4 text-brand-1;
+  }
+
+  .btn-light {
+    @apply bg-grey-10 border-grey-10 text-grey-1;
+  }
+
+  .btn-outline-1 {
+    @apply border-grey-0 text-grey-0 hover:bg-grey-1 hover:border-grey-1 hover:text-grey-10;
+  }
+
+  .btn-outline-2 {
+    @apply border-grey-4 text-grey-0 hover:bg-grey-1 hover:border-grey-1 hover:text-grey-10;
+  }
+
+  .btn-outlineBrand {
+    @apply border-brand-1 text-brand-1 hover:bg-brand-4;
+  }
+
+  .btn-alert {
+    @apply bg-alert-3 text-alert-1 hover:bg-alert-2;
+  }
+
+  .btn-success {
+    @apply bg-sucess-3 text-sucess-1 hover:bg-sucess-2;
+  }
+}

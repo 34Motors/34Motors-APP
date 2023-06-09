@@ -29,14 +29,14 @@ module.exports = {
           whiteFixed: "#FFFFFF",
         },
         alert: {
-          0: "#CD2B31",
-          1: "#FDD8D8",
-          2: "#FFE5E5",
+          1: "#CD2B31",
+          2: "#FDD8D8",
+          3: "#FFE5E5",
         },
         sucess: {
-          0: "#18794E",
-          1: "#CCEBD7",
-          2: "#DDF3E4",
+          1: "#18794E",
+          2: "#CCEBD7",
+          3: "#DDF3E4",
         },
         random: {
           1: "#E34D8C",
@@ -55,20 +55,20 @@ module.exports = {
       },
       // Ex: text-heading1 font-500
       fontSize: {
-          heading1: "44px",
-          heading2: "36px",
-          heading3: "32px",
-          heading4: "28px",
-          heading5: "24px",
-          heading6: "20px",
-          heading7: "16px",
-          body1: "16px",
-          body2: "14px",
-          buttonBigText: "16px",
-          buttonMediumText: "14",
-          inputPlaceholder: "16px",
-          inputLabel: "14px",
-        },
+        heading1: "44px",
+        heading2: "36px",
+        heading3: "32px",
+        heading4: "28px",
+        heading5: "24px",
+        heading6: "20px",
+        heading7: "16px",
+        body1: "16px",
+        body2: "14px",
+        buttonBigText: "16px",
+        buttonMediumText: "14px",
+        inputPlaceholder: "16px",
+        inputLabel: "14px",
+      },
       fontWeight: {
         400: "400",
         500: "500",
@@ -84,4 +84,3 @@ module.exports = {
 
   plugins: [],
 };
-
