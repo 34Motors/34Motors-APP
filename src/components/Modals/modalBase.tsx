@@ -26,11 +26,10 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
     };
   }, [toggleModal]);
   return createPortal(
-    <div
-      ref={blockClosing ? null : ref}
-      className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
-    >
-      {children}
+    <div className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}>
+      <div ref={blockClosing ? null : ref}>
+        {children}
+      </div>
     </div>,
     document.body
   );
