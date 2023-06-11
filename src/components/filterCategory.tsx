@@ -64,13 +64,13 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                         </ul>
                       </div>
                     ) : (
-                      <div className="w-4/5 flex">
+                      <div className="w-4/5 flex gap-3">
                         {category.var.map((specificValue) => (
                           <input
                             key={specificValue}
                             type="text"
                             placeholder={specificValue}
-                            className="w-2/5 font-lexend font-500 text-heading6 text-grey-3"
+                            className="w-2/5 font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
                           />
                         ))}
                       </div>
@@ -112,7 +112,7 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
                       key={specificValue}
                       type="text"
                       placeholder={specificValue}
-                      className="w-2/5 font-lexend font-500 text-heading6 text-grey-3"
+                      className="w-2/5 font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
                     />
                   ))}
                 </div>
@@ -126,6 +126,6 @@ const FiltroCategory: React.FC<FiltroCategoryProps> = ({ isMobile }) => {
       );
     }
   };
-  return <aside>{renderFilterContent()}</aside>;
+  return <aside className="min-w-[250px] max-w-[400px]">{renderFilterContent()}</aside>;
 };
 export default FiltroCategory;
