@@ -16,7 +16,7 @@ const ModalSuccessCreateAccount = ({
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[50%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>
@@ -37,7 +37,7 @@ const ModalSuccessCreateAccount = ({
           </p>
           <Link
             href={"/login"}
-            className={`bg-brand-1 py-3 px-5 rounded w-[132px] text-body2 font-600 text-grey-whiteFixed ${inter.className}`}
+            className={`btn-brand py-3 px-5 rounded w-[132px] text-body2 font-600 ${inter.className}`}
           >
             Ir para o login
           </Link>

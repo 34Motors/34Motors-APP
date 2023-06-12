@@ -15,7 +15,7 @@ const ModalDeleteCar = ({ toggleModal }: ModalDeleteCarProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[50%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>Excluir anúncio</h3>
@@ -35,12 +35,12 @@ const ModalDeleteCar = ({ toggleModal }: ModalDeleteCarProps) => {
         <div className={`flex justify-end gap-3 ${inter.className}`}>
           <button
             onClick={toggleModal}
-            className={`bg-grey-6 py-3 px-6 rounded text-body2 font-600 text-grey2`}
+            className={`btn-negative py-3 px-6 rounded text-body2 font-600`}
           >
             Cancelar
           </button>
           <button
-            className={`bg-alert-2 py-3 px-6 rounded  text-body2 font-600 text-alert-0`}
+            className={`btn-alert py-3 px-6 rounded text-body2 font-600`}
           >
             Sim, excluir anúncio
           </button>

@@ -36,7 +36,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[50%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>
@@ -61,7 +61,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="cep"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 CEP
               </label>
@@ -71,7 +71,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 placeholder="89888-888"
                 {...register("cep")}
                 onBlur={checkCEP}
-                className={`px-4 h-12 rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
             </div>
 
@@ -79,7 +79,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
               <div className={`flex flex-col gap-2`}>
                 <label
                   htmlFor="state"
-                  className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                  className={`default-label ${inter.className}`}
                 >
                   Estado
                 </label>
@@ -88,14 +88,14 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   id="state"
                   placeholder="Paraíba"
                   {...register("state")}
-                  className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                  className={`default-input w-full`}
                 />
               </div>
 
               <div className={`flex flex-col gap-2`}>
                 <label
                   htmlFor="city"
-                  className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                  className={`default-label ${inter.className}`}
                 >
                   Cidade
                 </label>
@@ -104,7 +104,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   id="city"
                   placeholder="Cachoeira dos Guedes"
                   {...register("city")}
-                  className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                  className={`default-input w-full`}
                 />
               </div>
             </div>
@@ -112,7 +112,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="street"
-                className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                className={`default-label ${inter.className}`}
               >
                 Rua
               </label>
@@ -121,7 +121,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 id="street"
                 placeholder="Rua do Sol"
                 {...register("street")}
-                className={`px-4 h-12 rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                className={`default-input`}
               />
             </div>
 
@@ -129,7 +129,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
               <div className={`flex flex-col gap-2`}>
                 <label
                   htmlFor="addressNumber"
-                  className={`text-body2 font-500 text-grey-1 ${inter.className}`}
+                  className={`default-label ${inter.className}`}
                 >
                   Número
                 </label>
@@ -138,14 +138,14 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   id="addressNumber"
                   placeholder="1234"
                   {...register("addressNumber")}
-                  className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                  className={`default-input w-full`}
                 />
               </div>
 
               <div className={`flex flex-col gap-2`}>
                 <label
                   htmlFor="complement"
-                  className={`text-body2 font-500 text-grey-1 w-full ${inter.className}`}
+                  className={`default-label ${inter.className}`}
                 >
                   Complemento
                 </label>
@@ -154,7 +154,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   id="complement"
                   placeholder="Apto 304"
                   {...register("complement")}
-                  className={`px-4 h-12 w-full rounded border-solid border-2 border-grey-7 placeholder:text-body1 placeholder:font-400 placeholder:text-grey-3`}
+                  className={`default-input w-full`}
                 />
               </div>
             </div>
@@ -162,14 +162,14 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
             <div className={`flex justify-end gap-3 ${inter.className}`}>
               <button
                 onClick={toggleModal}
-                className={`bg-grey-6 py-3 px-6 rounded text-body2 font-600 text-grey2`}
+                className={`btn-negative py-3 px-6 rounded text-body2 font-600`}
               >
                 Cancelar
               </button>
 
               <button
                 type="submit"
-                className={`bg-brand-3 py-3 px-6 rounded  text-body2 font-600 text-brand-4`}
+                className={`btn-brand bg-brand-1 py-3 px-6 rounded  text-body2 font-600`}
               >
                 Salvar alterações
               </button>
