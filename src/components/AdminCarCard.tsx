@@ -5,7 +5,7 @@ import { CardDetail } from "./cardDetail";
 
 const AdminCarCard = () => {
     return (
-        <li>
+        <li className="w-[312px] md:w-[40%] md:max-w-[312px]">
             <div className="w-full flex items-center justify-center bg-gray-200">
                 <Image
                     width={262}
@@ -32,7 +32,7 @@ const AdminCarCard = () => {
                         <CardDetail text="0 KM" />
                         <CardDetail text="2019" />
                     </div>
-                    <p className="text-base text-grey-1 font-500 font-lexend"> R$ 00.000,00</p>
+                    <p className="text-base text-grey-1 font-600 font-lexend"> R$ 00.000,00</p>
                 </div>
                 <div className="flex items-center justify-start gap-2">
                     <button className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded">Editar</button>
