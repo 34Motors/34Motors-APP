@@ -76,8 +76,8 @@ module.exports = {
         700: "700",
       },
       fontFamily: {
-        lexend: ["Lexend", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        lexend: ["Lexend", ""],
+        inter: ["Inter", ""],
       },
       screens: {
         "sm": {"max": "769px"}
