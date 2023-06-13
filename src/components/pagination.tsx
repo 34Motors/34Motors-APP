@@ -25,7 +25,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <section className="w-auto mx-auto">
+    <section className="w-auto mx-auto col-span-4">
       <div className="flex space-x-3 justify-center">
         {currentPage > 1 && (
           <button

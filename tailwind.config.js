@@ -79,6 +79,9 @@ module.exports = {
         lexend: ["Lexend", "sans-serif"],
         inter: ["Inter", "sans-serif"],
       },
+      screens: {
+        "sm": {"max": "769px"}
+      }
     },
   },
 

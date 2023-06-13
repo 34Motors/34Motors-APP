@@ -1,41 +1,27 @@
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import FiltroCategory from "@/components/filterCategory";
-import Footer from "@/components/footer";
-import { ListCards } from "@/components/listCards";
 import Header from "@/components/header";
+import { Inter } from "next/font/google";
+import coverImg from "../assets/img/cover-car.png";
+import Image from "next/image";
+import { ListCards } from "@/components/listCards";
+import { useState } from "react";
+import FiltroCategory from "@/components/filterCategory";
 import { Pagination } from "@/components/pagination";
-import coverImg from "../../src/assets/img/cover-car.png";
-import { ProductCard } from "@/components/productCard";
+import { useCarsContext } from "@/contexts/carsContext";
+import Footer from "@/components/footer";
 
-const listCardsData = Array.from({ length: 15 }, (_, index) => (
-  <ProductCard key={index + 1} />
-));
+const inter = Inter({ subsets: ["latin"] });
 
-const Home = () => {
-  const [isMobile, setIsMobile] = useState(false);
+export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 12;
-
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const {cars} = useCarsContext()
+  const mockList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
   return (
-    <div>
+    <>
       <Header />
       <section className="w-full h-[38.5rem] md:h-[33.5rem] bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black">
         <div className="relative h-full flex flex-col md:flex-row md:justify-center md:items-center">
@@ -55,51 +41,16 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <main className="w-full md:px-4 mx-auto my-12 px-5">
-        {!isMobile && (
-          <div className="grid grid-cols-4 gap-8">
-            <div className="col-start-1 row-span-1">
-              <FiltroCategory isMobile={isMobile} />
-            </div>
-              <div className="col-span-3 w-full flex flex-col">
-                <ListCards
-                  listCardsData={listCardsData}
-                  currentPage={currentPage}
-                  cardsPerPage={cardsPerPage}
-                  isMobile={isMobile}
-                />
-              </div>
-            <div className="col-span-4">
-              <Pagination
-                totalPages={Math.ceil(listCardsData.length / cardsPerPage)}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          </div>
-        )}
-        {isMobile && (
-          <>
-            <div className="flex flex-col">
-              <ListCards
-                listCardsData={listCardsData}
-                currentPage={currentPage}
-                cardsPerPage={cardsPerPage}
-                isMobile={isMobile}
-              />
-              <FiltroCategory isMobile={isMobile} />
-              <Pagination
-                totalPages={Math.ceil(listCardsData.length / cardsPerPage)}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          </>
-        )}
+      <main className="w-11/12 mx-auto my-12 px-5 grid grid-cols-1 md:grid-cols-4 md:px-4 md:gap-16">
+        <ListCards currentPage={currentPage} cardsPerPage={12} />
+        <FiltroCategory />
+        <Pagination
+          totalPages={Math.ceil(mockList.length / 12)}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </main>
       <Footer />
-    </div>
+    </>
   );
-};
-
-export default Home;
+}
