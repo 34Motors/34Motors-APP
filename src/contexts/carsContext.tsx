@@ -1,7 +1,7 @@
-import { api } from "@/api/api";
-import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { useRouter } from "next/router";
 import { ReactNode, useContext, createContext, useState } from "react";
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
+import { API } from "@/services/apis";
 
 interface Props {
   children: ReactNode;
@@ -19,7 +19,7 @@ export function CarsProvider({ children }: Props) {
   const [loadCars, setLoadCars] = useState(true);
 
   const getAllCars = async () => {
-    const responseCars = await api.get("cars/");
+    const responseCars = await API.get("cars/");
     setCars(responseCars.data);
     setLoadCars(false);
   };
