@@ -19,38 +19,39 @@ interface AuthProviderData {
   user: iUser | null;
 }
 
-const AuthContext = createContext<AuthProviderData>({} as AuthProviderData)
+const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
 
 export function AuthProvider({ children }: iProps) {
-    const [token, setToken] = useState<string>()
-    const [user, setUser] = useState<iUser | null>(null)
-    const router = useRouter()
-  
-    const login = (userData: LoginData) => {
-      API
-        .post('/login', userData)
-        .then((response) => {
-          setCookie(null, '34motors.token', response.data.token, {
-            maxAge: 60 * 30,
-            path: '/',
-          })
-          setCookie(null, '34motors.userName', response.data.user.name, {
-            maxAge: 60 * 30,
-            path: '/',
-          })
-          setToken(response.data.token)
-          setUser(response.data.user)
-          router.push('/profile')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-    return (
-      <AuthContext.Provider value={{ login, token, user, setToken }}>
-        {children}
-      </AuthContext.Provider>
-    )
-  }
-  
-  export const useAuth = () => useContext(AuthContext)
+  const [token, setToken] = useState<string>();
+  const [user, setUser] = useState<iUser | null>(null);
+  const router = useRouter();
+
+  const login = (userData: LoginData) => {
+    API.post("/login", userData)
+      .then((response) => {
+        setCookie(null, "34motors.token", response.data.token, {
+          maxAge: 60 * 30,
+          path: "/",
+        });
+        setToken(response.data.token);
+        // setCookie(null, "34motors.userName", response.data.user.name, {
+        //   maxAge: 60 * 30,
+        //   path: "/",
+        // });
+        // setUser(response.data.user);
+      })
+      .then(() => {
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  return (
+    <AuthContext.Provider value={{ login, token, user, setToken }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export const useAuth = () => useContext(AuthContext);
