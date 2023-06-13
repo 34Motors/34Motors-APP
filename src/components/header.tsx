@@ -26,7 +26,7 @@ const Header = () => {
 
   return (
     <header
-      className={`w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
+      className={`z-10 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
     >
       <div className={`w-full h-[80px] px-4 mx-auto flex justify-between items-center `}>
         <Image width={200} src={logo} alt="Logo 34 Motors" />

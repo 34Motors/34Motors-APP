@@ -1,0 +1,11 @@
+@tailwind components;
+
+@layer components {
+  .default-input {
+    @apply flex items-center px-4 py-2 bg-grey-10 border  rounded text-grey-3 hover:border-brand-1 focus:border-brand-1 focus:text-grey-1 focus:outline-brand-1;
+  }
+
+  .default-label {
+    @apply text-inputLabel font-500 text-grey-1;
+  }
+}
