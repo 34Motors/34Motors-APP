@@ -29,16 +29,17 @@ export function AuthProvider({ children }: iProps) {
   const login = (userData: LoginData) => {
     API.post("/login", userData)
       .then((response) => {
-        setCookie(null, "34motors.token", response.data.token, {
+        setCookie(null, "token", response.data.token, {
           maxAge: 60 * 30,
           path: "/",
         });
         setToken(response.data.token);
-        // setCookie(null, "34motors.userName", response.data.user.name, {
-        //   maxAge: 60 * 30,
-        //   path: "/",
-        // });
-        // setUser(response.data.user);
+        const userToCookie = JSON.stringify(response.data.user)
+        setCookie(null, "user", userToCookie, {
+          maxAge: 60 * 30,
+          path: "/",
+        });
+        setUser(response.data.user);
       })
       .then(() => {
         router.push("/");
