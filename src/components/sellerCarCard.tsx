@@ -2,8 +2,12 @@ import Image from "next/image";
 import carImage from "../assets/img/MaseratiExample.png";
 import { UserBadge } from "./userBadge";
 import { CardDetail } from "./cardDetail";
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
+import { formatCurrency } from "@/utils/formatingFunctions";
+import Link from "next/link";
 
-const SellerCarCard = () => {
+const SellerCarCard = ({ elem }: ICarsReturn) => {
+
     return (
         <li className="w-[312px] md:w-[40%] md:max-w-[312px]">
             <div className="w-full flex items-center justify-center bg-gray-200">
@@ -16,11 +20,11 @@ const SellerCarCard = () => {
                 />
             </div>
             <div className="flex flex-col gap-4">
-                <h6 className="font-lexend font-600 text-heading7 text-grey-1">
-                    Maserati - Ghibli
+                <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
+                    {elem.brand} - {elem.model}
                 </h6>
                 <p className=" h-12 text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem...
+                    {elem.description}
                 </p>
                 <UserBadge
                     bg_color="bg-brand-1"
@@ -29,14 +33,14 @@ const SellerCarCard = () => {
                 />
                 <div className=" flex justify-between items-center">
                     <div className="flex gap-3">
-                        <CardDetail text="0 KM" />
-                        <CardDetail text="2019" />
+                        <CardDetail text={`${elem.quilometers} KM`} />
+                        <CardDetail text={elem.year} />
                     </div>
-                    <p className="text-base text-grey-1 font-600 font-lexend"> R$ 00.000,00</p>
+                    <p className="text-base text-grey-1 font-600 font-lexend">{formatCurrency(elem.price)}</p>
                 </div>
                 <div className="flex items-center justify-start gap-2">
                     <button className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded">Editar</button>
-                    <button className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded"> ver detalhes</button>
+                    <Link href={`/announcement/${elem.id}`} className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded" > ver detalhes</Link>
                 </div>
             </div>
         </li>

@@ -37,6 +37,8 @@ const SellerPage = () => {
         getUsers()
     }, [])
 
+    console.log(userCars)
+
     if (!user) return
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -67,8 +69,8 @@ const SellerPage = () => {
                         </div>
                     </ul>
                 ) : (
-                    <div className=" w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center ">
-                        {userCars.map(elem => <SellerCarCard key={Math.random()} />)}
+                    <div className="mt-40 list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center ">
+                        {userCars?.map(elem => <SellerCarCard key={Math.random()} elem={elem}/>)}
                     </div>
                 )}
 
