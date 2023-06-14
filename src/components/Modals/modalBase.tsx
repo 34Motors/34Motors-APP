@@ -1,3 +1,4 @@
+import Document from "@/pages/_document";
 import { ReactNode, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
@@ -25,13 +26,13 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
       window.removeEventListener("mousedown", handleClick);
     };
   }, [toggleModal]);
-  return createPortal(
-    <div className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}>
-      <div ref={blockClosing ? null : ref}>
-        {children}
-      </div>
-    </div>,
-    document.body
+
+  return (
+    <div
+      className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
+    >
+      <div ref={blockClosing ? null : ref}>{children}</div>
+    </div>
   );
 };
 
