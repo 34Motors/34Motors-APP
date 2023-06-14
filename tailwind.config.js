@@ -81,6 +81,9 @@ module.exports = {
       },
       screens: {
         "sm": {"max": "769px"}
+      },
+      dropShadow: {
+        dropDownShadow: "0 4px 40px rgba(0, 0, 0, 0.25)"
       }
     },
   },
