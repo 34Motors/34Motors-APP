@@ -1,6 +1,5 @@
 import Image from "next/image";
 import carImage from "../assets/img/MaseratiExample.png";
-import { UserBadge } from "./userBadge";
 import { CardDetail } from "./cardDetail";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";

@@ -5,9 +5,9 @@ export interface iUser{
         password: string,
         cpf: string,
         birthDate: string,
-        description: null,
+        description: string | null,
         phone: string,
-        isSeller: false,
+        isSeller: boolean,
         address: {
             id: number,
             cep: string,
@@ -15,7 +15,7 @@ export interface iUser{
             city: string,
             street: string,
             number: number,
-            complement: null,
+            complement: string | null,
             userId: number
         }
 
