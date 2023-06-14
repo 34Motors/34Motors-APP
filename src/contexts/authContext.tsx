@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { setCookie } from "nookies";
+import { setCookie, destroyCookie } from "nookies";
 import { useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
@@ -17,6 +17,7 @@ interface AuthProviderData {
   login: (userData: LoginData) => void;
   token: string | undefined;
   user: iUser | null;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
@@ -30,13 +31,13 @@ export function AuthProvider({ children }: iProps) {
     API.post("/login", userData)
       .then((response) => {
         setCookie(null, "token", response.data.token, {
-          maxAge: 60 * 30,
+          maxAge: 86400,
           path: "/",
         });
         setToken(response.data.token);
         const userToCookie = JSON.stringify(response.data.user)
         setCookie(null, "user", userToCookie, {
-          maxAge: 60 * 30,
+          maxAge: 86400,
           path: "/",
         });
         setUser(response.data.user);
@@ -48,8 +49,16 @@ export function AuthProvider({ children }: iProps) {
         console.log(err);
       });
   };
+
+  const logout = () => {
+    setUser(null);
+    destroyCookie(null, "token")
+    destroyCookie(null, "user")
+    router.push("/");
+  }
+
   return (
-    <AuthContext.Provider value={{ login, token, user, setToken }}>
+    <AuthContext.Provider value={{ login, token, user, setToken, logout }}>
       {children}
     </AuthContext.Provider>
   );
