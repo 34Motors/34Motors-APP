@@ -1,7 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { iUserData } from "./header";
 import { Inter } from "next/font/google";
+import ModalEditUser from "./Modals/ModalEditUser/modalEditUser";
+import ModalEditAddress from "./Modals/ModalEditAddress/modalEditAddress";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,14 +43,25 @@ export const MenuModalButtons = () => {
 };
 
 export const UserMenuModalButtons = ({ isSeller }: iUserData) => {
+  const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
+  const [isOpenModalEditAddress, setIsOpenModalEditAddress] = useState(false);
+
+  const toggleModalEditUser = () => setIsOpenModalEditUser(!isOpenModalEditUser);
+  const toggleModalEditAddress = () => setIsOpenModalEditAddress(!isOpenModalEditAddress);
+
   return (
     <ul
       className={`absolute right-2 top-16 w-[200px] bg-white drop-shadow-dropDownShadow rounded p-5 flex flex-col items-center gap-4 text-grey-2 font-400 text-body1 ${inter.className}`}
     >
-      <li>Editar Perfil</li>
-      <li>Editar Endereço</li>
+      <button onClick={toggleModalEditUser}>Editar Perfil</button>
+      {isOpenModalEditUser && <ModalEditUser toggleModal={toggleModalEditUser}/>}
+
+      <button onClick={toggleModalEditAddress}>Editar Endereço</button>
+      {isOpenModalEditAddress && <ModalEditAddress toggleModal={toggleModalEditAddress}/>}
+
       {isSeller && <Link href={"/announcements"}>Meus anúncios</Link>}
-      <button className={``}>Sair</button>
+      
+      <button >Sair</button>
     </ul>
   );
 };
