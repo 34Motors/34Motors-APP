@@ -7,6 +7,7 @@ import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { iUser } from "./interface";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
+import { API } from "@/services/apis";
 
 
 const SellerPage = () => {
@@ -25,7 +26,7 @@ const SellerPage = () => {
 
         const getUsers = async () => {
 
-            const carResponse = await axios.get("http://localhost:4002/cars")
+            const carResponse = await API.get("http://localhost:4002/cars")
 
             const carData = carResponse.data
 
@@ -60,7 +61,7 @@ const SellerPage = () => {
                     </div>
                 </div>
             </section>
-            <main className="bg-grey-8 w-full flex flex-col justify-between">
+            <main className="bg-grey-8 w-full  flex flex-col justify-between">
                 {!userCars.length ? (
                     <ul className="bg-grey-8 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap mb-10">
                         <div className="mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center">
@@ -68,12 +69,12 @@ const SellerPage = () => {
                         </div>
                     </ul>
                 ) : (
-                    <div className="mt-40 list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center ">
+                    <div className={`mt-40 ${userCars.length < 16 ? "mb-10" :"" } list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
                         {userCars?.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()} elem={elem} />)}
                     </div>
                 )}
 
-                {userCars.length > 0 &&
+                {userCars.length > 16 &&
                     <div className="col-span-4 mb-[62.5px] mt-[62.5px]">
                         <Pagination
                             totalPages={Math.ceil(arr.length / cardsPerPage)}
