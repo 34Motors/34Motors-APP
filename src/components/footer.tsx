@@ -1,6 +1,7 @@
 import Image from "next/image";
 import logo from "../assets/logo-34-motors-white.png";
 import { MdKeyboardArrowUp } from "react-icons/md";
+import Link from "next/link";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -13,7 +14,7 @@ const Footer = () => {
     <div
       className={`w-full flex flex-col gap-14 md:justify-between md:flex-row items-center bg-grey-0 p-[45px]`}
     >
-      <Image width={200} src={logo} alt="Logo 34 Motors" />
+      <Link href={"/"}><Image width={200} src={logo} alt="Logo 34 Motors" /></Link>
       <h1 className={`text-grey-whiteFixed text-body2 font-400 text-center`}>
         34 Motors© 2023 - Todos os direitos reservados.
       </h1>
