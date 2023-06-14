@@ -21,7 +21,7 @@ const Announcement = () => {
       <Header />
       <div className="bg-brand-1 h-[436px] w-screen absolute z-0"></div>
       <div className="bg-grey-8">
-        <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:grid-flow-ro md:max-w-6xl">
+        <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
           <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
             <Image
               width={351}

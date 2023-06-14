@@ -79,6 +79,9 @@ module.exports = {
         lexend: ["Lexend", ""],
         inter: ["Inter", ""],
       },
+      screens: {
+        "sm": {"max": "769px"}
+      }
     },
   },
 
