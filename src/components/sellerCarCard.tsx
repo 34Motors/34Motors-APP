@@ -9,7 +9,8 @@ import Link from "next/link";
 const SellerCarCard = ({ elem }: ICarsReturn) => {
 
     return (
-        <li className="w-[312px] md:w-[40%] md:max-w-[312px]">
+        <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
+            <span className={elem.published ? "btn-brand font-500 text-sm py-0 px-2 top-[12px] left-[12px] absolute" : "bg-grey-4 font-500 text-white text-sm py-0 px-2 top-[12px] left-[12px] absolute"}>{elem.published ? "Ativo" : "Inativo"}</span>
             <div className="w-full flex items-center justify-center bg-gray-200">
                 <Image
                     width={262}
@@ -23,14 +24,9 @@ const SellerCarCard = ({ elem }: ICarsReturn) => {
                 <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
                     {elem.brand} - {elem.model}
                 </h6>
-                <p className=" h-12 text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
+                <p className="text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
                     {elem.description}
                 </p>
-                <UserBadge
-                    bg_color="bg-brand-1"
-                    initials_color="text-white"
-                    name_color="grey-2"
-                />
                 <div className=" flex justify-between items-center">
                     <div className="flex gap-3">
                         <CardDetail text={`${elem.quilometers} KM`} />

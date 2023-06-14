@@ -6,6 +6,7 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { iUser } from "./interface";
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
 
 
 const SellerPage = () => {
@@ -37,8 +38,6 @@ const SellerPage = () => {
         getUsers()
     }, [])
 
-    console.log(userCars)
-
     if (!user) return
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -53,7 +52,7 @@ const SellerPage = () => {
                     <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
                         <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">{user.name.split("")[0]}</p>
                         <div className="flex gap-2 items-center mb-6">
-                            <p className="font-600 text-heading6 text-grey-1 capitalize">{ user.name }</p>
+                            <p className="font-600 text-heading6 text-grey-1 capitalize">{user.name}</p>
                             <span className="btn-brand-white font-500 py-1 px-2 rounded ">anunciante</span>
                         </div>
                         <p className="text-grey-2 font-400 text-base text mb-6">{user.description ? user.description : "este usuário não possui descrição"}</p>
@@ -70,7 +69,7 @@ const SellerPage = () => {
                     </ul>
                 ) : (
                     <div className="mt-40 list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center ">
-                        {userCars?.map(elem => <SellerCarCard key={Math.random()} elem={elem}/>)}
+                        {userCars?.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()} elem={elem} />)}
                     </div>
                 )}
 
