@@ -3,7 +3,7 @@ import carImage from "../assets/img/MaseratiExample.png";
 import { UserBadge } from "./userBadge";
 import { CardDetail } from "./cardDetail";
 
-const AdminCarCard = () => {
+const SellerCarCard = () => {
     return (
         <li className="w-[312px] md:w-[40%] md:max-w-[312px]">
             <div className="w-full flex items-center justify-center bg-gray-200">
@@ -43,4 +43,4 @@ const AdminCarCard = () => {
     );
 }
 
-export default AdminCarCard;
+export default SellerCarCard;
