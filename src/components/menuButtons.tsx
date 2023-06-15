@@ -1,13 +1,18 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import { iUserData } from "./header";
 import { Inter } from "next/font/google";
 import ModalEditUser from "./Modals/ModalEditUser/modalEditUser";
 import ModalEditAddress from "./Modals/ModalEditAddress/modalEditAddress";
+import { useAuth } from "@/contexts/authContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
+interface iUserMenuModalButtonsProps {
+  isSeller: boolean;
+}
+
 export const MenuButtons = () => {
+
   return (
     <div className="flex items-center gap-11">
       <div className={`border-l-2 border-grey-6 h-[79px] drop-shadow-md`}></div>
@@ -42,26 +47,35 @@ export const MenuModalButtons = () => {
   );
 };
 
-export const UserMenuModalButtons = ({ isSeller }: iUserData) => {
+export const UserMenuModalButtons = ({
+  isSeller,
+}: iUserMenuModalButtonsProps) => {
   const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
   const [isOpenModalEditAddress, setIsOpenModalEditAddress] = useState(false);
+  const { logout } = useAuth();
 
-  const toggleModalEditUser = () => setIsOpenModalEditUser(!isOpenModalEditUser);
-  const toggleModalEditAddress = () => setIsOpenModalEditAddress(!isOpenModalEditAddress);
+  const toggleModalEditUser = () =>
+    setIsOpenModalEditUser(!isOpenModalEditUser);
+  const toggleModalEditAddress = () =>
+    setIsOpenModalEditAddress(!isOpenModalEditAddress);
 
   return (
     <ul
       className={`absolute right-2 top-16 w-[200px] bg-white drop-shadow-dropDownShadow rounded p-5 flex flex-col items-center gap-4 text-grey-2 font-400 text-body1 ${inter.className}`}
     >
       <button onClick={toggleModalEditUser}>Editar Perfil</button>
-      {isOpenModalEditUser && <ModalEditUser toggleModal={toggleModalEditUser}/>}
+      {isOpenModalEditUser && (
+        <ModalEditUser toggleModal={toggleModalEditUser} />
+      )}
 
       <button onClick={toggleModalEditAddress}>Editar Endereço</button>
-      {isOpenModalEditAddress && <ModalEditAddress toggleModal={toggleModalEditAddress}/>}
+      {isOpenModalEditAddress && (
+        <ModalEditAddress toggleModal={toggleModalEditAddress} />
+      )}
 
-      {isSeller && <Link href={"/announcements"}>Meus anúncios</Link>}
-      
-      <button >Sair</button>
+      {isSeller && <Link href={"/seller"}>Meus anúncios</Link>}
+
+      <button onClick={logout}>Sair</button>
     </ul>
   );
 };
