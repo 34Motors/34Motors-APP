@@ -1,5 +1,5 @@
 import Document from "@/pages/_document";
-import { ReactNode, useRef, useEffect } from "react";
+import { ReactNode, useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface ModalProps {
@@ -10,6 +10,13 @@ interface ModalProps {
 
 const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<Element | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    portalRef.current = document.querySelector<HTMLElement>("body");
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -27,13 +34,16 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
     };
   }, [toggleModal]);
 
-  return (
-    <div
-      className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
-    >
-      <div ref={blockClosing ? null : ref}>{children}</div>
-    </div>
-  );
+  return mounted && portalRef.current
+    ? createPortal(
+        <div
+          className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
+        >
+          <div ref={blockClosing ? null : ref}>{children}</div>
+        </div>,
+        portalRef.current
+      )
+    : null;
 };
 
 export default ModalBase;
