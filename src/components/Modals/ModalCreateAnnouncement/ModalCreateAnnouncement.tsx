@@ -14,9 +14,7 @@ export const ModalCreateAnnouncement = ({ toggleModal }: any) => {
         </div>
 
         <div>
-          <h4
-            className={`text-body2 font-500 text-grey-0 mb-[37px] font-inter`}
-          >
+          <h4 className={`text-body2 font-500 text-grey-0 mb-5 font-inter`}>
             Informações do veículo
           </h4>
           <ModalCreateAnnouncementForm />

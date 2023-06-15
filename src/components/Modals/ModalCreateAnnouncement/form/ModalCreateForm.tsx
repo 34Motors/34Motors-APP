@@ -4,15 +4,18 @@ import {
   capitalizeFirstLetter,
   formatCurrency,
 } from "@/utils/formatingFunctions";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import {
   useForm,
   useFieldArray,
-  FormProvider,
-  useFormContext,
   UseFormRegister,
+  UseFormReturn,
+  FieldValues,
+  UseFieldArrayReturn,
 } from "react-hook-form";
 import { BsFillTrashFill } from "react-icons/bs";
+import { createAnnouncementSchema } from "../validator";
 
 interface iCar {
   id: string;
@@ -37,7 +40,7 @@ const avaliableBrands = [
   "volkswagen",
 ];
 
-const fuels = ["Gasolina", "Híbrido", "Elétrico"];
+const fuels = ["", "Flex", "Hibrido", "Eletrico"];
 
 export const ModalCreateAnnouncementForm = ({}) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -55,6 +58,7 @@ export const ModalCreateAnnouncementForm = ({}) => {
     const brand = event.target.value;
 
     setSelectedBrand(brand);
+    setSelectedModel(null);
 
     const response = await carsAPI.get(`/cars?brand=${brand}`);
 
@@ -67,13 +71,28 @@ export const ModalCreateAnnouncementForm = ({}) => {
       return;
     }
 
-    setSelectedModel(models![event.target.value]);
+    const selected = models!.find((car) => car.name == event.target.value);
+
+    setSelectedModel(selected!);
   }
 
-  const { register } = useForm();
+  const formHandler = useForm({
+    resolver: zodResolver(createAnnouncementSchema),
+    mode: "onTouched",
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = formHandler;
+
+  function submitForm(data: any) {
+    console.log(data);
+  }
 
   return (
-    <form className="flex flex-col">
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(submitForm)}>
       <SelectBrands handleChange={handleBrandChange} register={register} />
       {selectedBrand && (
         <SelectModel
@@ -82,7 +101,14 @@ export const ModalCreateAnnouncementForm = ({}) => {
           register={register}
         />
       )}
-      {selectedModel && <OtherInputs car={selectedModel} register={register} />}
+      {selectedModel && <OtherInputs car={selectedModel} form={formHandler} />}
+      <button
+        type="submit"
+        className="btn-big btn-brand bg-brand-1"
+        disabled={errors ? true : false}
+      >
+        Criar anúncio
+      </button>
     </form>
   );
 };
@@ -99,7 +125,7 @@ function SelectBrands({ handleChange, register }: SelectBrandsProps) {
         Marca
       </label>
       <select
-        className="default-input"
+        className="default-select"
         id="brand"
         onChangeCapture={handleChange}
         {...register("brand")}
@@ -107,7 +133,7 @@ function SelectBrands({ handleChange, register }: SelectBrandsProps) {
         <option value="null">Selecione a marca</option>
         {avaliableBrands.map((brand) => (
           <option key={brand} value={brand}>
-            {brand.toLocaleUpperCase()}
+            {capitalizeFirstLetter(brand)}
           </option>
         ))}
       </select>
@@ -115,7 +141,13 @@ function SelectBrands({ handleChange, register }: SelectBrandsProps) {
   );
 }
 
-function SelectModel({ models, handleChange, register }: any) {
+interface SelectModelsProps {
+  models: iCar[] | null;
+  handleChange: (event: any) => void;
+  register: UseFormRegister<any>;
+}
+
+function SelectModel({ models, handleChange, register }: SelectModelsProps) {
   if (models == null) {
     return <p>Carregando...</p>;
   }
@@ -126,14 +158,14 @@ function SelectModel({ models, handleChange, register }: any) {
         Modelo
       </label>
       <select
-        className="default-input"
+        className="default-select"
         id="model"
         {...register("model")}
         onChange={handleChange}
       >
         <option value={"null"}>Selecione o modelo</option>
         {models.map((model: iCar, index: number) => (
-          <option key={model.id} value={index}>
+          <option key={model.id} value={model.name}>
             {capitalizeFirstLetter(model.name)}
           </option>
         ))}
@@ -144,42 +176,58 @@ function SelectModel({ models, handleChange, register }: any) {
 
 interface OtherInputsProps {
   car: iCar;
-  register: UseFormRegister<any>;
+  form: UseFormReturn<FieldValues, any>;
 }
 
-function OtherInputs({ car, register }: OtherInputsProps) {
+function OtherInputs({ car, form }: OtherInputsProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <DefaultFieldset
           label={"Ano"}
           id={"year"}
-          inputProps={{ value: car.year, readOnly: true }}
+          inputProps={{
+            value: car.year,
+            readOnly: true,
+            ...register("year"),
+          }}
         />
         <DefaultFieldset
           label={"Combustível"}
-          id={"fuel"}
+          id={"fuelType"}
           inputProps={{
-            value: fuels[car.fuel + 1],
+            value: fuels[car.fuel],
             readOnly: true,
-            ...register("fuel"),
+            ...register("fuelType"),
           }}
         />
       </div>
       <div className="flex justify-between">
         <DefaultFieldset
           label={"Quilometragem"}
-          id={"quilomenter"}
+          id={"quilometers"}
           inputProps={{
             type: "number",
             placeholder: "Quilometragem",
-            ...register("quilomenter"),
+            ...register("quilometers"),
+            className: errors.quilometers
+              ? "default-input-error"
+              : "default-input",
           }}
         />
         <DefaultFieldset
           label={"Cor"}
           id={"color"}
-          inputProps={{ placeholder: "Cor", ...register("color") }}
+          inputProps={{
+            placeholder: "Cor",
+            ...register("color"),
+            className: errors.color ? "default-input-error" : "default-input",
+          }}
         />
       </div>
       <div className="flex justify-between">
@@ -194,8 +242,13 @@ function OtherInputs({ car, register }: OtherInputsProps) {
         />
         <DefaultFieldset
           label={"Valor"}
-          id={"value"}
-          inputProps={{ placeholder: "Valor", ...register("value") }}
+          id={"price"}
+          inputProps={{
+            type: "number",
+            placeholder: "Valor",
+            ...register("price"),
+            className: errors.price ? "default-input-error" : "default-input",
+          }}
         />
       </div>
       <fieldset className="flex flex-col">
@@ -203,7 +256,9 @@ function OtherInputs({ car, register }: OtherInputsProps) {
           Descrição
         </label>
         <textarea
-          className="default-input"
+          className={
+            errors.description ? "default-input-error" : "default-input"
+          }
           id="description"
           cols={10}
           {...register("description")}
@@ -211,38 +266,65 @@ function OtherInputs({ car, register }: OtherInputsProps) {
       </fieldset>
       <DefaultFieldset
         label={"Imagem da capa"}
-        id={"image"}
+        id={"frontImage"}
         inputProps={{
           placeholder: "https://example.com/image.png",
-          ...register("image"),
+          ...register("frontImage"),
+          className: errors.frontImage
+            ? "default-input-error"
+            : "default-input",
         }}
       />
-      <ImageInputs register={register} />
-    </>
+      <ImageInputs form={form} />
+    </div>
   );
 }
 
-function ImageInputs({ register }: any) {
-  const methods = useForm();
-  const { fields, append, remove } = useFieldArray({
-    control: methods.control,
-    name: "imageUrls",
+interface ImageInputsProps {
+  form: UseFormReturn<FieldValues, any>;
+}
+
+function ImageInputs({ form }: ImageInputsProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  const fieldArray = useFieldArray({
+    control: form.control,
+    name: "images",
   });
 
+  const { fields, append } = fieldArray;
+
+  console.log(fields);
+
+  useEffect(() => {
+    if (fields.length < 1) {
+      append(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields]);
+
+  function addInput() {
+    append(null);
+  }
+
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {fields.map((field, index) => (
         <ImageField
           key={field.id}
           index={index}
-          onRemove={remove}
-          register={register}
+          form={form}
+          fieldArray={fieldArray}
         />
       ))}
       <button
-        className="font-inter font-600 text-brand-1"
+        className="font-inter font-600 text-brand-1 disabled:text-grey-2"
         type="button"
-        onClick={() => append({ url: "" })}
+        onClick={addInput}
+        disabled={errors.images ? true : false}
       >
         Adicionar campo para nova imagem
       </button>
@@ -250,22 +332,44 @@ function ImageInputs({ register }: any) {
   );
 }
 
-function ImageField({ index, onRemove, register }: any) {
+interface ImageFieldProps {
+  index: number;
+  form: UseFormReturn<FieldValues, any>;
+  fieldArray: UseFieldArrayReturn<FieldValues, "images", "id">;
+}
+
+function ImageField({ index, form, fieldArray }: ImageFieldProps) {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  const { fields, remove } = fieldArray;
+
+  const onRemove = () => {
+    remove(index);
+  };
+
+  const lastIndex = fields.length - 1;
+
   return (
     <div className="flex justify-between items-center relative">
       <DefaultFieldset
-        className="flex flex-col w-[93%]"
+        className="flex w-[93%]"
         label={`${index + 1}ª Imagem da galeria`}
-        id={`imageUrls[${index}].url`}
+        id={`images[${index}]`}
         inputProps={{
           type: "text",
-          ...register(`imageUrls[${index}].url`, { required: true }),
+          ...register(`images[${index}]`, { required: true }),
+          className: errors.images ? "default-input-error" : "default-input",
         }}
       />
-      <BsFillTrashFill
-        onClick={onRemove}
-        className="absolute right-1 bottom-3 cursor-pointer"
-      />
+      {index == lastIndex && index != 0 && (
+        <BsFillTrashFill
+          onClick={onRemove}
+          className="absolute right-1 bottom-3 cursor-pointer"
+        />
+      )}
     </div>
   );
 }
