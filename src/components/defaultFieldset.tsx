@@ -1,10 +1,23 @@
+import { type } from "os";
 import React from "react";
 
-const DefaultFieldset = ({ className, label, id, inputProps }: any) => {
-  const type = id != "password" ? "text" : "password";
+interface defaultFieldsetProps {
+  className?: string;
+  label: string;
+  id: string;
+  type?: string;
+  inputProps: object;
+}
 
+const DefaultFieldset = ({
+  className,
+  label,
+  id,
+  type,
+  inputProps,
+}: defaultFieldsetProps) => {
   return (
-    <fieldset className={className}>
+    <fieldset className={"flex flex-col gap-1 " + className}>
       <label htmlFor={id} className="default-label">
         {label}
       </label>
@@ -14,7 +27,8 @@ const DefaultFieldset = ({ className, label, id, inputProps }: any) => {
 };
 
 DefaultFieldset.defaultProps = {
-  className: "flex flex-col",
+  className: "flex flex-col gap-2",
+  type: "text",
 };
 
 export { DefaultFieldset };
