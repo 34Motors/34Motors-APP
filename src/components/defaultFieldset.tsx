@@ -17,11 +17,11 @@ const DefaultFieldset = ({
   inputProps,
 }: defaultFieldsetProps) => {
   return (
-    <fieldset className={"flex flex-col gap-1 " + className}>
+    <fieldset className={"flex flex-col gap-2 " + className}>
       <label htmlFor={id} className="default-label">
         {label}
       </label>
-      <input id={id} className="default-input" type={type} {...inputProps} />
+      <input id={id} className="default-input w-full" type={type} {...inputProps} />
     </fieldset>
   );
 };
