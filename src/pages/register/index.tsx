@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "./schema";
+import { API } from "@/services/apis";
+import ModalSuccessCreateAccount from "@/components/Modals/modalSuccessCreateAccount";
 
 const RegisterPage = () => {
 
@@ -13,16 +15,36 @@ const RegisterPage = () => {
         resolver: zodResolver(registerSchema)
     })
 
-    const [isSeller, setIsSeller] = useState<boolean>(false)
+    const [isSeller, setIsSeller] = useState<boolean>(true)
     const [buttonColor, setButtonColor] = useState<boolean>(false)
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
 
-    const submit = (data: iUserBody) => {
+    const toggle = () => {
+        setModalIsOpen(!modalIsOpen);
+      };
+
+    const submit = async(data: iUserBody) => {
         const userData = {
             ...data,
             isSeller
         }
+        if(userData.complement === "" ) {
+            console.log("entrou aqui")
+            delete userData.complement
+        }
         
-        console.log(userData)
+        if(userData.description === "") {
+            console.log("entrou aqui")
+            delete userData.description
+       }
+       console.log(userData)
+        try {
+            await API.post("/users", userData)
+            setModalIsOpen(true)
+            
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -35,7 +57,7 @@ const RegisterPage = () => {
                     <div className="flex flex-col gap-6 w-full">
                         <DefaultFieldset label="Nome" id="name" inputProps={{
 
-                            placeholder: "Digitar seu nome",
+                            placeholder: "Digite seu nome",
                             ...register("name"),
                         }} />
                         {errors.name?.message && <small className="text-alert-1 my-[-22px]">{errors.name.message}</small>}
@@ -61,7 +83,7 @@ const RegisterPage = () => {
                         <DefaultFieldset label="Data de nascimento"
                             id="birthDate"
                             inputProps={{
-                                placeholder: "Digite sua data denascimento",
+                                placeholder: "Digite sua data de nascimento",
                                 ...register("birthDate"),
                             }} />
                         {errors.birthDate?.message && <small className="text-alert-1 my-[-22px]">{errors.birthDate.message}</small>}
@@ -156,6 +178,7 @@ const RegisterPage = () => {
                 </form>
             </main>
             <Footer />
+            {modalIsOpen && <ModalSuccessCreateAccount toggleModal={toggle}/>}
         </div>
 
     );

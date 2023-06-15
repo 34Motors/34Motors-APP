@@ -10,7 +10,7 @@ export const registerSchema = z.object({
     confirmPassword: z.string().nonempty('As senhas não coincidem'),
     cpf: z.string().nonempty('adicionar um cpf é obrigatório'),
     birthDate: z.string().nonempty('adicionar uma data de nascimento é obrigatório'),
-    decription: z.string().optional(),
+    description: z.string().optional(),
     phone: z.string().nonempty('Adicionar um telefone é obrigatório'),
     cep: z.string().nonempty('adicionar um cep é obrigatório'),
     state: z.string().nonempty('adicionar um estado é obrigatório'),

@@ -5,7 +5,7 @@ export interface iUserBody{
     confirmPassword: string
     cpf: string,
     birthDate: string,
-    description: string ,
+    description?: string ,
     phone: string,
     isSeller: false,
     id: number,
@@ -14,6 +14,6 @@ export interface iUserBody{
     city: string,
     street: string,
     number: number,
-    complement: string ,
+    complement?: string ,
     userId: number
 }
