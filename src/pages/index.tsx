@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Header from "@/components/header";
 import { Inter } from "next/font/google";
 import coverImg from "../assets/img/cover-image2.jpg";
@@ -13,8 +14,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const {cars} = useCarsContext()
-  const mockList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+  const { cars } = useCarsContext();
+  const mockList = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  ];
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -22,6 +25,13 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>34 Motors - Seu próximo carro está aqui</title>
+        <meta
+          name="description"
+          content="34 Motors é uma aplicação feita em NextJS, como trabalho de conclusão do curso da Kenzie Academy Brasil."
+        />
+      </Head>
       <Header />
       <section className="w-full h-[38.5rem] md:h-[33.5rem] bg-gradient-to-b from-[rgba(0,0,0,0.29)] to-black">
         <div className="relative h-full flex flex-col md:flex-row md:justify-center md:items-center">
