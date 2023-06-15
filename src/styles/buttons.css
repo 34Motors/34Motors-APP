@@ -25,7 +25,7 @@ button {
   }
 
   .btn-brand {
-    @apply bg-brand-1 border-brand-1 text-grey-whiteFixed hover:bg-brand-2 hover:border-brand-2 disabled:bg-brand-3;
+    @apply bg-brand-1 border-brand-1 text-grey-whiteFixed hover:bg-brand-2 hover:border-brand-2 disabled:bg-brand-3 disabled:border-brand-3;
   }
   .btn-brand-white {
     @apply bg-brand-4 border-brand-4 text-brand-1;
