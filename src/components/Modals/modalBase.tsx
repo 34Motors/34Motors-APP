@@ -37,7 +37,7 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
   return mounted && portalRef.current
     ? createPortal(
         <div
-          className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
+          className={`top-0 w-screen z-10 h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
         >
           <div ref={blockClosing ? null : ref}>{children}</div>
         </div>,
