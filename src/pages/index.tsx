@@ -43,10 +43,10 @@ export default function Home() {
           />
           <div className="w-full mt-[15%] px-7 flex flex-col items-center justify-center text-grey-10 md:mt-0">
             <h3 className="mb-5 text-heading3 font-lexend font-700 text-center md:text-heading1">
-              Motors Shop
+              34 Motors
             </h3>
             <h5 className="text-heading5 font-lexend font-600 text-center md:text-heading2">
-              A melhor plataforma de anúncios de carros do país
+              Seu próximo carro está aqui!
             </h5>
           </div>
         </div>
