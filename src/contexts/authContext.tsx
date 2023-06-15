@@ -54,7 +54,7 @@ export function AuthProvider({ children }: iProps) {
     setUser(null);
     destroyCookie(null, "token")
     destroyCookie(null, "user")
-    router.push("/");
+    window.location.reload()
   }
 
   return (
