@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import { Inter } from "next/font/google";
-import coverImg from "../assets/img/cover-car.png";
+import coverImg from "../assets/img/cover-image2.jpg";
 import Image from "next/image";
 import { ListCards } from "@/components/listCards";
 import { useState } from "react";
@@ -28,7 +28,7 @@ export default function Home() {
           <Image
             src={coverImg}
             alt="Imagem de capa"
-            className="h-full object-cover md:w-1/2 z-[-3]"
+            className="h-full object-cover object-center md:w-1/2 z-[-3]  "
             fill={true}
           />
           <div className="w-full mt-[15%] px-7 flex flex-col items-center justify-center text-grey-10 md:mt-0">

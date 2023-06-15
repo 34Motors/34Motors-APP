@@ -10,21 +10,12 @@ import {
   MenuModalButtons,
   UserMenuModalButtons,
 } from "./menuButtons";
-
-export interface iUserData {
-  name: string;
-  email: string;
-  isSeller: boolean;
-  birthDate: string;
-  cpf: string;
-  description: string;
-  phone: string;
-}
+import { iUserBody } from "@/interfaces/user.interfaces";
 
 const Header = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
-  const [loggedUser, setLoggedUser] = useState<iUserData | null>(null);
+  const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
   const [loggedToken, setLoggedToken] = useState<string>("");
 
   useEffect(() => {
