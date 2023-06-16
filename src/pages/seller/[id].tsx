@@ -32,14 +32,14 @@ const SellerPage = () => {
         if (!cookies.token) {
 
             setLoggedUser(false)
-
-            router.push("/")
-
-            return
+            
         }
-        const cookieUser: iUser = JSON.parse(cookies.user)
+        if(cookies.token){
 
-        setCookieUser(cookieUser)
+            const cookieUser: iUser = JSON.parse(cookies.user)
+            setCookieUser(cookieUser)
+        }
+
 
         const getUserCars = async () => {
 
