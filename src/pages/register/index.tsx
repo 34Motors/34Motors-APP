@@ -48,9 +48,9 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="flex flex-col justify-between h-screen">
+        <div>
             <Header />
-            <main className="flex justify-center bg-grey-8 h-full overflow-y-scroll">
+            <main className="flex justify-center bg-grey-8 h-full">
                 <form className="bg-grey-10 py-11 h-fit px-12 mt-[46px] mb-[97px] rounded md:w-[411px]" onSubmit={handleSubmit(submit)}>
                     <h2 className="mb-8 font-500 text-heading5">Cadastro</h2>
                     <h3 className="mb-6 font-500 text-sm">Informações pessoais</h3>

@@ -64,7 +64,7 @@ const SellerPage = () => {
                 </div>
             </section>
 
-            <main className="bg-grey-8 w-screen h-full flex flex-col justify-between md:mt-[-250px]">
+            <main className="bg-grey-8 w-full h-full flex flex-col justify-between md:mt-[-250px] md:overflow-x-hidden">
 
                 {!userCars.length ? (
                     <ul className="bg-grey-8 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap mb-10">
@@ -73,7 +73,7 @@ const SellerPage = () => {
                         </div>
                     </ul>
                 ) : (
-                    <div className={`mt-40 md:mt-96 ${userCars.length < 16 ? "mb-10" : ""} overflow-y-scroll list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
+                    <div className={`mt-96  ${userCars.length < 16 ? "mb-10" : ""} overflow-y-scroll list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
                         {userCars.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()}
 
                             description={elem.description}
