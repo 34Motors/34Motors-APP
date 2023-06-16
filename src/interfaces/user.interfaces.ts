@@ -8,7 +8,7 @@ export interface iUserBody{
     cpf: string,
     birthDate: string,
     phone: string,
-    isSeller: false,
+    isSeller: boolean,
     id: number,
     cep: string,
     state: string,
