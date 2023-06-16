@@ -14,15 +14,16 @@ const SellerPage = () => {
     const arr = [1, 12, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     const cardsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
-    const [userCars, setUserCars] = useState([]);
+    const [userCars, setUserCars] = useState<ICarsReturn[]>([]);
     const [user, setUser] = useState<iUser | undefined>();
 
     useEffect(() => {
 
         const cookies = parseCookies()
-        const user: iUser = JSON.parse(cookies.user)
 
-        setUser(user)
+        const cookieUser: iUser = JSON.parse(cookies.user)
+
+        setUser(cookieUser)
 
         const getUsers = async () => {
 
@@ -30,10 +31,11 @@ const SellerPage = () => {
 
             const carData = carResponse.data
 
-            carData.filter((elem: any) => {
-                elem.UserId === user.id
+            const carsFromUser = carData.filter((elem: any) => {
+                return elem.user.id === cookieUser.id
             })
-            setUserCars(carData)
+
+            setUserCars(carsFromUser)
         }
 
         getUsers()
@@ -45,7 +47,7 @@ const SellerPage = () => {
     };
 
     return (
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between h-screen">
             <Header />
             <section className="relative">
                 <div className="bg-brand-1 w-full h-[360px]"></div>
@@ -61,16 +63,30 @@ const SellerPage = () => {
                     </div>
                 </div>
             </section>
-            <main className="bg-grey-8 w-full  flex flex-col justify-between">
+
+            <main className="bg-grey-8 w-screen h-full flex flex-col justify-between md:mt-[-250px]">
+
                 {!userCars.length ? (
                     <ul className="bg-grey-8 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap mb-10">
-                        <div className="mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center">
+                        <div className="relative bottom-5 md:z-40 md:top-48 2xl:top-52 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center">
                             <p className="text-3xl font-600 text-grey-1">Este usuário não possui anúncios cadastrados</p>
                         </div>
                     </ul>
                 ) : (
-                    <div className={`mt-40 ${userCars.length < 16 ? "mb-10" :"" } list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
-                        {userCars?.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()} elem={elem} />)}
+                    <div className={`mt-40 md:mt-96 ${userCars.length < 16 ? "mb-10" : ""} overflow-y-scroll list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
+                        {userCars.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()}
+
+                            description={elem.description}
+                            brand={elem.brand}
+                            id={elem.id}
+                            model={elem.model}
+                            price={elem.price}
+                            quilometers={elem.quilometers}
+                            year={elem.year}
+                            published={elem.published}
+
+                        />)
+                        }
                     </div>
                 )}
 
@@ -83,8 +99,10 @@ const SellerPage = () => {
                         />
                     </div>
                 }
-                <Footer />
             </main >
+            <div className="relative z-50">
+                <Footer />
+            </div>
         </div>
     );
 }
