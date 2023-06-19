@@ -13,13 +13,26 @@ import CommonUserCarCard from "@/components/commonUserCard";
 import { string } from "zod";
 
 
+export interface CarCard extends ICarsReturn {
+    user: {
+        name: string
+        email: string
+        birthDate: string,
+        phone: string,
+        isSeller: boolean,
+        description: null,
+        cpf: string
+    }
+}
+
+
 const SellerPage = () => {
     const router = useRouter()
 
     const arr = [1, 12, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     const cardsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
-    const [userCars, setUserCars] = useState<ICarsReturn[]>([]);
+    const [userCars, setUserCars] = useState<CarCard[]>([]);
     const [user, setUser] = useState<iUser | undefined>();
     const [cookieUser, setCookieUser] = useState<iUser | undefined>();
     const [loggedUser, setLoggedUser] = useState<boolean>(true);
@@ -32,9 +45,9 @@ const SellerPage = () => {
         if (!cookies.token) {
 
             setLoggedUser(false)
-            
+
         }
-        if(cookies.token){
+        if (cookies.token) {
 
             const cookieUser: iUser = JSON.parse(cookies.user)
             setCookieUser(cookieUser)
@@ -47,7 +60,7 @@ const SellerPage = () => {
 
             const carData = carResponse.data
 
-            const carsFromUser: ICarsReturn[] = carData.filter((elem: any) => {
+            const carsFromUser: CarCard[] = carData.filter((elem: any) => {
                 return elem.user.id == paramId
             })
 
@@ -99,13 +112,33 @@ const SellerPage = () => {
                         <ul className={`mt-40 h-full md:mt-60 ${userCars.length < 16 ? "mb-10" : ""} list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}>
                             {
                                 loggedUser === false ? (
-                                    userCars.map((elem: ICarsReturn) => <CommonUserCarCard key={elem.id + Math.random()}
-                                        elem={elem}
+                                    userCars.map((elem: CarCard) => <CommonUserCarCard key={elem.id + Math.random()}
+                                        description={elem.description}
+                                        brand={elem.brand}
+                                        id={elem.id}
+                                        model={elem.model}
+                                        price={elem.price}
+                                        quilometers={elem.quilometers}
+                                        year={elem.year}
+                                        published={elem.published}
+                                        user={elem.user.name}
+                                        images={elem.images}
+                                        frontImage={elem.frontImage}
                                     />)
                                 ) : String(cookieUser!.id) !== paramId ? (
 
-                                    userCars.map((elem: ICarsReturn) => <CommonUserCarCard key={elem.id + Math.random()}
-                                        elem={elem}
+                                    userCars.map((elem: CarCard) => <CommonUserCarCard key={elem.id + Math.random()}
+                                        description={elem.description}
+                                        brand={elem.brand}
+                                        id={elem.id}
+                                        model={elem.model}
+                                        price={elem.price}
+                                        quilometers={elem.quilometers}
+                                        year={elem.year}
+                                        published={elem.published}
+                                        user={elem.user.name}
+                                        images={elem.images}
+                                        frontImage={elem.frontImage}
                                     />)
                                 ) : (
                                     userCars.map((elem: ICarsReturn) => <SellerCarCard key={elem.id + Math.random()}

@@ -29,15 +29,12 @@ const RegisterPage = () => {
             isSeller
         }
         if(userData.complement === "" ) {
-            console.log("entrou aqui")
             delete userData.complement
         }
         
         if(userData.description === "") {
-            console.log("entrou aqui")
             delete userData.description
        }
-       console.log(userData)
         try {
             await API.post("/users", userData)
             setModalIsOpen(true)
