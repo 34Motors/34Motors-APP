@@ -1,6 +1,8 @@
 import { DefaultFieldset } from "@/components/defaultFieldset";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { API } from "@/services/apis";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 interface iRecoverPassword {
@@ -11,8 +13,17 @@ interface iRecoverPassword {
 const resetPassword = () => {
     const { register, handleSubmit } = useForm<iRecoverPassword>({})
 
-    const submit = (data:iRecoverPassword) => {
-        console.log(data)
+    const router = useRouter()
+    const { token } = router.query
+
+    const submit = async (data: iRecoverPassword) => {
+
+        try {
+            await API.patch("/users/resetPassword/" + token, data)
+            router.push("/login")
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
         <div className="flex flex-col justify-between items-center h-screen">

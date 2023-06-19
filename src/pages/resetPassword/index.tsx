@@ -1,17 +1,25 @@
 import { DefaultFieldset } from "@/components/defaultFieldset";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { API } from "@/services/apis";
+import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 interface IEmailSend {
     email: string;
 }
 
-const resetPassword = () => {
+const SendRecoverEmail = () => {
     const { register, handleSubmit } = useForm<IEmailSend>({})
+    const router = useRouter()
 
-    const submit = (data:IEmailSend) => {
-        console.log(data.email)
+    const submit = async (data: IEmailSend) => {
+        try {
+            await API.post("/users/resetPassword", data)
+            router.push("/")
+        } catch (error) {
+            console.log(error)
+        }
     }
     return (
         <div className="flex flex-col justify-between items-center h-screen">
@@ -37,4 +45,4 @@ const resetPassword = () => {
     );
 }
 
-export default resetPassword;
+export default SendRecoverEmail;
