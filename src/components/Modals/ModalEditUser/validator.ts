@@ -5,7 +5,7 @@ export const editUserSchema = z.object({
   email: z.string().email("Deve ser um e-mail válido.").max(127, "Limite de 127 caracteres alcançado."),
   cpf: z.string().length(11, "O campo CPF deve ter 11 dígitos"),
   phone: z.string().length(11, "O telefone deve ter 11 caracteres"),
-  birthDate: z.string(),
+  birthDate: z.string().min(6, "Digite uma data válida, no formato DD/MM/AAAA"),
   description: z.string().nullish(),
 });
 

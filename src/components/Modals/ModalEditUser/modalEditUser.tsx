@@ -4,6 +4,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserData, editUserSchema } from "./validator";
 import { IoMdClose } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
+import { iUserBody } from "@/interfaces/user.interfaces";
+import { DefaultFieldset } from "@/components/defaultFieldset";
 
 interface ModalEditUserProps {
   toggleModal: () => void;
@@ -22,17 +26,37 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
-  const { register, handleSubmit, formState: { errors } } = useForm<iEditUserData>({
+  const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
+  const [loggedToken, setLoggedToken] = useState<string>("");
+
+  useEffect(() => {
+    const validateUser = () => {
+      const cookies = parseCookies();
+
+      if (cookies.user) {
+        const userParsed = JSON.parse(cookies.user);
+        setLoggedUser(userParsed);
+        setLoggedToken(cookies.token);
+      }
+    };
+    validateUser();
+  }, [loggedToken]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<iEditUserData>({
     resolver: zodResolver(editUserSchema),
     mode: "onBlur",
-    // defaultValues: {
-    //   name: user?.name,
-    //   email: user?.email,
-    //   cpf: user?.cpf,
-    //   phone: user?.phone,
-    //   birthDate: user?.birthDate,
-    //   description: user?.description,
-    // },
+    defaultValues: {
+      name: loggedUser?.name,
+      email: loggedUser?.email,
+      cpf: loggedUser?.cpf,
+      phone: loggedUser?.phone,
+      birthDate: loggedUser?.birthDate,
+      description: loggedUser?.description,
+    },
   });
 
   const onSubmit: SubmitHandler<EditUserData> = (data) => {
@@ -64,90 +88,75 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
             onSubmit={handleSubmit(onSubmit)}
             className={`flex flex-col gap-6`}
           >
-            <div className={`flex flex-col gap-2`}>
-              <label
-                htmlFor="name"
-                className={`default-label ${inter.className}`}
-              >
-                Nome
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Exemplo Silva"
-                {...register("name")}
-                className={`default-input w-full`}
-              />
-              {errors.name?.message && <small>{errors.name.message}</small>}
-            </div>
+            <DefaultFieldset
+              label="Nome"
+              id="name"
+              inputProps={{
+                placeholder: "Exemplo Silva",
+                ...register("name"),
+              }}
+            />
+            {errors.name?.message && (
+              <small className="text-alert-1 my-[-10px]">
+                {errors.name.message}
+              </small>
+            )}
 
-            <div className={`flex flex-col gap-2`}>
-              <label
-                htmlFor="email"
-                className={`default-label ${inter.className}`}
-              >
-                E-mail
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="exemplo@mail.com"
-                {...register("email")}
-                className={`default-input`}
-              />
-              {errors.email?.message && <small>{errors.email.message}</small>}
-            </div>
+            <DefaultFieldset
+              label="E-mail"
+              id="email"
+              inputProps={{
+                placeholder: "exemplo@mail.com",
+                ...register("email"),
+              }}
+            />
+            {errors.email?.message && (
+              <small className="text-alert-1 my-[-10px]">
+                {errors.email.message}
+              </small>
+            )}
 
-            <div className={`flex flex-col gap-2`}>
-              <label
-                htmlFor="cpf"
-                className={`default-label ${inter.className}`}
-              >
-                CPF
-              </label>
-              <input
-                type="text"
-                id="cpf"
-                placeholder="100.200.300-40"
-                {...register("cpf")}
-                className={`default-input`}
-              />
-              {errors.cpf?.message && <small>{errors.cpf.message}</small>}
-            </div>
+            <DefaultFieldset
+              label="CPF"
+              id="cpf"
+              inputProps={{
+                placeholder: "100.200.300-40",
+                ...register("cpf"),
+              }}
+            />
+            {errors.cpf?.message && (
+              <small className="text-alert-1 my-[-10px]">
+                {errors.cpf.message}
+              </small>
+            )}
 
-            <div className={`flex flex-col gap-2`}>
-              <label
-                htmlFor="phone"
-                className={`default-label ${inter.className}`}
-              >
-                Celular
-              </label>
-              <input
-                type="text"
-                id="phone"
-                placeholder="83 12345 6789"
-                {...register("phone")}
-                className={`default-input`}
-              />
-              {errors.phone?.message && <small>{errors.phone.message}</small>}
-            </div>
+            <DefaultFieldset
+              label="Celular"
+              id="phone"
+              inputProps={{
+                placeholder: "00 12345 6789",
+                ...register("phone"),
+              }}
+            />
+            {errors.phone?.message && (
+              <small className="text-alert-1 my-[-10px]">
+                {errors.phone.message}
+              </small>
+            )}
 
-            <div className={`flex flex-col gap-2`}>
-              <label
-                htmlFor="birthDate"
-                className={`default-label ${inter.className}`}
-              >
-                Data de nascimento
-              </label>
-              <input
-                type="text"
-                id="birthDate"
-                placeholder="DD/MM/AAAA"
-                {...register("birthDate")}
-                className={`default-input`}
-              />
-              {errors.birthDate?.message && <small>{errors.birthDate.message}</small>}
-            </div>
+            <DefaultFieldset
+              label="Data de nascimento"
+              id="birthDate"
+              inputProps={{
+                placeholder: "DD/MM/AAAA",
+                ...register("birthDate"),
+              }}
+            />
+            {errors.birthDate?.message && (
+              <small className="text-alert-1 my-[-10px]">
+                {errors.birthDate.message}
+              </small>
+            )}
 
             <div className={`flex flex-col gap-2`}>
               <label
@@ -162,7 +171,11 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
                 {...register("description")}
                 className={`default-input`}
               />
-              {errors.description?.message && <small>{errors.description.message}</small>}
+              {errors.description?.message && (
+                <small className="text-alert-1 my-[-22px]">
+                  {errors.description.message}
+                </small>
+              )}
             </div>
 
             <div className={`flex justify-end gap-3 ${inter.className}`}>
