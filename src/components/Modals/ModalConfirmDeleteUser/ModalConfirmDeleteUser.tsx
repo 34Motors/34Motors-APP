@@ -17,7 +17,7 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalConfirmDeleteUser = ({
-  toggleModal,
+  toggleModal
 }: ModalConfirmDeleteUserProps) => {
   const { register, handleSubmit } = useForm<iConfirmPassword>();
 
