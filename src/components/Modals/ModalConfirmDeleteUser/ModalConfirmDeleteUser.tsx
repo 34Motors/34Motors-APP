@@ -4,6 +4,9 @@ import { Inter, Lexend } from "next/font/google";
 import { DefaultFieldset } from "@/components/defaultFieldset";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { tConfirmPasswordData } from "./validator";
+import { useUserContext } from "@/contexts/userContext";
+import { API } from "@/services/apis";
+import { destroyCookie } from "nookies";
 
 interface ModalConfirmDeleteUserProps {
   toggleModal: () => void;
@@ -17,12 +20,15 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalConfirmDeleteUser = ({
-  toggleModal
+  toggleModal,
 }: ModalConfirmDeleteUserProps) => {
   const { register, handleSubmit } = useForm<iConfirmPassword>();
+  const { deleteUser } = useUserContext();
 
-  const onSubmit: SubmitHandler<tConfirmPasswordData> = (data) => {
-    console.log(data);
+  const onSubmitDeleteUser: SubmitHandler<tConfirmPasswordData> = (
+    passData
+  ) => {
+    deleteUser(passData);
   };
 
   return (
@@ -38,11 +44,15 @@ const ModalConfirmDeleteUser = ({
             <IoMdClose />
           </button>
         </div>
-        <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={handleSubmit(onSubmitDeleteUser)}
+        >
           <DefaultFieldset
             label="Digite sua senha para confirmar a exclusão:"
             id="password"
             inputProps={{
+              type: "password",
               placeholder: "******",
               ...register("password"),
             }}
@@ -55,6 +65,7 @@ const ModalConfirmDeleteUser = ({
               Cancelar
             </button>
             <button
+              type="submit"
               className={`btn-alert py-3 px-6 rounded text-body2 font-600`}
             >
               Quero excluir minha conta
