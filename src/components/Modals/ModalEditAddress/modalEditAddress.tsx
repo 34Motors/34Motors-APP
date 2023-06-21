@@ -14,22 +14,26 @@ const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
   const { updateAddress } = useAddressContext();
+  const [cepModified, setCepModified] = useState(false);
 
-  const { register, handleSubmit, setValue, setFocus } =
-    useForm<EditAddressData>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setFocus,
+    formState: { errors },
+  } = useForm<EditAddressData>();
 
   const formSubmit = async (data: EditAddressData) => {
     try {
-      if (data.cep !== "" && data.city == "" && data.state == "") {
-        throw new Error("Preencha o estado e cidade")
-      }
       updateAddress(data);
+      toggleModal();
     } catch (error) {
       console.error(error);
     }
   };
 
-  const checkCEP = (e: any) => {
+  const checkCEP = async (e: any) => {
     const cep = e.target.value.replace(/\D/g, "");
     if (cep) {
       fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -41,6 +45,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
           setFocus("addressNumber");
         });
     }
+    setCepModified(true);
   };
 
   return (
@@ -100,6 +105,9 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   {...register("state")}
                   className={`default-input w-full`}
                 />
+                {cepModified && !errors.state && (
+                  <span className="text-red-500">Preencha o estado</span>
+                )}
               </div>
 
               <div className={`flex flex-col gap-2`}>
@@ -116,9 +124,11 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   {...register("city")}
                   className={`default-input w-full`}
                 />
+                {cepModified && !errors.city && (
+                  <span className="text-red-500">Preencha a cidade</span>
+                )}
               </div>
             </div>
-
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="street"

@@ -32,9 +32,8 @@ export function AddressProvider({ children }: Props) {
         data,
         headers
       );
-      console.log(responseAddress);
     } catch (error) {
-      console.error(error);
+      throw new Error("Ops! Algo está errado");
     }
   };
 
