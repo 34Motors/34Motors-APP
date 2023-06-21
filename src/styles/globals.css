@@ -14,3 +14,7 @@
     @apply text-body1 font-500 text-grey-1 font-lexend;
   }
 }
+
+body{
+  background-color: #F1F3F5;
+}
