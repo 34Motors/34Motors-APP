@@ -61,6 +61,7 @@ const SellerPage = () => {
             const carsFromUser: CarCard[] = carData.filter((elem: any) => {
                 return elem.user.id == paramId
             })
+
             const response = await API.get("/users/" + paramId)
 
             const data = response.data
