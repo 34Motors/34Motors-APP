@@ -14,7 +14,7 @@ const listCategory: Category[] = [
   { id: 2, nome: "Marca", var: ["2000", "1997", "2003"] },
   { id: 3, nome: "Cor", var: ["2000", "1997", "2003"] },
   { id: 4, nome: "Modelo", var: ["2000", "1997", "2003"] },
-  { id: 4, nome: "Combustível", var: ["Gasolina", "Etanol", "Diesel"] },
+  { id: 5, nome: "Combustível", var: ["Gasolina", "Etanol", "Diesel"] },
   { id: 6, nome: "Preço", var: ["Mínimo", "Máximo"] },
   { id: 7, nome: "km", var: ["Mínimo", "Máximo"] },
 ];
@@ -26,7 +26,7 @@ const FiltroCategory = () => {
   };
 
   return (
-    <aside className="md:row-start-1 md:col-span-1">
+    <aside className="col-span-4 md:row-start-1 md:col-span-1">
       <div className="w-full flex justify-center md:hidden">
         <button
           onClick={handleToggleModal}
