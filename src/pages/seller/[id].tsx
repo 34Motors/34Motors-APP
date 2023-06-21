@@ -43,12 +43,10 @@ const SellerPage = () => {
 
         const cookies = parseCookies()
         if (!cookies.token) {
-
             setLoggedUser(false)
 
         }
         if (cookies.token) {
-
             const cookieUser: iUser = JSON.parse(cookies.user)
             setCookieUser(cookieUser)
         }
@@ -58,12 +56,11 @@ const SellerPage = () => {
 
             const carResponse = await API.get("/cars")
 
-            const carData = carResponse.data
+            const carData = carResponse.data.cars
 
             const carsFromUser: CarCard[] = carData.filter((elem: any) => {
                 return elem.user.id == paramId
             })
-
             const response = await API.get("/users/" + paramId)
 
             const data = response.data
