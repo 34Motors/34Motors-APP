@@ -13,20 +13,21 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
-  
   const { updateAddress } = useAddressContext();
 
- 
   const { register, handleSubmit, setValue, setFocus } =
     useForm<EditAddressData>();
 
-    const formSubmit = (data: EditAddressData) => {
-      try {
-        updateAddress(data);
-      } catch (error) {
-        console.error(error);
+  const formSubmit = async (data: EditAddressData) => {
+    try {
+      if (data.cep !== "" && data.city == "" && data.state == "") {
+        throw new Error("Preencha o estado e cidade")
       }
-    };
+      updateAddress(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const checkCEP = (e: any) => {
     const cep = e.target.value.replace(/\D/g, "");

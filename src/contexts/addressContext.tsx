@@ -26,14 +26,12 @@ export function AddressProvider({ children }: Props) {
   const id = user.id || null;
 
   const updateAddress = async (data: object) => {
-    console.log(data);
-    console.log(token);
-    console.log(id);
     try {
-      const responseAddress = await API.patch(`/users/${id}/address`, {
+      const responseAddress = await API.patch(
+        `/users/${id}/address`,
         data,
-        headers,
-      });
+        headers
+      );
       console.log(responseAddress);
     } catch (error) {
       console.error(error);
