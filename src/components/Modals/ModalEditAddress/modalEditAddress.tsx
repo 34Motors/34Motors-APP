@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { Inter, Lexend } from "next/font/google";
 import { EditAddressData } from "./validator";
+import { useAddressContext } from "@/contexts/addressContext";
 
 interface ModalEditAddressProps {
   toggleModal: () => void;
@@ -12,12 +13,20 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
+  
+  const { updateAddress } = useAddressContext();
+
+ 
   const { register, handleSubmit, setValue, setFocus } =
     useForm<EditAddressData>();
 
-  const formSubmit = (e: any) => {
-    console.log(e);
-  };
+    const formSubmit = (data: EditAddressData) => {
+      try {
+        updateAddress(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
   const checkCEP = (e: any) => {
     const cep = e.target.value.replace(/\D/g, "");

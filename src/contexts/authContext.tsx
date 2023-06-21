@@ -5,6 +5,7 @@ import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
 
 interface iUser {
+  id: number;
   name: string;
 }
 
