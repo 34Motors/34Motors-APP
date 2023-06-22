@@ -11,6 +11,7 @@ import { DefaultFieldset } from "@/components/defaultFieldset";
 
 interface ModalEditUserProps {
   toggleModal: () => void;
+  toggleModalDeleteUser: () => void;
 }
 
 export interface iEditUserData {
@@ -25,7 +26,7 @@ export interface iEditUserData {
 const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
-const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
+const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProps) => {
   const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
   const [loggedToken, setLoggedToken] = useState<string>("");
 
@@ -187,6 +188,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
               </button>
 
               <button
+              onClick={toggleModalDeleteUser}
                 className={`btn-alert py-3 px-6 rounded  text-body2 font-600`}
               >
                 Excluir perfil
