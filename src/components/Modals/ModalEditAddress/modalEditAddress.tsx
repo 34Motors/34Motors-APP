@@ -4,6 +4,7 @@ import { IoMdClose } from "react-icons/io";
 import { Inter, Lexend } from "next/font/google";
 import { EditAddressData } from "./validator";
 import { useAddressContext } from "@/contexts/addressContext";
+import { useState } from "react";
 
 interface ModalEditAddressProps {
   toggleModal: () => void;
@@ -143,6 +144,9 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 {...register("street")}
                 className={`default-input`}
               />
+               {cepModified && !errors.street && (
+                  <span className="text-red-500">Preencha o endereço</span>
+                )}
             </div>
 
             <div className={`flex gap-[10px]`}>
