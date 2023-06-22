@@ -86,9 +86,9 @@ export function AuthProvider({ children }: iProps) {
   };
 
   const logout = () => {
-    setUser(null);
     destroyCookie(null, "token");
     destroyCookie(null, "user");
+    setUser(null);
     window.location.reload();
   };
 
