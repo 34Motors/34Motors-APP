@@ -39,6 +39,7 @@ const LoginForm = () => {
           label={"Senha"}
           id={"password"}
           inputProps={{
+            type: "password",
             placeholder: "Digitar senha",
             ...register("password"),
           }}

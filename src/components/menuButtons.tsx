@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import ModalEditUser from "./Modals/ModalEditUser/modalEditUser";
 import ModalEditAddress from "./Modals/ModalEditAddress/modalEditAddress";
 import { useAuth } from "@/contexts/authContext";
+import ModalConfirmDeleteUser from "./Modals/ModalConfirmDeleteUser/ModalConfirmDeleteUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,7 +13,6 @@ interface iUserMenuModalButtonsProps {
 }
 
 export const MenuButtons = () => {
-
   return (
     <div className="flex items-center gap-11">
       <div className={`border-l-2 border-grey-6 h-[79px] drop-shadow-md`}></div>
@@ -52,12 +52,19 @@ export const UserMenuModalButtons = ({
 }: iUserMenuModalButtonsProps) => {
   const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
   const [isOpenModalEditAddress, setIsOpenModalEditAddress] = useState(false);
+  const [isOpenModalDeleteUser, setIsOpenModalDeleteUser] = useState(false);
   const { logout } = useAuth();
 
   const toggleModalEditUser = () =>
     setIsOpenModalEditUser(!isOpenModalEditUser);
+
   const toggleModalEditAddress = () =>
     setIsOpenModalEditAddress(!isOpenModalEditAddress);
+
+  const toggleModalDeleteUser = () => {
+    setIsOpenModalEditUser(false);
+    setIsOpenModalDeleteUser(!isOpenModalDeleteUser);
+  };
 
   return (
     <ul
@@ -65,7 +72,10 @@ export const UserMenuModalButtons = ({
     >
       <button onClick={toggleModalEditUser}>Editar Perfil</button>
       {isOpenModalEditUser && (
-        <ModalEditUser toggleModal={toggleModalEditUser} />
+        <ModalEditUser toggleModal={toggleModalEditUser} toggleModalDeleteUser={toggleModalDeleteUser} />
+      )}
+      {isOpenModalDeleteUser && (
+        <ModalConfirmDeleteUser toggleModal={toggleModalDeleteUser} />
       )}
 
       <button onClick={toggleModalEditAddress}>Editar Endereço</button>
