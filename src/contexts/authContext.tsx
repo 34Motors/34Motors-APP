@@ -1,8 +1,15 @@
-import { ReactNode, createContext, useContext, useState } from "react";
-import { setCookie, destroyCookie } from "nookies";
-import { useRouter } from "next/router";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { setCookie, destroyCookie, parseCookies } from "nookies";
+import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
+import { AxiosResponse } from "axios";
 
 interface iUser {
   name: string;
@@ -18,6 +25,7 @@ interface AuthProviderData {
   token: string | undefined;
   user: iUser | null;
   logout: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
@@ -25,7 +33,34 @@ const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
 export function AuthProvider({ children }: iProps) {
   const [token, setToken] = useState<string>();
   const [user, setUser] = useState<iUser | null>(null);
-  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
+  const router: NextRouter = useRouter();
+
+  useEffect(() => {
+    const validateUser = async () => {
+      const cookies: { [key: string]: string } = parseCookies();
+      const token: string = cookies.token;
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response: AxiosResponse<any, any> = await API.get("/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+      API.defaults.headers.common.authorization = `Bearer ${token}`;
+      setLoading(false);
+    };
+    validateUser();
+  }, []);
 
   const login = (userData: LoginData) => {
     API.post("/login", userData)
@@ -58,7 +93,9 @@ export function AuthProvider({ children }: iProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ login, token, user, setToken, logout }}>
+    <AuthContext.Provider
+      value={{ login, token, user, setToken, logout, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );
