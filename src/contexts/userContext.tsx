@@ -1,8 +1,9 @@
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
-import { ReactNode, useContext, createContext } from "react";
+import { ReactNode, useContext, createContext, useState, Dispatch, SetStateAction } from "react";
 import { useAuth } from "./authContext";
+import { iUserBody } from "@/interfaces/user.interfaces";
 
 interface Props {
   children: ReactNode;
@@ -10,6 +11,9 @@ interface Props {
 
 interface iUserProvider {
   deleteUser: (passData: any) => void;
+  setModalIsOpen: Dispatch<SetStateAction<boolean>>
+  modalIsOpen: boolean
+  registerUser: (data: iUserBody) => Promise<void>
 }
 
 const UserContext = createContext<iUserProvider>({} as iUserProvider);
@@ -17,6 +21,8 @@ const UserContext = createContext<iUserProvider>({} as iUserProvider);
 export function UserProvider({ children }: Props) {
   const router = useRouter();
   const { logout } = useAuth();
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
 
   const deleteUser = async (passData: any) => {
     const cookies = parseCookies();
@@ -36,8 +42,26 @@ export function UserProvider({ children }: Props) {
     }
   };
 
+  const registerUser = async(data: iUserBody) => {
+
+    if(data.complement === "" ) {
+        delete data.complement
+    }
+    
+    if(data.description === "") {
+        delete data.description
+   }
+    try {
+        await API.post("/users", data)
+        setModalIsOpen(true)
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
   return (
-    <UserContext.Provider value={{ deleteUser }}>
+    <UserContext.Provider value={{ deleteUser, setModalIsOpen, modalIsOpen, registerUser }}>
       {children}
     </UserContext.Provider>
   );
