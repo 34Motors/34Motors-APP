@@ -7,6 +7,7 @@ type ICarsReturn = z.infer<typeof returnCar>;
 interface CarImage {
   id: number;
   imageUrl: string;
+  carId: number;
 }
 
 export type { ICarsBodyRequest, ICarsReturn, CarImage };

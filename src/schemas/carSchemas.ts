@@ -11,7 +11,11 @@ const createCarBody = z.object({
   price: z.number(),
   description: z.string(),
   frontImage: z.string().max(255),
-  images: z.string().array(),
+  images: z.object({
+    id: z.number(),
+    imageUrl: z.string(),
+    carId: z.number()
+  }).array(),
   published: z.boolean().default(true),
   userId: z.number(),
 });
