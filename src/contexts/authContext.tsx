@@ -36,7 +36,7 @@ export function AuthProvider({ children }: iProps) {
           path: "/",
         });
         setToken(response.data.token);
-        const userToCookie = JSON.stringify(response.data.user)
+        const userToCookie = JSON.stringify(response.data.user);
         setCookie(null, "user", userToCookie, {
           maxAge: 86400,
           path: "/",
@@ -53,10 +53,10 @@ export function AuthProvider({ children }: iProps) {
 
   const logout = () => {
     setUser(null);
-    destroyCookie(null, "token")
-    destroyCookie(null, "user")
-    window.location.reload()
-  }
+    destroyCookie(null, "token");
+    destroyCookie(null, "user");
+    window.location.reload();
+  };
 
   return (
     <AuthContext.Provider value={{ login, token, user, setToken, logout }}>

@@ -5,12 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserData, editUserSchema } from "./validator";
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
-import { parseCookies } from "nookies";
+import { parseCookies, setCookie } from "nookies";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import { DefaultFieldset } from "@/components/defaultFieldset";
+import { API } from "@/services/apis";
+import { iUser } from "@/pages/seller/interface";
 
 interface ModalEditUserProps {
   toggleModal: () => void;
+  toggleModalDeleteUser: () => void;
 }
 
 export interface iEditUserData {
@@ -25,7 +28,7 @@ export interface iEditUserData {
 const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
-const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
+const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProps) => {
   const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
   const [loggedToken, setLoggedToken] = useState<string>("");
 
@@ -59,9 +62,48 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
     },
   });
 
-  const onSubmit: SubmitHandler<EditUserData> = (data) => {
-    console.log(data);
-  };
+  const onSubmit: SubmitHandler<EditUserData> = async(data) => {
+
+    if(data.name === ""){
+      delete data.name;
+    }
+    if(data.description === ""){
+      delete data.description;
+    }
+    if(data.email === ""){
+      delete data.email;
+    }
+    if(data.phone === ""){
+      delete data.phone;
+    }
+    if(data.cpf === ""){
+      delete data.cpf;
+    }
+    if(data.birthDate === ""){
+      delete data.birthDate;
+    }
+
+    const cookies = parseCookies()    
+    const cookieUser: iUser = JSON.parse(cookies.user)
+    const token = cookies.token
+
+    API.defaults.headers.common.authorization = `Bearer ${token}`;
+
+    try {
+      const response = await API.patch("/users/"+cookieUser.id, data)
+
+      const userToCookie = JSON.stringify(response.data)
+
+      setCookie(null, "user", userToCookie, {
+        maxAge: 86400,
+        path: "/",
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+
+  }
 
   return (
     <ModalBase toggleModal={toggleModal}>
@@ -187,6 +229,7 @@ const ModalEditUser = ({ toggleModal }: ModalEditUserProps) => {
               </button>
 
               <button
+              onClick={toggleModalDeleteUser}
                 className={`btn-alert py-3 px-6 rounded  text-body2 font-600`}
               >
                 Excluir perfil

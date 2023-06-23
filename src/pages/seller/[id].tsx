@@ -2,7 +2,6 @@ import SellerCarCard from "@/components/sellerCarCard";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Pagination } from "@/components/pagination";
-import axios from "axios";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { iUser } from "./interface";
@@ -10,7 +9,6 @@ import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
 import CommonUserCarCard from "@/components/commonUserCard";
-import { string } from "zod";
 
 
 export interface CarCard extends ICarsReturn {
@@ -43,12 +41,10 @@ const SellerPage = () => {
 
         const cookies = parseCookies()
         if (!cookies.token) {
-
             setLoggedUser(false)
 
         }
         if (cookies.token) {
-
             const cookieUser: iUser = JSON.parse(cookies.user)
             setCookieUser(cookieUser)
         }
@@ -56,21 +52,29 @@ const SellerPage = () => {
 
         const getUserCars = async () => {
 
-            const carResponse = await API.get("/cars")
+            try {
+                
+                const carResponse = await API.get("/cars")
+    
+                const carData = carResponse.data.cars
+    
+                const carsFromUser: CarCard[] = carData.filter((elem: any) => {
+                    return elem.user.id == paramId
+                })
+    
+                const response = await API.get("/users/" + paramId)
+    
+                const data = response.data
+    
+                setUser(data)
+    
+                setUserCars(carsFromUser)
 
-            const carData = carResponse.data
+            } catch (error) {
+                router.push("/")
+                
+            }
 
-            const carsFromUser: CarCard[] = carData.filter((elem: any) => {
-                return elem.user.id == paramId
-            })
-
-            const response = await API.get("/users/" + paramId)
-
-            const data = response.data
-
-            setUser(data)
-
-            setUserCars(carsFromUser)
         }
         if (paramId) getUserCars()
 
