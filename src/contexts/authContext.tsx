@@ -17,6 +17,15 @@ interface iUser {
   name: string;
 }
 
+interface iAddressUser {
+  city: string;
+  street: string;
+  number: string;
+  cep: string;
+  state: string;
+  complement: string;
+}
+
 interface iProps {
   children: ReactNode;
 }
