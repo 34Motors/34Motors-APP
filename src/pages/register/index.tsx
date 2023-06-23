@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const RegisterPage = () => {
-
     const { register, handleSubmit, formState: { errors } } = useForm<iUserBody>({})
 
     const [isSeller, setIsSeller] = useState<boolean>(false)

@@ -9,6 +9,7 @@ import FiltroCategory from "@/components/filterCategory";
 import { Pagination } from "@/components/pagination";
 import { useCarsContext } from "@/contexts/carsContext";
 import Footer from "@/components/footer";
+import { ModalCreateAnnouncement } from "@/components/Modals/ModalCreateAnnouncement/ModalCreateAnnouncement";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,10 @@ export default function Home() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => setModal(!modal);
 
   return (
     <>
@@ -42,7 +47,10 @@ export default function Home() {
             fill={true}
           />
           <div className="w-full mt-[15%] px-7 flex flex-col items-center justify-center text-grey-10 md:mt-0">
-            <h3 className="mb-5 text-heading3 font-lexend font-700 text-center md:text-heading1">
+            <h3
+              className="mb-5 text-heading3 font-lexend font-700 text-center md:text-heading1"
+              onClick={toggleModal}
+            >
               Motors Shop
             </h3>
             <h5 className="text-heading5 font-lexend font-600 text-center md:text-heading2">
@@ -61,6 +69,7 @@ export default function Home() {
         />
       </main>
       <Footer />
+      {modal && <ModalCreateAnnouncement toggleModal={toggleModal} />}
     </>
   );
 }
