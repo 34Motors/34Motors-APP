@@ -1,10 +1,15 @@
+import { useAuth } from "@/contexts/authContext";
 interface UserBadgeProps {
   bg_color: string;
   initials_color: string;
   name_color: string;
 }
-
-export const UserBadge = ({ bg_color, initials_color, name_color }: UserBadgeProps) => {
+export const UserBadge = ({
+  bg_color,
+  initials_color,
+  name_color,
+}: UserBadgeProps) => {
+  const { user } = useAuth();
   return (
     <div className="flex gap-2 items-center font-inter font-500">
       <div
@@ -12,7 +17,7 @@ export const UserBadge = ({ bg_color, initials_color, name_color }: UserBadgePro
       >
         G3
       </div>
-      <p className={`text-sm text-${name_color}`}>Grupo 34</p>
+      <p className={`text-sm text-${name_color}`}>{user.name.split("")[0]}</p>
     </div>
   );
 };

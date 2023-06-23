@@ -11,25 +11,26 @@ import {
   UserMenuModalButtons,
 } from "./menuButtons";
 import { iUserBody } from "@/interfaces/user.interfaces";
+import { useAuth } from "@/contexts/authContext";
 
 const Header = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
   const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
   const [loggedToken, setLoggedToken] = useState<string>("");
+  const { user } = useAuth();
 
   useEffect(() => {
     const validateUser = () => {
       const cookies = parseCookies();
 
-      if (cookies.user) {
-        const userParsed = JSON.parse(cookies.user);
-        setLoggedUser(userParsed);
+      if (cookies.token) {
+        setLoggedUser(user);
         setLoggedToken(cookies.token);
       }
     };
     validateUser();
-  }, [loggedToken]);
+  }, [user]);
 
   const toggleDropdown = () => {
     setNavIsOpen(!navIsOpen);
@@ -81,7 +82,7 @@ const Header = () => {
 
         {navIsOpen &&
           (loggedToken ? (
-            <UserMenuModalButtons isSeller={loggedUser?.isSeller} />
+            <UserMenuModalButtons isSeller={user?.isSeller} />
           ) : (
             <MenuModalButtons />
           ))}

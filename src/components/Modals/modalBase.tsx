@@ -39,7 +39,7 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
         <div
           className={`top-0 w-screen z-10 h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
         >
-          <div ref={blockClosing ? null : ref}>{children}</div>
+          <div ref={blockClosing ? null : ref} className="slideIn">{children}</div>
         </div>,
         portalRef.current
       )

@@ -10,6 +10,7 @@ import { iUserBody } from "@/interfaces/user.interfaces";
 import { DefaultFieldset } from "@/components/defaultFieldset";
 import { API } from "@/services/apis";
 import { iUser } from "@/pages/seller/interface";
+import { useAuth } from "@/contexts/authContext";
 
 interface ModalEditUserProps {
   toggleModal: () => void;
@@ -31,6 +32,7 @@ const lexend = Lexend({ subsets: ["latin"] });
 const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProps) => {
   const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
   const [loggedToken, setLoggedToken] = useState<string>("");
+  const { user } = useAuth();
 
   useEffect(() => {
     const validateUser = () => {
@@ -52,14 +54,6 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
   } = useForm<iEditUserData>({
     resolver: zodResolver(editUserSchema),
     mode: "onBlur",
-    defaultValues: {
-      name: loggedUser?.name,
-      email: loggedUser?.email,
-      cpf: loggedUser?.cpf,
-      phone: loggedUser?.phone,
-      birthDate: loggedUser?.birthDate,
-      description: loggedUser?.description,
-    },
   });
 
   const onSubmit: SubmitHandler<EditUserData> = async(data) => {

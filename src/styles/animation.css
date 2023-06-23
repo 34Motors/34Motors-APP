@@ -1,0 +1,28 @@
+@keyframes slideIn {
+  0% {
+    opacity: 0.3;
+    transform: translateY(-30%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.slideIn {
+  animation: slideIn 0.7s;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0.3;
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slideInUserBtn {
+  animation: slideIn 0.3s;
+}

@@ -32,7 +32,7 @@ export const MenuButtons = () => {
 export const MenuModalButtons = () => {
   return (
     <ul
-      className={`absolute right-0 top-20 w-full bg-white  h-[184px] flex flex-col items-center px-3 py-9 gap-11 text-black`}
+      className={`absolute right-0 top-20 w-full bg-white  h-[184px] flex flex-col items-center px-3 py-9 gap-11 text-black `}
     >
       <Link href={"/login"} className={`text-grey-2 text-heading7 font-600 `}>
         Fazer Login
@@ -53,7 +53,8 @@ export const UserMenuModalButtons = ({
   const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
   const [isOpenModalEditAddress, setIsOpenModalEditAddress] = useState(false);
   const [isOpenModalDeleteUser, setIsOpenModalDeleteUser] = useState(false);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
 
   const toggleModalEditUser = () =>
     setIsOpenModalEditUser(!isOpenModalEditUser);
@@ -68,11 +69,14 @@ export const UserMenuModalButtons = ({
 
   return (
     <ul
-      className={`absolute right-2 top-16 w-[200px] bg-white drop-shadow-dropDownShadow rounded p-5 flex flex-col items-center gap-4 text-grey-2 font-400 text-body1 ${inter.className}`}
+      className={`slideInUserBtn absolute right-2 top-16 w-[200px] bg-white drop-shadow-dropDownShadow rounded p-5 flex flex-col items-center gap-4 text-grey-2 font-400 text-body1 ${inter.className}`}
     >
       <button onClick={toggleModalEditUser}>Editar Perfil</button>
       {isOpenModalEditUser && (
-        <ModalEditUser toggleModal={toggleModalEditUser} toggleModalDeleteUser={toggleModalDeleteUser} />
+        <ModalEditUser
+          toggleModal={toggleModalEditUser}
+          toggleModalDeleteUser={toggleModalDeleteUser}
+        />
       )}
       {isOpenModalDeleteUser && (
         <ModalConfirmDeleteUser toggleModal={toggleModalDeleteUser} />
@@ -83,7 +87,7 @@ export const UserMenuModalButtons = ({
         <ModalEditAddress toggleModal={toggleModalEditAddress} />
       )}
 
-      {isSeller && <Link href={"/seller"}>Meus anúncios</Link>}
+      {user.isSeller && <Link href={`/seller/${user.id}`}>Meus anúncios</Link>}
 
       <button onClick={logout}>Sair</button>
     </ul>
