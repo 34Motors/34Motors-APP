@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
 
 import Header from "@/components/header";
@@ -12,6 +12,7 @@ import { CarImageComponent } from "@/components/carImageComponent";
 import { API } from "@/services/apis";
 import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
+import ModalCarImage from "@/components/Modals/modalCarImage";
 
 const Announcement = () => {
   const router = useRouter();
@@ -43,12 +44,26 @@ const Announcement = () => {
   }
 
   let carImages: React.JSX.Element[] = [];
+  const [carImage, setCarImage] = useState("")
+  const [isClicked, setIsclicked] = useState(false)
+  const [openImageModal, setOpenImageModal] = useState(false)
+  const toggleModal = () => {
+    setOpenImageModal(!openImageModal)
+  }
 
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement
+    const foundImage = car.images.find(image => image.id === parseInt(target.id))
+    foundImage && setCarImage(foundImage.imageUrl)
+    toggleModal()
+  }
+  
   if (car.images) {
     carImages = car.images.map((image: CarImage) => {
-      return <CarImageComponent key={image.id} carImage={image} />;
+      return <CarImageComponent key={image.id} id={(image.id).toString()} carImage={image} callback={handleImageClick} />;
     });
   }
+
 
   return (
     <>
@@ -100,7 +115,7 @@ const Announcement = () => {
             <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
               Fotos
             </h6>
-            <ul className="grid grid-cols-3 gap-x-[5.5px] gap-y-12">
+            <ul className="grid grid-cols-3 gap-x-[5.5px] gap-y-12 overflow-hidden">
               {carImages}
             </ul>
           </div>
@@ -162,6 +177,7 @@ const Announcement = () => {
             </div>
           </div>
         </main>
+        {openImageModal && <ModalCarImage toggleModal={toggleModal} carImage={carImage} /> }
         <Footer />
       </div>
     </>

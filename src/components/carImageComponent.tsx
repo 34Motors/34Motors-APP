@@ -1,18 +1,31 @@
 import { CarImage } from "@/interfaces/cars.interfaces";
 import Image from "next/image";
 
-const CarImageComponent = ({ carImage }: { carImage: CarImage }) => {
+interface CarImageComponentProps {
+  carImage: CarImage;
+  callback: () => void;
+  id: string;
+}
+
+const CarImageComponent = ({
+  carImage,
+  callback,
+  id
+}: CarImageComponentProps) => {
   return (
     <li
       key={carImage.id}
       className="bg-grey-7 h-20 grid justify-center items-center rounded cursor-pointer"
+      onClick={callback}
+      id={id}
     >
       <Image
         width={90}
         height={54}
         src={carImage.imageUrl}
         alt="Foto de um carro"
-        className="object-cover h-full w-full mix-blend-multiply rounded"
+        id={id}
+        className="object-cover min-h-full min-w-full mix-blend-multiply rounded"
       />
     </li>
   );
