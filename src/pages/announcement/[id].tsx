@@ -1,51 +1,103 @@
-import Header from "@/components/header";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import carImage from "../../assets/img/MaseratiExample.png";
+import { ReactEventHandler, useEffect, useState } from "react";
+import Link from "next/link";
+
+import Header from "@/components/header";
 import { CardDetail } from "@/components/cardDetail";
 import { CommentsList } from "@/components/commentsList";
 import { UserBadge } from "@/components/userBadge";
-
-import { useState } from "react";
 import Footer from "@/components/footer";
-import Link from "next/link";
+import { CarImageComponent } from "@/components/carImageComponent";
+import { API } from "@/services/apis";
+import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
+import { iUserBody } from "@/interfaces/user.interfaces";
+import ModalCarImage from "@/components/Modals/modalCarImage";
 
 const Announcement = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const [car, setCar] = useState({} as ICarsReturn);
+  const [user, setUser] = useState({} as iUserBody);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const { id } = router.query;
+
+      API.get(`/cars/${id}`).then((carResponse) => {
+        API.get(`/users/${carResponse.data.userId}`).then((response) => {
+          setCar(carResponse.data);
+          setUser(response.data);
+        });
+      });
+    }
+  }, [router.isReady]);
 
   const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
+  let userInitials = "";
+
+  if (user.name) {
+    const userName = user.name.split(" ");
+    userName.forEach((name) => {
+      userInitials += name[0];
+    });
+  }
+
+  let carImages: React.JSX.Element[] = [];
+  const [carImage, setCarImage] = useState("")
+  const [isClicked, setIsclicked] = useState(false)
+  const [openImageModal, setOpenImageModal] = useState(false)
+  const toggleModal = () => {
+    setOpenImageModal(!openImageModal)
+  }
+
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement
+    const foundImage = car.images.find(image => image.id === parseInt(target.id))
+    foundImage && setCarImage(foundImage.imageUrl)
+    toggleModal()
+  }
+  
+  if (car.images) {
+    carImages = car.images.map((image: CarImage) => {
+      return <CarImageComponent key={image.id} id={(image.id).toString()} carImage={image} callback={handleImageClick} />;
+    });
+  }
+
+
   return (
     <>
       <Header />
-      <div className="bg-brand-1 h-[436px] w-screen absolute z-0"></div>
+      <div className="bg-brand-1 h-[436px] w-full absolute z-0"></div>
       <div className="bg-grey-8">
         <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
           <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
             <Image
               width={351}
               height={355}
-              src={carImage}
+              src={car.frontImage}
               alt="Foto de um carro"
-              className="mt-[90px] mx-auto"
+              className="mt-[70px] mx-auto"
             />
           </div>
 
           <div className="bg-grey-10 rounded p-7 md:col-span-2 md:row-span-1">
             <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-[71px]">
-              Mercedes Benz A 200 CGI ADVANCE SEDAN Mercedes Benz A 200{" "}
+              {`${car.brand} ${car.model}`}
             </h6>
             <div className="mb-6">
               <div className="flex gap-3 mb-8">
-                <CardDetail text="0 KM" />
-                <CardDetail text="2019" />
+                <CardDetail text={`${car.quilometers} KM`} />
+                <CardDetail text={car.year} />
               </div>
               <p className="text-heading7 text-grey-1 font-500 font-lexend">
-                R$ 00.000,00
+                {`R$ ${car.price},00`}
               </p>
             </div>
-            <button className="mb-10 btn-brand p-2 text-sm font-600 font-inter rounded" disabled={disable}>
+            <button
+              className="mb-10 btn-brand p-2 text-sm font-600 font-inter rounded"
+              disabled={disable}
+            >
               Comprar
             </button>
           </div>
@@ -55,10 +107,7 @@ const Announcement = () => {
               Descrição
             </h6>
             <p className="text-base text-grey-2 font-400 font-inter leading-7">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt
-              ducimus expedita est adipisci unde, doloremque culpa obcaecati,
-              animi molestiae cumque soluta harum? Unde nulla quos libero
-              aliquam doloremque suscipit a.
+              {car.description}
             </p>
           </div>
 
@@ -66,74 +115,27 @@ const Announcement = () => {
             <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
               Fotos
             </h6>
-            <ul className="grid grid-cols-3 gap-x-[5.5px] gap-y-12">
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
-              <li className="bg-grey-7 h-20 grid justify-center items-center rounded">
-                <Image
-                  width={90}
-                  height={54}
-                  src={carImage}
-                  alt="Foto de um carro"
-                />
-              </li>
+            <ul className="grid grid-cols-3 gap-x-[5.5px] gap-y-12 overflow-hidden">
+              {carImages}
             </ul>
           </div>
-          <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-2">
+          <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
                 className={`h-[77px] w-[77px] bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
-                SL
+                {userInitials}
               </div>
               <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
-                Samuel Leão
+                {user.name}
               </h6>
               <p className="text-base text-grey-2 font-400 font-inter leading-7 text-center">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Deserunt ducimus expedita est adipisci unde, doloremque culpa
-                obcaecati, animi molestiae cumque soluta harum? Unde nulla quos
-                libero aliquam doloremque suscipit a.
+                {user.description}
               </p>
-              <Link href={"/"} className="bg-grey-0 font-inter font-600 text-base text-white p-2 rounded">
+              <Link
+                href={`/seller/${user.id}`}
+                className="bg-grey-0 font-inter font-600 text-base text-white p-2 rounded"
+              >
                 Ver todos anúncios
               </Link>
             </div>
@@ -163,12 +165,19 @@ const Announcement = () => {
               </button>
             </form>
             <div className="flex gap-2 flex-wrap">
-              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 flex items-center px-3 py-1 rounded-3xl cursor-pointer">Gostei muito!</span>
-              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 px-3 py-1 flex items-center rounded-3xl cursor-pointer">Incrível</span>
-              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 px-3 py-1 flex items-center rounded-3xl cursor-pointer">Recomendarei para meus amigos!</span>
+              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 flex items-center px-3 py-1 rounded-3xl">
+                Gostei muito!
+              </span>
+              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 px-3 py-1 flex items-center rounded-3xl">
+                Incrível
+              </span>
+              <span className="bg-grey-7 text-grey-3 text-xs font-inter font-500 px-3 py-1 flex items-center rounded-3xl">
+                Recomendarei para meus amigos!
+              </span>
             </div>
           </div>
         </main>
+        {openImageModal && <ModalCarImage toggleModal={toggleModal} carImage={carImage} /> }
         <Footer />
       </div>
     </>

@@ -1,64 +1,93 @@
-import { ReactNode, createContext, useContext, useState } from "react";
-import { setCookie, destroyCookie } from "nookies";
-import { useRouter } from "next/router";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { setCookie, destroyCookie, parseCookies } from "nookies";
+import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
-
-interface iUser {
-  name: string;
-}
+import { AxiosResponse } from "axios";
+import { iUserComplete } from "@/interfaces/user.interfaces";
 
 interface iProps {
   children: ReactNode;
 }
 
 interface AuthProviderData {
-  setToken: (value: string) => void;
   login: (userData: LoginData) => void;
   token: string | undefined;
-  user: iUser | null;
+  user: iUserComplete;
   logout: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
 
 export function AuthProvider({ children }: iProps) {
   const [token, setToken] = useState<string>();
-  const [user, setUser] = useState<iUser | null>(null);
-  const router = useRouter();
+  const [user, setUser] = useState<iUserComplete>({} as iUserComplete);
+  const [loading, setLoading] = useState<boolean>(true);
+  const router: NextRouter = useRouter();
 
-  const login = (userData: LoginData) => {
-    API.post("/login", userData)
-      .then((response) => {
-        setCookie(null, "token", response.data.token, {
-          maxAge: 86400,
-          path: "/",
+  const getUser = async (bearerToken: string) => {
+    console.log(bearerToken)
+    API.defaults.headers.common.authorization = `Bearer ${bearerToken}`;
+    const response: AxiosResponse<any, any> = await API.get("/users");
+    setUser(response.data);
+  };
+
+  useEffect(() => {
+    const validateUser = async () => {
+      const cookies: { [key: string]: string } = parseCookies();
+      const token: string = cookies.token;
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response: AxiosResponse<any, any> = await API.get("/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setToken(response.data.token);
-        const userToCookie = JSON.stringify(response.data.user)
-        setCookie(null, "user", userToCookie, {
-          maxAge: 86400,
-          path: "/",
-        });
-        setUser(response.data.user);
-      })
-      .then(() => {
-        router.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
+        setUser(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+      API.defaults.headers.common.authorization = `Bearer ${token}`;
+      setLoading(false);
+    };
+    validateUser();
+  }, []);
+
+  const login = async (userData: LoginData) => {
+    try {
+      const response = await API.post("/login", userData);
+      setCookie(null, "token", response.data.token, {
+        maxAge: 86400,
+        path: "/",
       });
+      setToken(response.data.token);
+      await getUser(response.data.token);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const logout = () => {
-    setUser(null);
-    destroyCookie(null, "token")
-    destroyCookie(null, "user")
-    window.location.reload()
-  }
+    destroyCookie(null, "token");
+    setToken("");
+    window.location.assign("/");
+  };
 
   return (
-    <AuthContext.Provider value={{ login, token, user, setToken, logout }}>
+    <AuthContext.Provider value={{ login, token, user, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,7 @@ export const addressSchema = z.object({
   state: z.string(),
   city: z.string(),
   street: z.string(),
-  addressNumber: z.string(),
+  number: z.string(),
   complement: z.string(),
 });
 
