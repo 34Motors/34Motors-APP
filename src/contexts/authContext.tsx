@@ -12,6 +12,7 @@ import { LoginData } from "@/schemas/login/login.schema";
 import { AxiosResponse } from "axios";
 
 interface iUser {
+  id: number;
   name: string;
 }
 

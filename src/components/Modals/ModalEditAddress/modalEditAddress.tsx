@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { Inter, Lexend } from "next/font/google";
 import { EditAddressData } from "./validator";
+import { useAddressContext } from "@/contexts/addressContext";
+import { useState } from "react";
+
 
 interface ModalEditAddressProps {
   toggleModal: () => void;
@@ -12,14 +15,43 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
-  const { register, handleSubmit, setValue, setFocus } =
-    useForm<EditAddressData>();
+  const { updateAddress, addressUser, setAddressUser } = useAddressContext();
+  const [cepModified, setCepModified] = useState(false);
 
-  const formSubmit = (e: any) => {
-    console.log(e);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setFocus,
+    formState: { errors },
+  } = useForm<EditAddressData>();
+
+  const formSubmit = async (data: EditAddressData) => {
+    if (Object.keys(errors).length === 0) {
+      if (cepModified) {
+        if (
+          data.street &&
+          data.state &&
+          data.city &&
+          data.number &&
+          data.street.trim() !== "" &&
+          data.state.trim() !== "" &&
+          data.city.trim() !== "" &&
+          data.number.trim() !== ""
+        ) {
+          updateAddress(data);
+          setAddressUser(data);
+          toggleModal();
+        }
+      } else {
+        updateAddress(data);
+        setAddressUser(data);
+        toggleModal();
+      }
+    }
   };
 
-  const checkCEP = (e: any) => {
+  const checkCEP = async (e: any) => {
     const cep = e.target.value.replace(/\D/g, "");
     if (cep) {
       fetch(`https://viacep.com.br/ws/${cep}/json/`)
@@ -28,9 +60,10 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
           setValue("state", data.uf);
           setValue("city", data.localidade);
           setValue("street", data.logradouro);
-          setFocus("addressNumber");
+          setFocus("number");
         });
     }
+    setCepModified(true);
   };
 
   return (
@@ -68,7 +101,8 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
               <input
                 type="text"
                 id="cep"
-                placeholder="89888-888"
+                placeholder="Digite o seu cep"
+                defaultValue={`${addressUser?.cep}`}
                 {...register("cep")}
                 onBlur={checkCEP}
                 className={`default-input`}
@@ -86,10 +120,14 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 <input
                   type="text"
                   id="state"
-                  placeholder="Paraíba"
+                  placeholder="Digite o seu estado"
+                  defaultValue={`${addressUser?.state}`}
                   {...register("state")}
                   className={`default-input w-full`}
                 />
+                {cepModified && !errors.state && (
+                  <span className="text-red-500">Preencha o estado</span>
+                )}
               </div>
 
               <div className={`flex flex-col gap-2`}>
@@ -102,13 +140,16 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 <input
                   type="text"
                   id="city"
-                  placeholder="Cachoeira dos Guedes"
+                  placeholder="Digite a sua cidade"
+                  defaultValue={`${addressUser?.city}`}
                   {...register("city")}
                   className={`default-input w-full`}
                 />
+                {cepModified && !errors.city && (
+                  <span className="text-red-500">Preencha a cidade</span>
+                )}
               </div>
             </div>
-
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="street"
@@ -119,27 +160,35 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
               <input
                 type="text"
                 id="street"
-                placeholder="Rua do Sol"
+                placeholder="Digite a sua rua"
+                defaultValue={`${addressUser?.street}`}
                 {...register("street")}
                 className={`default-input`}
               />
+              {cepModified && !errors.street && (
+                <span className="text-red-500">Preencha o endereço</span>
+              )}
             </div>
 
             <div className={`flex gap-[10px]`}>
               <div className={`flex flex-col gap-2`}>
                 <label
-                  htmlFor="addressNumber"
+                  htmlFor="number"
                   className={`default-label ${inter.className}`}
                 >
                   Número
                 </label>
                 <input
                   type="text"
-                  id="addressNumber"
-                  placeholder="1234"
-                  {...register("addressNumber")}
+                  id="number"
+                  placeholder="Digite o seu número"
+                  defaultValue={`${addressUser?.number}`}
+                  {...register("number")}
                   className={`default-input w-full`}
                 />
+                {cepModified && !errors.number && (
+                  <span className="text-red-500">Preencha o número</span>
+                )}
               </div>
 
               <div className={`flex flex-col gap-2`}>
@@ -152,7 +201,8 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 <input
                   type="text"
                   id="complement"
-                  placeholder="Apto 304"
+                  defaultValue={`${addressUser?.complement}`}
+                  placeholder="Digite o complemento"
                   {...register("complement")}
                   className={`default-input w-full`}
                 />
@@ -160,19 +210,14 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
             </div>
 
             <div className={`flex justify-end gap-3 ${inter.className}`}>
-              <button
-                onClick={toggleModal}
-                className={`btn-negative py-3 px-6 rounded text-body2 font-600`}
-              >
-                Cancelar
-              </button>
-
-              <button
-                type="submit"
-                className={`btn-brand bg-brand-1 py-3 px-6 rounded  text-body2 font-600`}
-              >
-                Salvar alterações
-              </button>
+              {!Object.keys(errors).length && (
+                <button
+                  type="submit"
+                  className={`btn-brand bg-brand-1 py-3 px-6 rounded text-body2 font-600`}
+                >
+                  Salvar alterações
+                </button>
+              )}
             </div>
           </form>
         </div>

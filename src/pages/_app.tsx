@@ -1,3 +1,4 @@
+import { AddressProvider } from "@/contexts/addressContext";
 import { AuthProvider } from "@/contexts/authContext";
 import { CarsProvider } from "@/contexts/carsContext";
 import { UserProvider } from "@/contexts/userContext";
