@@ -4,16 +4,16 @@ import React from "react";
 interface defaultFieldsetProps {
   className?: string;
   label: string;
-  id: string;
+  id?: string;
   type?: string;
   inputProps: object;
 }
 
 const DefaultFieldset = ({
-  className,
+  className = "flex flex-col gap-2",
   label,
-  id,
-  type,
+  id = "",
+  type = "text",
   inputProps,
 }: defaultFieldsetProps) => {
   return (
@@ -21,14 +21,14 @@ const DefaultFieldset = ({
       <label htmlFor={id} className="default-label">
         {label}
       </label>
-      <input id={id} className="default-input w-full" type={type} {...inputProps} />
+      <input
+        id={id}
+        className="default-input w-full"
+        type={type}
+        {...inputProps}
+      />
     </fieldset>
   );
-};
-
-DefaultFieldset.defaultProps = {
-  className: "flex flex-col gap-2",
-  type: "text",
 };
 
 export { DefaultFieldset };

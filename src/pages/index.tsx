@@ -9,6 +9,7 @@ import FiltroCategory from "@/components/filterCategory";
 import { Pagination } from "@/components/pagination";
 import { useCarsContext } from "@/contexts/carsContext";
 import Footer from "@/components/footer";
+import { ModalCreateAnnouncement } from "@/components/Modals/ModalCreateAnnouncement/ModalCreateAnnouncement";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,10 @@ export default function Home() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => setModal(!modal);
 
   return (
     <>
