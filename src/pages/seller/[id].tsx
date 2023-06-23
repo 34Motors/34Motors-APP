@@ -2,7 +2,6 @@ import SellerCarCard from "@/components/sellerCarCard";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Pagination } from "@/components/pagination";
-import axios from "axios";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { iUser } from "./interface";
@@ -10,7 +9,6 @@ import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
 import CommonUserCarCard from "@/components/commonUserCard";
-import { notFound } from 'next/navigation'
 
 
 export interface CarCard extends ICarsReturn {
