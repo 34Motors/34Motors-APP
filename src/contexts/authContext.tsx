@@ -10,6 +10,7 @@ import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
 import { AxiosResponse } from "axios";
+import { iUserBody } from "@/interfaces/user.interfaces";
 
 interface iUser {
   id: number;
@@ -21,10 +22,9 @@ interface iProps {
 }
 
 interface AuthProviderData {
-  setToken: (value: string) => void;
   login: (userData: LoginData) => void;
   token: string | undefined;
-  user: iUser | null;
+  user: iUserBody;
   logout: () => void;
   loading: boolean;
 }
@@ -33,9 +33,16 @@ const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
 
 export function AuthProvider({ children }: iProps) {
   const [token, setToken] = useState<string>();
-  const [user, setUser] = useState<iUser | null>(null);
+  const [user, setUser] = useState<iUserBody>({} as iUserBody);
   const [loading, setLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
+
+  const getUser = async (bearerToken: string) => {
+    console.log(bearerToken)
+    API.defaults.headers.common.authorization = `Bearer ${bearerToken}`;
+    const response: AxiosResponse<any, any> = await API.get("/users");
+    setUser(response.data);
+  };
 
   useEffect(() => {
     const validateUser = async () => {
@@ -63,40 +70,29 @@ export function AuthProvider({ children }: iProps) {
     validateUser();
   }, []);
 
-  const login = (userData: LoginData) => {
-    API.post("/login", userData)
-      .then((response) => {
-        setCookie(null, "token", response.data.token, {
-          maxAge: 86400,
-          path: "/",
-        });
-        setToken(response.data.token);
-        const userToCookie = JSON.stringify(response.data.user);
-        setCookie(null, "user", userToCookie, {
-          maxAge: 86400,
-          path: "/",
-        });
-        setUser(response.data.user);
-      })
-      .then(() => {
-        router.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
+  const login = async (userData: LoginData) => {
+    try {
+      const response = await API.post("/login", userData);
+      setCookie(null, "token", response.data.token, {
+        maxAge: 86400,
+        path: "/",
       });
+      setToken(response.data.token);
+      await getUser(response.data.token);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const logout = () => {
     destroyCookie(null, "token");
-    destroyCookie(null, "user");
-    setUser(null);
-    window.location.reload();
+    setToken("");
+    window.location.assign("/");
   };
 
   return (
-    <AuthContext.Provider
-      value={{ login, token, user, setToken, logout, loading }}
-    >
+    <AuthContext.Provider value={{ login, token, user, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

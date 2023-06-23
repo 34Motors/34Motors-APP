@@ -53,7 +53,8 @@ export const UserMenuModalButtons = ({
   const [isOpenModalEditUser, setIsOpenModalEditUser] = useState(false);
   const [isOpenModalEditAddress, setIsOpenModalEditAddress] = useState(false);
   const [isOpenModalDeleteUser, setIsOpenModalDeleteUser] = useState(false);
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
 
   const toggleModalEditUser = () =>
     setIsOpenModalEditUser(!isOpenModalEditUser);
@@ -72,7 +73,10 @@ export const UserMenuModalButtons = ({
     >
       <button onClick={toggleModalEditUser}>Editar Perfil</button>
       {isOpenModalEditUser && (
-        <ModalEditUser toggleModal={toggleModalEditUser} toggleModalDeleteUser={toggleModalDeleteUser} />
+        <ModalEditUser
+          toggleModal={toggleModalEditUser}
+          toggleModalDeleteUser={toggleModalDeleteUser}
+        />
       )}
       {isOpenModalDeleteUser && (
         <ModalConfirmDeleteUser toggleModal={toggleModalDeleteUser} />
@@ -83,7 +87,7 @@ export const UserMenuModalButtons = ({
         <ModalEditAddress toggleModal={toggleModalEditAddress} />
       )}
 
-      {isSeller && <Link href={"/seller"}>Meus anúncios</Link>}
+      {user.isSeller && <Link href={`/seller/${user.id}`}>Meus anúncios</Link>}
 
       <button onClick={logout}>Sair</button>
     </ul>
