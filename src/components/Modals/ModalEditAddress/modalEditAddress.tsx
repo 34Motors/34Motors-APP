@@ -3,8 +3,10 @@ import { useForm } from "react-hook-form";
 import { IoMdClose } from "react-icons/io";
 import { Inter, Lexend } from "next/font/google";
 import { EditAddressData } from "./validator";
-import { useAddressContext } from "@/contexts/addressContext";
 import { useState } from "react";
+import { useAuth } from "@/contexts/authContext";
+import { API } from "@/services/apis";
+
 
 
 interface ModalEditAddressProps {
@@ -15,8 +17,27 @@ const inter = Inter({ subsets: ["latin"] });
 const lexend = Lexend({ subsets: ["latin"] });
 
 const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
-  const { updateAddress, addressUser, setAddressUser } = useAddressContext();
   const [cepModified, setCepModified] = useState(false);
+  const { user, token } = useAuth();
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const updateAddress = async (data: object) => {
+    try {
+      const responseAddress = await API.patch(
+        `/users/${user.id}/address`,
+        data,
+        headers
+      );
+      console.log(responseAddress);
+      
+    } catch (error) {
+      throw new Error("Ops! Algo está errado");
+    }
+  };
 
   const {
     register,
@@ -40,12 +61,10 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
           data.number.trim() !== ""
         ) {
           updateAddress(data);
-          setAddressUser(data);
           toggleModal();
         }
       } else {
         updateAddress(data);
-        setAddressUser(data);
         toggleModal();
       }
     }
@@ -102,7 +121,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 type="text"
                 id="cep"
                 placeholder="Digite o seu cep"
-                defaultValue={`${addressUser?.cep}`}
+                defaultValue={`${user.address?.cep}`}
                 {...register("cep")}
                 onBlur={checkCEP}
                 className={`default-input`}
@@ -121,7 +140,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="state"
                   placeholder="Digite o seu estado"
-                  defaultValue={`${addressUser?.state}`}
+                  defaultValue={`${user.address.state}`}
                   {...register("state")}
                   className={`default-input w-full`}
                 />
@@ -141,7 +160,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="city"
                   placeholder="Digite a sua cidade"
-                  defaultValue={`${addressUser?.city}`}
+                  defaultValue={`${user.address.city}`}
                   {...register("city")}
                   className={`default-input w-full`}
                 />
@@ -161,7 +180,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 type="text"
                 id="street"
                 placeholder="Digite a sua rua"
-                defaultValue={`${addressUser?.street}`}
+                defaultValue={`${user.address.street}`}
                 {...register("street")}
                 className={`default-input`}
               />
@@ -182,7 +201,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="number"
                   placeholder="Digite o seu número"
-                  defaultValue={`${addressUser?.number}`}
+                  defaultValue={`${user.address.number}`}
                   {...register("number")}
                   className={`default-input w-full`}
                 />
@@ -201,7 +220,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 <input
                   type="text"
                   id="complement"
-                  defaultValue={`${addressUser?.complement}`}
+                  defaultValue={`${user.address.complement}`}
                   placeholder="Digite o complemento"
                   {...register("complement")}
                   className={`default-input w-full`}

@@ -174,6 +174,7 @@ const SellerPage = () => {
                       quilometers={elem.quilometers}
                       year={elem.year}
                       published={elem.published}
+                      frontImage={elem.frontImage}
                     />
                   ))}
             </ul>

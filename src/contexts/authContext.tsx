@@ -10,21 +10,7 @@ import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
 import { AxiosResponse } from "axios";
-import { iUserBody } from "@/interfaces/user.interfaces";
-
-interface iUser {
-  id: number;
-  name: string;
-}
-
-interface iAddressUser {
-  city: string;
-  street: string;
-  number: string;
-  cep: string;
-  state: string;
-  complement: string;
-}
+import { iUserComplete } from "@/interfaces/user.interfaces";
 
 interface iProps {
   children: ReactNode;
@@ -33,7 +19,7 @@ interface iProps {
 interface AuthProviderData {
   login: (userData: LoginData) => void;
   token: string | undefined;
-  user: iUserBody;
+  user: iUserComplete;
   logout: () => void;
   loading: boolean;
 }
@@ -42,7 +28,7 @@ const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
 
 export function AuthProvider({ children }: iProps) {
   const [token, setToken] = useState<string>();
-  const [user, setUser] = useState<iUserBody>({} as iUserBody);
+  const [user, setUser] = useState<iUserComplete>({} as iUserComplete);
   const [loading, setLoading] = useState<boolean>(true);
   const router: NextRouter = useRouter();
 
