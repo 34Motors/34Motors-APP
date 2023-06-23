@@ -29,6 +29,7 @@ export const ProductCard = ({ car }: { car: ICarsReturn }) => {
             bg_color="bg-brand-1"
             initials_color="text-white"
             name_color="grey-2"
+            name={car.user.name}
           />
           <div className="w-80 flex justify-between items-center">
             <div className="flex gap-3">
