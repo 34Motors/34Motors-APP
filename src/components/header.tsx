@@ -10,13 +10,13 @@ import {
   MenuModalButtons,
   UserMenuModalButtons,
 } from "./menuButtons";
-import { iUserBody } from "@/interfaces/user.interfaces";
+import { iUserComplete } from "@/interfaces/user.interfaces";
 import { useAuth } from "@/contexts/authContext";
 
 const Header = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
-  const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
+  const [loggedUser, setLoggedUser] = useState<iUserComplete>({} as iUserComplete);
   const [loggedToken, setLoggedToken] = useState<string>("");
   const { user } = useAuth();
 
@@ -74,6 +74,7 @@ const Header = () => {
               bg_color="bg-brand-1"
               initials_color="text-white"
               name_color="grey-2"
+              name={user.name}
             />
           </button>
         ) : (

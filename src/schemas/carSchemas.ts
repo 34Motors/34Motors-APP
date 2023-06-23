@@ -11,17 +11,20 @@ const createCarBody = z.object({
   price: z.number(),
   description: z.string(),
   frontImage: z.string().max(255),
-  images: z.object({
-    id: z.number(),
-    imageUrl: z.string(),
-    carId: z.number()
-  }).array(),
+  images: z
+    .object({
+      id: z.number(),
+      imageUrl: z.string(),
+      carId: z.number(),
+    })
+    .array(),
   published: z.boolean().default(true),
   userId: z.number(),
 });
 
 const returnCar = createCarBody.extend({
   id: z.number(),
+  user: z.object({ id: z.number(), name: z.string() }),
 });
 
 export { createCarBody, returnCar };
