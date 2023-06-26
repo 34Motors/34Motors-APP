@@ -10,4 +10,20 @@ interface CarImage {
   carId: number;
 }
 
-export type { ICarsBodyRequest, ICarsReturn, CarImage };
+interface IFilterOption {
+  brand?: string[];
+  model?: string[];
+  color?: string[];
+  year?: string[];
+  fuelType?: string[];
+  price?: {
+    max: number;
+    min: number;
+  };
+  quilometers?: {
+    max: number;
+    min: number;
+  };
+}
+
+export type { ICarsBodyRequest, ICarsReturn, CarImage, IFilterOption };
