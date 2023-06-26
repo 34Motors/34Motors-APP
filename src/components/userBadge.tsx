@@ -18,7 +18,7 @@ export const UserBadge = ({
       <div
         className={`h-8 w-8 ${bg_color} ${initials_color} text-sm rounded-full p-2 flex items-center justify-center`}
       >
-        {name[0]}
+        {name}
       </div>
       <p className={`text-sm text-${name_color}`}>{name}</p>
     </div>
