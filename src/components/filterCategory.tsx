@@ -26,8 +26,8 @@ const FiltroCategory = () => {
   };
 
   return (
-    <aside className="col-span-4 md:row-start-1 md:col-span-1">
-      <div className="w-full flex justify-center md:hidden">
+    <aside className="min-w-[200px] tabletMax:col-span-4 tabletMax:row-start-2 tabletMin:row-start-1">
+      <div className="w-full flex justify-center tabletMin:hidden">
         <button
           onClick={handleToggleModal}
           className="w-full max-w-[279px] btn-big bg-brand-2 text-white my-12 rounded"
@@ -88,7 +88,7 @@ const FiltroCategory = () => {
           </div>
         )}
       </div>
-      <div className="sm:hidden">
+      <div className="tabletMax:hidden">
         {listCategory.map((category) => (
           <div key={category.id}>
             <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
