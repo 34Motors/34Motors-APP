@@ -3,7 +3,7 @@ import Image from "next/image";
 
 interface CarImageComponentProps {
   carImage: CarImage;
-  callback: () => void;
+  callback: (e:any) => void;
   id: string;
 }
 
