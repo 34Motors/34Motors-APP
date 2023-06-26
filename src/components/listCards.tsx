@@ -10,7 +10,6 @@ export const ListCards: React.FC<ListCardsProps> = ({
   cardsPerPage,
 }) => {
   const { cars } = useCarsContext();
-  // console.log(cars)
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = cars.slice(indexOfFirstCard, indexOfLastCard)
@@ -18,7 +17,7 @@ export const ListCards: React.FC<ListCardsProps> = ({
     <ProductCard key={car.id} car={car} />
   ));
   return (
-    <ul className="flex items-center gap-3 overflow-x-auto md:overflow-hidden md:grid md:grid-cols-2 xl:grid-cols-3 md:col-span-3 md:gap-12 md:col-start-2 md:items-start">
+    <ul className="flex items-center gap-3 overflow-x-auto md:overflow-hidden md:grid homeList:grid-cols-2 xl:grid-cols-3 md:col-span-3 md:gap-12 xl:col-span-3">
         {renderedCards}
     </ul>
   );
