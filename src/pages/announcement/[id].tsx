@@ -32,6 +32,9 @@ const Announcement = () => {
     }
   }, [router.isReady]);
 
+  console.log(user)
+  console.log(car)
+
   const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
@@ -148,6 +151,7 @@ const Announcement = () => {
               bg_color="bg-brand-1"
               initials_color="text-white"
               name_color="grey-1"
+              name={user.name}
             />
             <form className="relative">
               <textarea

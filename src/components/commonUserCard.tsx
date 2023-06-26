@@ -12,7 +12,6 @@ interface iCarCarProps {
   price: number;
   description: string;
   frontImage: string;
-  images: string[];
   published: boolean;
   id: number;
   user: string;
@@ -20,7 +19,6 @@ interface iCarCarProps {
 
 const CommonUserCarCard = ({
   frontImage,
-  images,
   published,
   model,
   brand,
@@ -31,10 +29,13 @@ const CommonUserCarCard = ({
   price,
   user,
 }: iCarCarProps) => {
+  const nameSplit = user?.split(" ")
+
+  const userInitials = user?.split(" ")[0][0] === user?.split(" ")[nameSplit.length-1][0] ? "" : user?.split(" ")[nameSplit.length-1][0]
   return (
     <Link
       href={"/announcement/" + id}
-      className="w-[312px] md:w-[40%] md:max-w-[312px] relative"
+      className="min-w-[320px] h-[280px] md:max-w-[312px] relative"
     >
       <li>
         <div className="w-full flex items-center justify-center bg-gray-200">
@@ -50,12 +51,13 @@ const CommonUserCarCard = ({
           <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
             {brand} - {model}
           </h6>
-          <p className="text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
+            <p className="text-sm h-12 overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
             {description}
-          </p>
+            </p>
           <div className="flex items-center gap-2 font-500">
-            <span className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-sm  w-8 h-8 rounded-full">
-              {brand.split("")[0]}
+            <span className="p-0 m-0 capitalize flex items-center justify-center text-white bg-brand-1 text-sm  w-8 h-8 rounded-full">
+              <span className="capitalize">{user.split("")[0]}</span>
+              <span className="capitalize">{userInitials}</span>
             </span>
             <p className="text-grey-2 capitalize">{user}</p>
           </div>
