@@ -12,7 +12,6 @@ interface iCarCarProps {
   price: number;
   description: string;
   frontImage: string;
-  images: string[];
   published: boolean;
   id: number;
   user: string;
@@ -20,7 +19,6 @@ interface iCarCarProps {
 
 const CommonUserCarCard = ({
   frontImage,
-  images,
   published,
   model,
   brand,
