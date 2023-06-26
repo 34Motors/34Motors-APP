@@ -1,7 +1,5 @@
 import React, { useRef } from "react";
 import { useCarsContext } from "@/contexts/carsContext";
-import { capitalizeFirstLetter } from "@/utils/formatingFunctions";
-import { useTranslation } from "react-i18next";
 import { debounce } from "lodash";
 import { ModalFiltroMobile } from "./Modals/ModalFilterMobile";
 
@@ -14,7 +12,6 @@ const FiltroCategory = () => {
     selectedFilters,
     setSelectedFilters,
   } = useCarsContext();
-  const { t } = useTranslation();
 
   const minPriceRef = useRef<HTMLInputElement>(null);
   const maxPriceRef = useRef<HTMLInputElement>(null);
@@ -68,32 +65,54 @@ const FiltroCategory = () => {
   };
 
   const contentFilter = (
-    <>
+    <div className="tabletMax:hidden">
       {listFilters?.map((filter: any, index) => {
         const category = Object.keys(filter)[0];
+        let translatedCategory = "";
 
-        if (category !== "quilometers" && category !== "price") {
+        if (category === "brand") {
+          translatedCategory = "Marca";
+        } else if (category === "model") {
+          translatedCategory = "Modelo";
+        } else if (category === "year") {
+          translatedCategory = "Ano";
+        } else if (category === "color") {
+          translatedCategory = "Color";
+        } else if (category === "fuelType") {
+          translatedCategory = "Combustível";
+        } else if (category === "price" && hasPrice) {
+          translatedCategory = "Preço";
+        } else if (category === "quilometers" && hasQuilometers) {
+          translatedCategory = "Km";
+        }
+
+        if (
+          translatedCategory !== "Km" &&
+          translatedCategory !== "Preço"
+        ) {
           return (
             <div key={index}>
               <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
-                {t(capitalizeFirstLetter(category))}
+                {translatedCategory}
               </h4>
-              <ul className="overflow-y-auto space-y-1 ml-3">
-                {Object.values(filter[category]).map(
-                  (categorySpecific: any, i) => (
-                    <li key={i}>
-                      <button
-                        className="font-lexend font-500 text-heading6 text-grey-3"
-                        onClick={() =>
-                          handleFilterCars(category, categorySpecific)
-                        }
-                      >
-                        {categorySpecific}
-                      </button>
-                    </li>
-                  )
-                )}
-              </ul>
+              <div className="overflow-y-auto space-y-1 ml-3">
+                <ul className="overflow-y-auto space-y-1 ml-3">
+                  {Object.values(filter[category]).map(
+                    (categorySpecific: any, i) => (
+                      <li key={i}>
+                        <button
+                          className="font-lexend font-500 text-heading6 text-grey-3"
+                          onClick={() =>
+                            handleFilterCars(category, categorySpecific)
+                          }
+                        >
+                          {categorySpecific}
+                        </button>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
             </div>
           );
         }
@@ -102,7 +121,7 @@ const FiltroCategory = () => {
           return (
             <div key={index}>
               <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
-                {t(capitalizeFirstLetter(category))}
+                Preço
               </h4>
               <div className="grid grid-cols-2 gap-6">
                 <input
@@ -132,7 +151,7 @@ const FiltroCategory = () => {
           return (
             <div key={index}>
               <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
-                {t(capitalizeFirstLetter(category))}
+                Km
               </h4>
               <div className="grid grid-cols-2 gap-6">
                 <input
@@ -160,12 +179,12 @@ const FiltroCategory = () => {
 
         return null;
       })}
-    </>
+    </div>
   );
 
   return (
-    <aside className="col-span-4 md:row-start-1 md:col-span-1">
-      <div className="w-full flex justify-center md:hidden">
+    <aside className="min-w-[200px] tabletMax:col-span-4 tabletMax:row-start-2 tabletMin:row-start-1">
+      <div className="w-full flex justify-center tabletMin:hidden">
         <button
           onClick={() => {
             handleToggleModal();
@@ -177,7 +196,7 @@ const FiltroCategory = () => {
         </button>
         {isModalOpen && <ModalFiltroMobile content={contentFilter} />}
       </div>
-      <div className="sm:hidden">
+      <div className="tabletMax:hidden">
         {contentFilter}
         <div className="w-full flex items-center mt-10">
           <button
