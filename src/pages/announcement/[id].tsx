@@ -37,9 +37,6 @@ const Announcement = () => {
     }
   }, [router.isReady]);
 
-  console.log(user)
-  console.log(car)
-
   const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
