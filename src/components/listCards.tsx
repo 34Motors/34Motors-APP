@@ -10,7 +10,6 @@ export const ListCards: React.FC<ListCardsProps> = ({
   cardsPerPage,
 }) => {
   const { cars } = useCarsContext();
-  // console.log(cars)
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = cars.slice(indexOfFirstCard, indexOfLastCard)
