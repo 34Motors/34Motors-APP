@@ -1,3 +1,4 @@
+import { Input } from "postcss";
 import React from "react";
 import InptMask from "react-input-mask";
 
@@ -20,18 +21,31 @@ const DefaultFieldset = ({
 }: defaultFieldsetProps) => {
   const InputMask = InptMask as any;
 
+  const InputMasked = (
+    <InputMask
+      mask={mask}
+      id={id}
+      className="default-input w-full"
+      type={type}
+      {...inputProps}
+    />
+  );
+
+  const Default = (
+    <input
+      id={id}
+      className="default-input w-full"
+      type={type}
+      {...inputProps}
+    />
+  );
+
   return (
     <fieldset className={"flex flex-col gap-2 " + className}>
       <label className="default-label" htmlFor={id}>
         {label}
       </label>
-      <InputMask
-        mask={mask}
-        id={id}
-        className="default-input w-full"
-        type={type}
-        {...inputProps}
-      />
+      {mask ? InputMasked : Default}
     </fieldset>
   );
 };
