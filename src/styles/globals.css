@@ -6,7 +6,6 @@
 @import url("./animation.css");
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&family=Inter:wght@400;500&family=Poppins:wght@400;600&display=swap");
 
-
 @layer components {
   .modal-window {
     @apply flex flex-col gap-6 bg-grey-whiteFixed p-5 shadow-xl w-[90vw] max-w-lg rounded-lg;
@@ -17,6 +16,7 @@
   }
 }
 
-body{
-  background-color: #F1F3F5;
+#__next {
+  height: 100%;
+  width: 100%;
 }

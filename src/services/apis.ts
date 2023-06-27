@@ -7,5 +7,5 @@ export const carsAPI = axios.create({
 
 export const API = axios.create({
   baseURL: "http://localhost:4002",
-  timeout: 5000,
+  timeout: 15000,
 });
