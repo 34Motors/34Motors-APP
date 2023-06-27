@@ -13,11 +13,14 @@ import { API } from "@/services/apis";
 import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import ModalCarImage from "@/components/Modals/modalCarImage";
+import { formatCurrency } from "@/utils/formatingFunctions";
+import { LoadingScreen } from "@/components/loadingScreen";
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [user, setUser] = useState({} as iUserBody);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (router.isReady) {
@@ -27,13 +30,12 @@ const Announcement = () => {
         API.get(`/users/${carResponse.data.userId}`).then((response) => {
           setCar(carResponse.data);
           setUser(response.data);
+
+          setLoading(false);
         });
       });
     }
-  }, [router.isReady]);
-
-  console.log(user)
-  console.log(car)
+  }, [router.query, router.isReady]);
 
   const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
@@ -47,26 +49,38 @@ const Announcement = () => {
   }
 
   let carImages: React.JSX.Element[] = [];
-  const [carImage, setCarImage] = useState("")
-  const [isClicked, setIsclicked] = useState(false)
-  const [openImageModal, setOpenImageModal] = useState(false)
+  const [carImage, setCarImage] = useState("");
+  const [isClicked, setIsclicked] = useState(false);
+  const [openImageModal, setOpenImageModal] = useState(false);
   const toggleModal = () => {
-    setOpenImageModal(!openImageModal)
-  }
+    setOpenImageModal(!openImageModal);
+  };
 
   const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    const target = e.target as HTMLImageElement
-    const foundImage = car.images.find(image => image.id === parseInt(target.id))
-    foundImage && setCarImage(foundImage.imageUrl)
-    toggleModal()
-  }
-  
+    const target = e.target as HTMLImageElement;
+    const foundImage = car.images.find(
+      (image) => image.id === parseInt(target.id)
+    );
+    foundImage && setCarImage(foundImage.imageUrl);
+    toggleModal();
+  };
+
   if (car.images) {
     carImages = car.images.map((image: CarImage) => {
-      return <CarImageComponent key={image.id} id={(image.id).toString()} carImage={image} callback={handleImageClick} />;
+      return (
+        <CarImageComponent
+          key={image.id}
+          id={image.id.toString()}
+          carImage={image}
+          callback={handleImageClick}
+        />
+      );
     });
   }
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>
@@ -79,7 +93,7 @@ const Announcement = () => {
               width={351}
               height={355}
               src={car.frontImage}
-              alt="Foto de um carro"
+              alt={`Foto de um ${car.brand} ${car.model}`}
               className="mt-[70px] mx-auto"
             />
           </div>
@@ -94,7 +108,7 @@ const Announcement = () => {
                 <CardDetail text={car.year} />
               </div>
               <p className="text-heading7 text-grey-1 font-500 font-lexend">
-                {`R$ ${car.price},00`}
+                {formatCurrency(car.price)}
               </p>
             </div>
             <button
@@ -181,7 +195,9 @@ const Announcement = () => {
             </div>
           </div>
         </main>
-        {openImageModal && <ModalCarImage toggleModal={toggleModal} carImage={carImage} /> }
+        {openImageModal && (
+          <ModalCarImage toggleModal={toggleModal} carImage={carImage} />
+        )}
         <Footer />
       </div>
     </>

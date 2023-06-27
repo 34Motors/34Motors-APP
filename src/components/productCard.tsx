@@ -3,10 +3,10 @@ import { CardDetail } from "./cardDetail";
 import { UserBadge } from "./userBadge";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import Link from "next/link";
+import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 
 export const ProductCard = ({ car }: { car: ICarsReturn }) => {
   return (
-
     <li className="box-content w-80 flex flex-col gap-4">
       <Link href={`/announcement/${car.id}`}>
         <div className="w-80 h-[150px] flex items-center justify-center bg-gray-200 relative">
@@ -33,11 +33,11 @@ export const ProductCard = ({ car }: { car: ICarsReturn }) => {
           />
           <div className="w-80 flex justify-between items-center">
             <div className="flex gap-3">
-              <CardDetail text={car.quilometers + " KM"} />
+              <CardDetail text={formatNumber(car.quilometers) + " KM"} />
               <CardDetail text={car.year} />
             </div>
             <p className="text-base text-grey-1 font-500 font-lexend">
-              {`R$ ${car.price},00`}
+              {formatCurrency(car.price)}
             </p>
           </div>
         </div>
