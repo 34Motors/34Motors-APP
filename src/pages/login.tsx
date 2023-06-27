@@ -16,7 +16,7 @@ const Login: NextPage = () => {
       </Head>
       <div className="flex flex-col justify-between h-full">
         <Header />
-        <main className="bg-grey-8 w-full h-full flex justify-center py-28">
+        <main className="bg-grey-8 w-full flex justify-center py-28">
           <LoginForm />
         </main>
         <Footer />
