@@ -65,7 +65,7 @@ const FiltroCategory = () => {
   };
 
   const contentFilter = (
-    <div className="tabletMax:hidden">
+    <div className={`${!isModalOpen && 'tabletMax:hidden'}`}>
       {listFilters?.map((filter: any, index) => {
         const category = Object.keys(filter)[0];
         let translatedCategory = "";

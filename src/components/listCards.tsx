@@ -17,7 +17,7 @@ export const ListCards: React.FC<ListCardsProps> = ({
     <ProductCard key={car.id} car={car} />
   ));
   return (
-    <ul className="flex items-center gap-3 overflow-x-auto md:overflow-hidden md:grid md:grid-cols-2 xl:grid-cols-3 md:col-span-3 md:gap-12 md:col-start-2 md:items-start">
+    <ul className="w-full flex items-start mt-4 gap-3 sm:gap-x-4 lg:gap-x-14 overflow-x-auto md:overflow-hidden md:grid homeList:grid-cols-2 xl:grid-cols-3 md:col-span-3 xl:col-span-3">
         {renderedCards}
     </ul>
   );

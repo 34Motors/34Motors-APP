@@ -80,7 +80,10 @@ module.exports = {
         inter: ["Inter", ""],
       },
       screens: {
-        "sm": {"max": "769px"}
+        "sm": {"max": "769px"},
+        "tabletMax": {"max": "1062px"},
+        "tabletMin": {"min": "1063px"},
+        "homeList": {"max": "1425px"}
       },
       dropShadow: {
         dropDownShadow: "0 4px 40px rgba(0, 0, 0, 0.25)"
