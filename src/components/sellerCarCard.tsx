@@ -28,15 +28,7 @@ const SellerCarCard = ({
 }: iCarCarProps) => {
   return (
     <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
-      <span
-        className={
-          published
-            ? "btn-brand font-500 text-sm py-0 px-2 top-[12px] left-[12px] absolute"
-            : "bg-grey-4 font-500 text-white text-sm py-0 px-2 top-[12px] left-[12px] absolute"
-        }
-      >
-        {published ? "Ativo" : "Inativo"}
-      </span>
+
       <div className="w-full flex items-center justify-center bg-gray-200">
         <Image
           width={262}
