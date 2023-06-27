@@ -1,5 +1,7 @@
 import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -22,6 +24,8 @@ interface AuthProviderData {
   user: iUserComplete;
   logout: () => void;
   loading: boolean;
+  isLoggedIn:boolean
+  setIsloggedIn: Dispatch<SetStateAction<boolean>>
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
@@ -30,6 +34,7 @@ export function AuthProvider({ children }: iProps) {
   const [token, setToken] = useState<string>();
   const [user, setUser] = useState<iUserComplete>({} as iUserComplete);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isLoggedIn, setIsloggedIn] = useState(false);
   const router: NextRouter = useRouter();
 
   const getUser = async (bearerToken: string) => {
@@ -73,6 +78,7 @@ export function AuthProvider({ children }: iProps) {
         path: "/",
       });
       setToken(response.data.token);
+      setIsloggedIn(true)
       await getUser(response.data.token);
       router.push("/");
     } catch (error) {
@@ -87,7 +93,7 @@ export function AuthProvider({ children }: iProps) {
   };
 
   return (
-    <AuthContext.Provider value={{ login, token, user, logout, loading }}>
+    <AuthContext.Provider value={{ login, token, user, logout, loading , isLoggedIn, setIsloggedIn}}>
       {children}
     </AuthContext.Provider>
   );

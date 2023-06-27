@@ -14,20 +14,34 @@ import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import ModalCarImage from "@/components/Modals/modalCarImage";
 import { formatCurrency } from "@/utils/formatingFunctions";
-import { LoadingScreen } from "@/components/loadingScreen";
+import { useAuth } from "@/contexts/authContext";
+import { useForm } from "react-hook-form";
+import { parseCookies } from "nookies";
+import { iCommentBody, iCommentResponse } from "@/interfaces/comments.interfaces";
+
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [user, setUser] = useState({} as iUserBody);
   const [loading, setLoading] = useState(true);
+  const [carImage, setCarImage] = useState("");
+  const [comments, setComments] = useState<iCommentResponse>({} as iCommentResponse);
+  const [openImageModal, setOpenImageModal] = useState(false);
+
+  const { isLoggedIn, setIsloggedIn } = useAuth()
 
   useEffect(() => {
-    if (router.isReady) {
-      const { id } = router.query;
 
+    const cookies = parseCookies()
+
+    if (cookies.token) setIsloggedIn(true)
+
+    const { id } = router.query;
+    const getPageDependecies = () => {
       API.get(`/cars/${id}`).then((carResponse) => {
         API.get(`/users/${carResponse.data.userId}`).then((response) => {
+          console.log(carResponse)
           setCar(carResponse.data);
           setUser(response.data);
 
@@ -35,9 +49,12 @@ const Announcement = () => {
         });
       });
     }
+
+    if (id) getPageDependecies()
+
+
   }, [router.query, router.isReady]);
 
-  const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
 
@@ -49,9 +66,7 @@ const Announcement = () => {
   }
 
   let carImages: React.JSX.Element[] = [];
-  const [carImage, setCarImage] = useState("");
-  const [isClicked, setIsclicked] = useState(false);
-  const [openImageModal, setOpenImageModal] = useState(false);
+
   const toggleModal = () => {
     setOpenImageModal(!openImageModal);
   };
@@ -78,9 +93,19 @@ const Announcement = () => {
     });
   }
 
-  if (loading) {
-    return <LoadingScreen />;
+
+  const { register, handleSubmit } = useForm<iCommentBody>({})
+
+  const submit = async (data: iCommentBody) => {
+    try {
+      const response = await API.post(`/comments/${car.id}`, data)
+      const commentData:iCommentResponse = response.data
+      setComments(commentData)
+    } catch (error) {
+      console.log(error)
+    }
   }
+  console.log(isLoggedIn)
 
   return (
     <>
@@ -90,9 +115,9 @@ const Announcement = () => {
         <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
           <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
             <Image
+              src={car.frontImage}
               width={351}
               height={355}
-              src={car.frontImage}
               alt={`Foto de um ${car.brand} ${car.model}`}
               className="mt-[70px] mx-auto"
             />
@@ -108,7 +133,7 @@ const Announcement = () => {
                 <CardDetail text={car.year} />
               </div>
               <p className="text-heading7 text-grey-1 font-500 font-lexend">
-                {formatCurrency(car.price)}
+                {/* formatCurrency ()*/car.price}
               </p>
             </div>
             <button
@@ -139,7 +164,7 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
                 {userInitials}
               </div>
@@ -167,13 +192,13 @@ const Announcement = () => {
               name_color="grey-1"
               name={user.name}
             />
-            <form className="relative">
+            <form className="relative" onSubmit={handleSubmit(submit)}>
               <textarea
-                name=""
                 id=""
                 className="w-full h-[128px] p-3 border-solid border-grey-7 border-[1.5px] rounded text-grey-3 font-inter font-400 focus:border-brand-2 focus:border-[1.5px] focus:outline-none"
                 placeholder="Digitar comentário"
                 disabled={disable}
+                {...register("description")}
               ></textarea>
               <button
                 className="absolute bottom-6 right-4 btn-brand p-2 text-sm font-600 font-inter rounded"
