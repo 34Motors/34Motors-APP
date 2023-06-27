@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Header from "@/components/header";
-import { Inter } from "next/font/google";
 import coverImg from "../assets/img/cover-image2.jpg";
 import Image from "next/image";
 import { ListCards } from "@/components/listCards";
@@ -10,8 +9,6 @@ import { Pagination } from "@/components/pagination";
 import { useCarsContext } from "@/contexts/carsContext";
 import Footer from "@/components/footer";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const { cars } = useCarsContext();
@@ -19,6 +16,10 @@ export default function Home() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => setModal(!modal);
 
   return (
     <>

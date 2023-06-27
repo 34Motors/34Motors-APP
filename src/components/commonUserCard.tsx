@@ -35,7 +35,7 @@ const CommonUserCarCard = ({
   return (
     <Link
       href={"/announcement/" + id}
-      className="w-[312px] md:w-[40%] md:max-w-[312px] relative"
+      className="min-w-[320px] h-[280px] md:max-w-[312px] relative"
     >
       <li>
       <span
@@ -60,9 +60,9 @@ const CommonUserCarCard = ({
           <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
             {brand} - {model}
           </h6>
-          <p className="text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400 ">
+            <p className="text-sm h-12 overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
             {description}
-          </p>
+            </p>
           <div className="flex items-center gap-2 font-500">
             <span className="p-0 m-0 capitalize flex items-center justify-center text-white bg-brand-1 text-sm  w-8 h-8 rounded-full">
               <span className="capitalize">{user.split("")[0]}</span>

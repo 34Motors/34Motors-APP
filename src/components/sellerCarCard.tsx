@@ -27,6 +27,7 @@ const SellerCarCard = ({
   price,
 }: iCarCarProps) => {
   return (
+
     <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
 
       <div className="w-full flex items-center justify-center bg-gray-200">
@@ -42,7 +43,7 @@ const SellerCarCard = ({
         <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
           {brand} - {model}
         </h6>
-        <p className="text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
+        <p className="text-sm h-12 overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
           {description}
         </p>
         <div className=" flex justify-between items-center">
