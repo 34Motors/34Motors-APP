@@ -4,6 +4,7 @@ import { parseCookies } from "nookies";
 import { ReactNode, useContext, createContext, useState, Dispatch, SetStateAction } from "react";
 import { useAuth } from "./authContext";
 import { iUserBody } from "@/interfaces/user.interfaces";
+import { toast } from "react-toastify";
 
 interface Props {
   children: ReactNode;
@@ -36,8 +37,10 @@ export function UserProvider({ children }: Props) {
 
     try {
       await API.delete("/users", { headers });
+      toast.success("usuário deletado com sucesso!")
       logout();
     } catch (error) {
+      toast.error("Ops, algo deu errado!")
       console.log(error);
     }
   };

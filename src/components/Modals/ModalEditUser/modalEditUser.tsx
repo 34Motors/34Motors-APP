@@ -11,6 +11,7 @@ import { DefaultFieldset } from "@/components/defaultFieldset";
 import { API } from "@/services/apis";
 import { iUser } from "@/pages/seller/interface";
 import { useAuth } from "@/contexts/authContext";
+import { toast } from "react-toastify";
 
 interface ModalEditUserProps {
   toggleModal: () => void;
@@ -92,7 +93,9 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
         maxAge: 86400,
         path: "/",
       })
+      toast.success("informações de usuário atualizdas com sucesso!")
     } catch (error) {
+      toast.error("não foi possível atualizar as informações do usuário")
       console.log(error)
     }
 

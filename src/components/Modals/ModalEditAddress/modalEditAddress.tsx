@@ -6,6 +6,7 @@ import { EditAddressData } from "./validator";
 import { useState } from "react";
 import { useAuth } from "@/contexts/authContext";
 import { API } from "@/services/apis";
+import { toast } from "react-toastify";
 
 
 
@@ -32,10 +33,10 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
         data,
         headers
       );
-      console.log(responseAddress);
-      
+      toast.success("endereço atualizado com sucesso!")
     } catch (error) {
-      throw new Error("Ops! Algo está errado");
+      toast.error("não foi possíovel atualizar o endereço!")
+      console.log(error)
     }
   };
 
