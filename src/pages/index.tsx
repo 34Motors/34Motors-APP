@@ -12,14 +12,10 @@ import Footer from "@/components/footer";
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const { cars } = useCarsContext();
-
+  
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
-  const [modal, setModal] = useState(false);
-
-  const toggleModal = () => setModal(!modal);
 
   return (
     <>
@@ -50,13 +46,23 @@ export default function Home() {
         </div>
       </section>
       <main className="w-11/12 mx-auto my-12 px-5 grid grid-cols-1 gap-y-6 md:grid-cols-2 tabletMin:grid-cols-4 tabletMin:px-4 tabletMin:gap-16">
-        <ListCards currentPage={currentPage} cardsPerPage={12} />
-        <FiltroCategory />
-        <Pagination
-          totalPages={Math.ceil(cars.length / 12)}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+        {cars ? (
+          <>
+            <ListCards currentPage={currentPage} cardsPerPage={12} />
+            <FiltroCategory />
+            <Pagination
+              totalPages={Math.ceil(cars.length / 12)}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </>
+        ) : (
+          <div className="w-full col-span-4 col-start-2 row-span-4 row-start-3">
+            <p className="text-3xl font-600 text-grey-1">
+              Ainda não há anúncios cadastrados. Volte mais tarde!
+            </p>
+          </div>
+        )}
       </main>
       <Footer />
     </>
