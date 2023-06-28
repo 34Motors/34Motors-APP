@@ -13,6 +13,7 @@ import { API } from "@/services/apis";
 import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import ModalCarImage from "@/components/Modals/modalCarImage";
+import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { useForm } from "react-hook-form";
@@ -20,16 +21,19 @@ import { parseCookies } from "nookies";
 import { iCommentBody, iCommentResponse } from "@/interfaces/comments.interfaces";
 
 
+
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [user, setUser] = useState({} as iUserBody);
+  const [comments, setComments] = useState([] as commentReturn[])
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
   const [comments, setComments] = useState<iCommentResponse>({} as iCommentResponse);
   const [openImageModal, setOpenImageModal] = useState(false);
 
   const { isLoggedIn, setIsloggedIn } = useAuth()
+
 
   useEffect(() => {
 
@@ -41,11 +45,12 @@ const Announcement = () => {
     const getPageDependecies = () => {
       API.get(`/cars/${id}`).then((carResponse) => {
         API.get(`/users/${carResponse.data.userId}`).then((response) => {
-          console.log(carResponse)
-          setCar(carResponse.data);
-          setUser(response.data);
-
-          setLoading(false);
+          API.get(`/comments/${id}`).then((commentResponse) => {
+            setCar(carResponse.data);
+            setUser(response.data);
+            setComments(commentResponse.data)
+            setLoading(false);
+          })
         });
       });
     }
@@ -55,6 +60,7 @@ const Announcement = () => {
 
   }, [router.query, router.isReady]);
 
+  const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
 
@@ -183,7 +189,7 @@ const Announcement = () => {
             </div>
           </div>
           <div className="bg-grey-10 rounded px-7 py-9 md:col-start-1 md:col-end-3">
-            <CommentsList />
+            <CommentsList comments={comments} />
           </div>
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
             <UserBadge
