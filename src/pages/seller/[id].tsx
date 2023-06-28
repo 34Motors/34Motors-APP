@@ -67,7 +67,7 @@ const SellerPage = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col justify-start">
+    <div className={`${!userCars.length ? "h-screen flex flex-col justify-start" : ""}`}>
       <Header />
       <section className="relative">
         <div className="bg-brand-1 w-full h-[360px]"></div>
@@ -186,10 +186,12 @@ const SellerPage = () => {
           </div>
         )}
       </main>
-      <Footer />
       {modalCreateAnnouncement && (
         <ModalCreateAnnouncement toggleModal={toggleModalCreateAnnouncement} />
-      )}
+        )}
+        <div >
+          <Footer />
+        </div>
     </div>
   );
 };
