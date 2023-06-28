@@ -48,9 +48,11 @@
 - [x] Next.js
 - [x] Tailwind
 - [x] Context API
-- [x] React-hook-form
+- [x] React hook form
+- [x] React input mask
+- [x] React icons
 - [x] Zod
-- [x] React toastfy
+- [x] React toastify
 - [x] React Router DOM
 - [x] Axios
 
@@ -59,7 +61,6 @@
 - [x] Jira
 - [x] VS Code
 - [x] Github
-- [x] JSON-Server-Auth
 - [x] Typescript
 - [x] Prisma Studio
 - [x] Insomnia
