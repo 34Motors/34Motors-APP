@@ -18,41 +18,36 @@ import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { useForm } from "react-hook-form";
 import { parseCookies } from "nookies";
-import { iCommentBody, iCommentResponse } from "@/interfaces/comments.interfaces";
+import { iCommentBody } from "@/interfaces/comments.interfaces";
+import { LoadingScreen } from "@/components/loadingScreen";
 
 
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
-  const [user, setUser] = useState({} as iUserBody);
+  const [owner, setOwner] = useState({} as iUserBody);
   const [comments, setComments] = useState([] as commentReturn[])
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
-  const [comments, setComments] = useState<iCommentResponse>({} as iCommentResponse);
   const [openImageModal, setOpenImageModal] = useState(false);
+  const { isLoggedIn, setIsloggedIn, user } = useAuth()
 
-  const { isLoggedIn, setIsloggedIn } = useAuth()
 
 
   useEffect(() => {
 
     const cookies = parseCookies()
-
     if (cookies.token) setIsloggedIn(true)
 
     const { id } = router.query;
-    const getPageDependecies = () => {
-      API.get(`/cars/${id}`).then((carResponse) => {
-        API.get(`/users/${carResponse.data.userId}`).then((response) => {
-          API.get(`/comments/${id}`).then((commentResponse) => {
-            setCar(carResponse.data);
-            setUser(response.data);
-            setComments(commentResponse.data)
-            setLoading(false);
-          })
-        });
-      });
+    const getPageDependecies = async () => {
+      const response = await API.get(`/cars/${id}`)
+
+      setCar(response.data)
+      setOwner(response.data.user)
+      setComments(response.data.comments)
+      setLoading(false)
     }
 
     if (id) getPageDependecies()
@@ -60,12 +55,11 @@ const Announcement = () => {
 
   }, [router.query, router.isReady]);
 
-  const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
 
-  if (user.name) {
-    const userName = user.name.split(" ");
+  if (owner.name) {
+    const userName = owner.name.split(" ");
     userName.forEach((name) => {
       userInitials += name[0];
     });
@@ -105,13 +99,16 @@ const Announcement = () => {
   const submit = async (data: iCommentBody) => {
     try {
       const response = await API.post(`/comments/${car.id}`, data)
-      const commentData:iCommentResponse = response.data
+      const commentData: commentReturn[] = response.data
       setComments(commentData)
     } catch (error) {
       console.log(error)
     }
   }
-  console.log(isLoggedIn)
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>
@@ -139,7 +136,7 @@ const Announcement = () => {
                 <CardDetail text={car.year} />
               </div>
               <p className="text-heading7 text-grey-1 font-500 font-lexend">
-                {/* formatCurrency ()*/car.price}
+                {formatCurrency(car.price)}
               </p>
             </div>
             <button
@@ -175,13 +172,13 @@ const Announcement = () => {
                 {userInitials}
               </div>
               <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
-                {user.name}
+                {owner.name}
               </h6>
               <p className="text-base text-grey-2 font-400 font-inter leading-7 text-center">
-                {user.description}
+                {owner.description}
               </p>
               <Link
-                href={`/seller/${user.id}`}
+                href={`/seller/${owner.id}`}
                 className="bg-grey-0 font-inter font-600 text-base text-white p-2 rounded"
               >
                 Ver todos anúncios
@@ -192,12 +189,12 @@ const Announcement = () => {
             <CommentsList comments={comments} />
           </div>
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
-            <UserBadge
+            {user.name && (<UserBadge
               bg_color="bg-brand-1"
               initials_color="text-white"
               name_color="grey-1"
               name={user.name}
-            />
+            />)}
             <form className="relative" onSubmit={handleSubmit(submit)}>
               <textarea
                 id=""
