@@ -53,7 +53,7 @@ export default function Home() {
         <ListCards currentPage={currentPage} cardsPerPage={12} />
         <FiltroCategory />
         <Pagination
-          totalPages={Math.ceil(cars.length / 12)}
+          totalPages={Math.ceil(cars?.length / 12)}
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
