@@ -121,11 +121,11 @@ const SellerPage = () => {
             </div>
           </ul>
         ) : (
-          <div className=" md:mt-[-5rem] md:mb-[-150px]">
+          <div className=" md:mt-10">
             <ul
-              className={`mt-44 h-full md:mt-60 ${
+              className={`mt-60 h-fit md:mt-60 ${
                 userCars.length < 16 ? "mb-10" : ""
-              } list-none w-full bg-grey-8 mx-auto flex flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center `}
+              } list-none w-full bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center `}
             >
               {loggedUser === false
                 ? userCars.map((elem, index) => (
