@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import Header from "@/components/header";

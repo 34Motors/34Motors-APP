@@ -13,8 +13,7 @@ export const createAnnouncementSchema = z.object({
     .min(1)
     .transform((val) => parseFloat(val)),
   description: z.string().min(1),
-  frontImage: z.string().url().max(255),
-  images: z.array(z.string().min(1).max(255)),
+  frontImage: z.unknown()
 });
 
 export type iCreateAnnouncement = z.infer<typeof createAnnouncementSchema>;
