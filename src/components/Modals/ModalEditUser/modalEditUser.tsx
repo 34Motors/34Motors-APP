@@ -93,9 +93,9 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
         maxAge: 86400,
         path: "/",
       })
-      toast.success("informações de usuário atualizdas com sucesso!")
+      toast.success("Informações de usuário atualizdas com sucesso!")
     } catch (error) {
-      toast.error("não foi possível atualizar as informações do usuário")
+      toast.error("Não foi possível atualizar as informações do usuário")
       console.log(error)
     }
 
@@ -105,10 +105,10 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg h-auto rounded-lg`}
+        className={`my-20 flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg h-auto rounded-lg`}
       >
         <div className={`flex justify-between`}>
-          <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>
+          <h3 className={`mt-72 xl:mt-0 text-body1 font-500 text-grey-1 ${lexend.className}`}>
             Editar perfil
           </h3>
           <button onClick={toggleModal} className={`text-heading6 text-grey-4`}>
