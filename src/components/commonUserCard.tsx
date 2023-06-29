@@ -37,7 +37,7 @@ const CommonUserCarCard = ({
       href={"/announcement/" + id}
       className="min-w-[320px] h-[280px] md:max-w-[312px] relative"
     >
-      <li>
+      <li className="">
       <span
         className={
           published
@@ -49,11 +49,11 @@ const CommonUserCarCard = ({
       </span>
         <div className="w-full flex items-center justify-center bg-gray-200">
           <Image
-            width={262}
-            height={150}
+            width={10000}
+            height={10000}
             src={frontImage}
             alt="Foto de um carro"
-            className="w-full"
+            className="w-full max-h-[150px]"
           />
         </div>
         <div className="flex flex-col gap-4">
