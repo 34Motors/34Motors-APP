@@ -37,13 +37,15 @@ const Announcement = () => {
     if (cookies.token) setIsloggedIn(true);
 
     const { id } = router.query;
-    const getPageDependecies = async () => {
-      const response = await API.get(`/cars/${id}`);
-
-      setCar(response.data);
-      setOwner(response.data.user);
-      setComments(response.data.comments);
-      setLoading(false);
+    const getPageDependecies = () => {
+      API.get(`/cars/${id}`).then(response => {
+        API.get(`/comments/${id}`).then(commentResponse => {
+          setCar(response.data);
+          setOwner(response.data.user);
+          setComments(commentResponse.data);
+          setLoading(false);
+        })
+      });
     };
 
     if (id) getPageDependecies();
@@ -92,8 +94,8 @@ const Announcement = () => {
   const submit = async (data: iCommentBody) => {
     try {
       const response = await API.post(`/comments/${car.id}`, data);
-      const commentData: commentReturn[] = response.data;
-      setComments(commentData);
+      const commentData: commentReturn = response.data;
+      setComments([...comments, commentData]);
     } catch (error) {
       console.log(error);
     }
