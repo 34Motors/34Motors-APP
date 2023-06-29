@@ -15,7 +15,6 @@ import Head from "next/head";
 
 const SellerPage = () => {
   const router = useRouter();
-
   const arr = [1, 12, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const cardsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,36 +23,25 @@ const SellerPage = () => {
   const [loggedUser, setLoggedUser] = useState<boolean>(true);
   const [modalCreateAnnouncement, setModalCreateAnnouncement] = useState(false);
   const { user } = useAuth();
-
   const toggleModalCreateAnnouncement = () =>
     setModalCreateAnnouncement(!modalCreateAnnouncement);
-
   const paramId = router.query.id;
-
   useEffect(() => {
     const cookies = parseCookies();
     if (!cookies.token) {
       setLoggedUser(false);
     }
-
     const getUserCars = async () => {
       try {
         const carResponse = await API.get("/cars");
-
         const carData = carResponse.data.cars;
-
         const carsFromUser: ICarsReturn[] = carData.filter((elem: any) => {
           return elem.user.id == paramId;
         });
-
         const response = await API.get("/users/" + paramId);
-
         const data = response.data;
-
         if (data.id === user.id && data.isSeller === false) router.push("/");
-
         setSellerUser(data);
-
         setUserCars(carsFromUser);
       } catch (error) {
         router.push("/");
@@ -61,70 +49,72 @@ const SellerPage = () => {
     };
     if (paramId) getUserCars();
   }, [paramId, user.id, router]);
-
   if (!sellerUser) return;
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
-  const nameSplit = sellerUser.name?.split(" ")
-
-  const userInitials = sellerUser.name?.split(" ")[0][0] === sellerUser.name?.split(" ")[nameSplit.length-1][0] ? "" : sellerUser.name?.split(" ")[nameSplit.length-1][0]
-  const userSecondName = sellerUser.name?.split(" ")[nameSplit.length-1] == sellerUser.name?.split(" ")[0] ? "": sellerUser.name?.split(" ")[nameSplit.length-1]
-
+  const nameSplit = sellerUser.name?.split(" ");
+  const userInitials =
+    sellerUser.name?.split(" ")[0][0] ===
+    sellerUser.name?.split(" ")[nameSplit.length - 1][0]
+      ? ""
+      : sellerUser.name?.split(" ")[nameSplit.length - 1][0];
+  const userSecondName =
+    sellerUser.name?.split(" ")[nameSplit.length - 1] ==
+    sellerUser.name?.split(" ")[0]
+      ? ""
+      : sellerUser.name?.split(" ")[nameSplit.length - 1];
   return (
     <>
-    <Head>
+      <Head>
         <title>{sellerUser.name} - 34 Motors</title>
-        <meta
-          name="description"
-          content="Página do anunciante 34 Motors."
-        />
-    </Head>
-    <div className={`${!userCars.length ? "h-screen flex flex-col justify-start" : ""}`}>
-      <Header />
-      <section className="relative">
-        <div className="bg-brand-1 w-full h-[360px]"></div>
-        <div className=" w-11/12 mx-auto max-w-[1204px]">
-          <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
-            <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">
-              {sellerUser.name.split("")[0]}
-            </p>
-            <div className="flex gap-2 items-center mb-6">
-              <p className="font-600 text-heading6 text-grey-1 capitalize">
-                {sellerUser.name}
+        <meta name="description" content="Página do anunciante 34 Motors." />
+      </Head>
+      <div
+        className={`${
+          !userCars.length ? "h-screen flex flex-col justify-start" : ""
+        }`}
+      >
+        <Header />
+        <section className="relative">
+          <div className="bg-brand-1 w-full h-[360px]"></div>
+          <div className="w-11/12 mx-auto max-w-[1204px]">
+            <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
+              <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">
+                {sellerUser.name.split("")[0]}
               </p>
-              <div className="flex gap-2 items-center mb-6">
-                <p className="font-600 text-heading6 text-grey-1 capitalize">
-                  {sellerUser.name}
+              <div className="flex flex-col gap-2 mb-6">
+                <div className="flex gap-2 items-center mb-6">
+                  <p className="font-600 text-heading6 text-grey-1 capitalize">
+                    {sellerUser.name}
+                  </p>
+                  <span className="btn-brand-white font-500 py-1 px-2 rounded ">
+                    Anunciante
+                  </span>
+                </div>
+                <p className="text-grey-2 font-400 text-base text mb-6">
+                  {sellerUser.description
+                    ? sellerUser.description
+                    : "Este usuário não possui descrição"}
                 </p>
-                <span className="btn-brand-white font-500 py-1 px-2 rounded ">
-                  Anunciante
-                </span>
-              </div>
-              <p className="text-grey-2 font-400 text-base text mb-6">
-                {sellerUser.description
-                  ? sellerUser.description
-                  : "Este usuário não possui descrição"}
-              </p>
-              {loggedUser ? (
-                user!.id == sellerUser.id ? (
-                  <button
-                    onClick={toggleModalCreateAnnouncement}
-                    className="btn-brand-white bg-white border-[1.5px] font-600 border-brand-1 py-3 px-7 rounded"
-                  >
-                    Criar anuncio
-                  </button>
+                {loggedUser ? (
+                  user!.id == sellerUser.id ? (
+                    <button
+                      onClick={toggleModalCreateAnnouncement}
+                      className="btn-big btn-outline-brand w-[200px]"
+                    >
+                      Criar anuncio
+                    </button>
+                  ) : (
+                    ""
+                  )
                 ) : (
                   ""
-                )
-              ) : (
-                ""
-              )}
+                )}
+              </div>
             </div>
           </div>
         </section>
-
         <main
           className={`bg-grey-8 w-full mx-auto h-full mb-72 ${
             !userCars.length ? "mb-72" : "mt-[-10rem]"
@@ -210,16 +200,8 @@ const SellerPage = () => {
             toggleModal={toggleModalCreateAnnouncement}
           />
         )}
-      </main>
-      {modalCreateAnnouncement && (
-        <ModalCreateAnnouncement toggleModal={toggleModalCreateAnnouncement} />
-        )}
-        <div >
-          <Footer />
-        </div>
-    </div>
-     </>
+      </div>
+    </>
   );
 };
-
 export default SellerPage;

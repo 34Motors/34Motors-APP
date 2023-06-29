@@ -9,3 +9,7 @@ export function formatCurrency(number: number | string) {
 export function formatNumber(number: number | string) {
   return number.toLocaleString("pt-BR");
 }
+
+export function removeNonDigits(s: string) {
+  return s.replace(/\D/g, "");
+}
