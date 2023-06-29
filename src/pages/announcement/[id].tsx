@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { ReactEventHandler, useEffect, useState } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 import Header from "@/components/header";
 import { CardDetail } from "@/components/cardDetail";
@@ -21,38 +22,31 @@ import { parseCookies } from "nookies";
 import { iCommentBody } from "@/interfaces/comments.interfaces";
 import { LoadingScreen } from "@/components/loadingScreen";
 
-
-
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [owner, setOwner] = useState({} as iUserBody);
-  const [comments, setComments] = useState([] as commentReturn[])
+  const [comments, setComments] = useState([] as commentReturn[]);
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
   const [openImageModal, setOpenImageModal] = useState(false);
-  const { isLoggedIn, setIsloggedIn, user } = useAuth()
-
-
+  const { isLoggedIn, setIsloggedIn, user } = useAuth();
 
   useEffect(() => {
-
-    const cookies = parseCookies()
-    if (cookies.token) setIsloggedIn(true)
+    const cookies = parseCookies();
+    if (cookies.token) setIsloggedIn(true);
 
     const { id } = router.query;
     const getPageDependecies = async () => {
-      const response = await API.get(`/cars/${id}`)
+      const response = await API.get(`/cars/${id}`);
 
-      setCar(response.data)
-      setOwner(response.data.user)
-      setComments(response.data.comments)
-      setLoading(false)
-    }
+      setCar(response.data);
+      setOwner(response.data.user);
+      setComments(response.data.comments);
+      setLoading(false);
+    };
 
-    if (id) getPageDependecies()
-
-
+    if (id) getPageDependecies();
   }, [router.query, router.isReady]);
 
   const disable = isLoggedIn ? false : true;
@@ -93,18 +87,17 @@ const Announcement = () => {
     });
   }
 
-
-  const { register, handleSubmit } = useForm<iCommentBody>({})
+  const { register, handleSubmit } = useForm<iCommentBody>({});
 
   const submit = async (data: iCommentBody) => {
     try {
-      const response = await API.post(`/comments/${car.id}`, data)
-      const commentData: commentReturn[] = response.data
-      setComments(commentData)
+      const response = await API.post(`/comments/${car.id}`, data);
+      const commentData: commentReturn[] = response.data;
+      setComments(commentData);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   if (loading) {
     return <LoadingScreen />;
@@ -112,6 +105,13 @@ const Announcement = () => {
 
   return (
     <>
+      <Head>
+        <title>{car.brand} {car.model} - 34 Motors</title>
+        <meta
+          name="description"
+          content="34 Motors é uma aplicação feita em NextJS, como trabalho de conclusão do curso da Kenzie Academy Brasil."
+        />
+      </Head>
       <Header />
       <div className="bg-brand-1 h-[436px] w-full absolute z-0"></div>
       <div className="bg-grey-8">
@@ -189,12 +189,14 @@ const Announcement = () => {
             <CommentsList comments={comments} />
           </div>
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
-            {user.name && (<UserBadge
-              bg_color="bg-brand-1"
-              initials_color="text-white"
-              name_color="grey-1"
-              name={user.name}
-            />)}
+            {user.name && (
+              <UserBadge
+                bg_color="bg-brand-1"
+                initials_color="text-white"
+                name_color="grey-1"
+                name={user.name}
+              />
+            )}
             <form className="relative" onSubmit={handleSubmit(submit)}>
               <textarea
                 id=""
