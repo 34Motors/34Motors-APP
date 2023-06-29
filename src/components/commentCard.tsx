@@ -4,6 +4,10 @@ import { UserBadge } from "./userBadge";
 const diffDates = (start: number, end: number): string => {
   const days = Math.ceil((end - start) / 86400000);
 
+  if(days <= 1) {
+    return "Hoje"
+  }
+
   if(days < 30) {
     const sufix = days === 1 ? "" : "s"
     return `Há ${days} dia${sufix}`
