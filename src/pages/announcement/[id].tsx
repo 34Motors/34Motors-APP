@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { ReactEventHandler, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
 
@@ -17,9 +19,6 @@ import ModalCarImage from "@/components/Modals/modalCarImage";
 import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
-import { useForm } from "react-hook-form";
-import { parseCookies } from "nookies";
-import { iCommentBody } from "@/interfaces/comments.interfaces";
 import { LoadingScreen } from "@/components/loadingScreen";
 
 const Announcement = () => {
@@ -38,13 +37,13 @@ const Announcement = () => {
 
     const { id } = router.query;
     const getPageDependecies = () => {
-      API.get(`/cars/${id}`).then(response => {
-        API.get(`/comments/${id}`).then(commentResponse => {
+      API.get(`/cars/${id}`).then((response) => {
+        API.get(`/comments/${id}`).then((commentResponse) => {
           setCar(response.data);
           setOwner(response.data.user);
           setComments(commentResponse.data);
           setLoading(false);
-        })
+        });
       });
     };
 
@@ -89,13 +88,14 @@ const Announcement = () => {
     });
   }
 
-  const { register, handleSubmit } = useForm<iCommentBody>({});
+  const { register, handleSubmit, reset } = useForm<commentReturn>({});
 
-  const submit = async (data: iCommentBody) => {
+  const submit = async (data: commentReturn) => {
     try {
       const response = await API.post(`/comments/${car.id}`, data);
       const commentData: commentReturn = response.data;
       setComments([...comments, commentData]);
+      reset()
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +108,9 @@ const Announcement = () => {
   return (
     <>
       <Head>
-        <title>{car.brand} {car.model} - 34 Motors</title>
+        <title>
+          {car.brand} {car.model} - 34 Motors
+        </title>
         <meta
           name="description"
           content="34 Motors é uma aplicação feita em NextJS, como trabalho de conclusão do curso da Kenzie Academy Brasil."
