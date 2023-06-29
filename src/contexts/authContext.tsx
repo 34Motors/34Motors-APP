@@ -13,6 +13,7 @@ import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
 import { AxiosResponse } from "axios";
 import { iUserComplete } from "@/interfaces/user.interfaces";
+import { toast } from "react-toastify";
 
 interface iProps {
   children: ReactNode;
@@ -80,8 +81,10 @@ export function AuthProvider({ children }: iProps) {
       setToken(response.data.token);
       setIsloggedIn(true)
       await getUser(response.data.token);
+      toast.success("login realizado com sucesso")
       router.push("/");
     } catch (error) {
+      toast.error("Ops, algo deu errado!")
       console.error(error);
     }
   };
