@@ -67,6 +67,11 @@ const SellerPage = () => {
     setCurrentPage(pageNumber);
   };
 
+  const nameSplit = sellerUser.name?.split(" ")
+
+  const userInitials = sellerUser.name?.split(" ")[0][0] === sellerUser.name?.split(" ")[nameSplit.length-1][0] ? "" : sellerUser.name?.split(" ")[nameSplit.length-1][0]
+  const userSecondName = sellerUser.name?.split(" ")[nameSplit.length-1] == sellerUser.name?.split(" ")[0] ? "": sellerUser.name?.split(" ")[nameSplit.length-1]
+
   return (
     <>
     <Head>
@@ -121,24 +126,24 @@ const SellerPage = () => {
         </section>
 
         <main
-          className={`bg-grey-8 w-full h-full mb-72 ${
+          className={`bg-grey-8 w-full mx-auto h-full mb-72 ${
             !userCars.length ? "mb-72" : "mt-[-10rem]"
           }  flex flex-col justify-between md:mt-[-200px] `}
         >
           {!userCars.length ? (
-            <ul className="bg-grey-8 mt-[-4rem] mb-[-20rem] md:mt-[-4rem] md:mb-[-20rem] mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap">
-              <div className="relative bottom-5 md:z-0 md:top-48 2xl:top-56 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center">
+            <ul className="bg-grey-8 mt-[-4rem] mb-[-20rem] md:mt-[-4rem] md:mb-2 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap">
+              <div className="relative bottom-5 md:z-0 md:top-48 2xl:top-56 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12  md:flex-row md:flex-wrap items-center justify-center ">
                 <p className="text-3xl font-600 text-grey-1">
                   Este usuário não possui anúncios cadastrados
                 </p>
               </div>
             </ul>
           ) : (
-            <div className=" md:mt-10">
+            <div className="w-11/12 md:mt-10 mx-auto">
               <ul
-                className={`mt-60 h-fit md:mt-60 ${
+                className={`mt-80 h-fit md:mt-72 ${
                   userCars.length < 16 ? "mb-10" : ""
-                } list-none w-full bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center `}
+                } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
               >
                 {loggedUser === false
                   ? userCars.map((elem, index) => (

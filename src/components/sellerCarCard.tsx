@@ -36,7 +36,7 @@ const SellerCarCard = ({
           height={150}
           src={frontImage}
           alt="Foto de um carro"
-          className="w-full"
+          className="w-full object-cover"
         />
       </div>
       <div className="flex flex-col gap-4">
