@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { CardDetail } from "./cardDetail";
-import { formatCurrency } from "@/utils/formatingFunctions";
+import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 import Link from "next/link";
 
 interface iCarCarProps {
@@ -12,7 +12,7 @@ interface iCarCarProps {
   id: number;
   price: number;
   description: string;
-  frontImage:string;
+  frontImage: string;
 }
 
 const SellerCarCard = ({
@@ -27,9 +27,7 @@ const SellerCarCard = ({
   price,
 }: iCarCarProps) => {
   return (
-
     <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
-
       <div className="w-full flex items-center justify-center bg-gray-200">
         <Image
           width={262}
@@ -48,7 +46,7 @@ const SellerCarCard = ({
         </p>
         <div className=" flex justify-between items-center">
           <div className="flex gap-3">
-            <CardDetail text={`${quilometers} KM`} />
+            <CardDetail text={`${formatNumber(quilometers)} KM`} />
             <CardDetail text={year} />
           </div>
           <p className="text-base text-grey-1 font-600 font-lexend">

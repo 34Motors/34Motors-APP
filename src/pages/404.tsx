@@ -3,8 +3,11 @@ import logo from "../assets/logo-34-motors-black.png";
 import { MdOutlineInsertPageBreak } from "react-icons/md";
 import { FaCarCrash } from "react-icons/fa";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Custom404() {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -25,6 +28,12 @@ export default function Custom404() {
           />
           Erro 404 - Desculpe, a página não foi encontrada
         </h1>
+        <button
+          className="btn-big btn-brand"
+          onClick={() => router.push("/")}
+        >
+          Voltar para a página inicial
+        </button>
       </div>
     </>
   );

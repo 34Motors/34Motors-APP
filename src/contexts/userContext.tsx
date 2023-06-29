@@ -1,7 +1,14 @@
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
-import { ReactNode, useContext, createContext, useState, Dispatch, SetStateAction } from "react";
+import {
+  ReactNode,
+  useContext,
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useAuth } from "./authContext";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import { toast } from "react-toastify";
@@ -12,9 +19,9 @@ interface Props {
 
 interface iUserProvider {
   deleteUser: (passData: any) => void;
-  setModalIsOpen: Dispatch<SetStateAction<boolean>>
-  modalIsOpen: boolean
-  registerUser: (data: iUserBody) => Promise<void>
+  setModalIsOpen: Dispatch<SetStateAction<boolean>>;
+  modalIsOpen: boolean;
+  registerUser: (data: iUserBody) => Promise<void>;
 }
 
 const UserContext = createContext<iUserProvider>({} as iUserProvider);
@@ -23,7 +30,7 @@ export function UserProvider({ children }: Props) {
   const router = useRouter();
   const { logout } = useAuth();
 
-  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false)
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const deleteUser = async (passData: any) => {
     const cookies = parseCookies();
@@ -37,36 +44,41 @@ export function UserProvider({ children }: Props) {
 
     try {
       await API.delete("/users", { headers });
-      toast.success("usuário deletado com sucesso!")
+      toast.success("usuário deletado com sucesso!");
       logout();
-    } catch (error) {
-      toast.error("Ops, algo deu errado!")
+    } catch (error: any) {
+      if (error.response.data) {
+        toast.error(error.response.data.message);
+      }
+      
       console.log(error);
     }
   };
 
   const registerUser = async (data: iUserBody) => {
-
     if (data.complement === "") {
-      delete data.complement
+      delete data.complement;
     }
 
     if (data.description === "") {
-      delete data.description
+      delete data.description;
     }
+
     try {
-      await API.post("/users", data)
-      setModalIsOpen(true)
-
-
-    } catch (error) {
-      toast.error("Ops, algo deu errado!")
-      console.log(error)
+      await API.post("/users", data);
+      setModalIsOpen(true);
+    } catch (error: any) {
+      if (error.response.data) {
+        toast.error(error.response.data.message);
+      }
+      console.log(error);
     }
-  }
+  };
 
   return (
-    <UserContext.Provider value={{ deleteUser, setModalIsOpen, modalIsOpen, registerUser }}>
+    <UserContext.Provider
+      value={{ deleteUser, setModalIsOpen, modalIsOpen, registerUser }}
+    >
       {children}
     </UserContext.Provider>
   );
