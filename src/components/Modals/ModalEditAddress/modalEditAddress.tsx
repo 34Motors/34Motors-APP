@@ -33,9 +33,9 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
         data,
         headers
       );
-      toast.success("endereço atualizado com sucesso!")
+      toast.success("Endereço atualizado com sucesso!")
     } catch (error) {
-      toast.error("não foi possíovel atualizar o endereço!")
+      toast.error("Não foi possível atualizar o endereço!")
       console.log(error)
     }
   };
