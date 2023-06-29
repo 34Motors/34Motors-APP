@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "@/contexts/userContext";
+import { removeNonDigits } from "@/utils/formatingFunctions";
 
 export const RegisterForm = () => {
   const { registerUser } = useUserContext();
@@ -19,12 +20,13 @@ export const RegisterForm = () => {
   });
   const [isSeller, setIsSeller] = useState<boolean>(true);
   const [buttonColor, setButtonColor] = useState<boolean>(false);
+
   const submit = (data: iUserBody) => {
-    const userData = {
-      ...data,
-      isSeller,
-    };
-    registerUser(userData);
+    data.cep = removeNonDigits(data.cep);
+    data.phone = removeNonDigits(data.phone).substring(2);
+    data.cpf = removeNonDigits(data.cpf)
+
+    registerUser(data);
   };
 
   return (

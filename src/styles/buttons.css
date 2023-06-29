@@ -43,8 +43,8 @@ button {
     @apply border-grey-4 text-grey-0 hover:bg-grey-1 hover:border-grey-1 hover:text-grey-10;
   }
 
-  .btn-outlineBrand {
-    @apply border-brand-1 text-brand-1 hover:bg-brand-4;
+  .btn-outline-brand {
+    @apply border-brand-1 bg-white text-brand-1 hover:bg-brand-4;
   }
 
   .btn-alert {

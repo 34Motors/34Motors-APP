@@ -81,10 +81,10 @@ export function AuthProvider({ children }: iProps) {
       setToken(response.data.token);
       setIsloggedIn(true)
       await getUser(response.data.token);
-      toast.success("login realizado com sucesso")
+      toast.success("Login realizado com sucesso")
       router.push("/");
-    } catch (error) {
-      toast.error("Ops, algo deu errado!")
+    } catch (error: any) {
+      toast.error(error.response.data.message)
       console.error(error);
     }
   };
