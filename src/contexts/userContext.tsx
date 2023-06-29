@@ -4,6 +4,7 @@ import { parseCookies } from "nookies";
 import { ReactNode, useContext, createContext, useState, Dispatch, SetStateAction } from "react";
 import { useAuth } from "./authContext";
 import { iUserBody } from "@/interfaces/user.interfaces";
+import { toast } from "react-toastify";
 
 interface Props {
   children: ReactNode;
@@ -36,29 +37,33 @@ export function UserProvider({ children }: Props) {
 
     try {
       await API.delete("/users", { headers });
+      toast.success("usuário deletado com sucesso!")
       logout();
     } catch (error) {
+      toast.error("Ops, algo deu errado!")
       console.log(error);
     }
   };
 
-  const registerUser = async(data: iUserBody) => {
+  const registerUser = async (data: iUserBody) => {
 
-    if(data.complement === "" ) {
-        delete data.complement
+    if (data.complement === "") {
+      delete data.complement
     }
-    
-    if(data.description === "") {
-        delete data.description
-   }
+
+    if (data.description === "") {
+      delete data.description
+    }
     try {
-        await API.post("/users", data)
-        setModalIsOpen(true)
-        
+      await API.post("/users", data)
+      setModalIsOpen(true)
+
+
     } catch (error) {
-        console.log(error)
+      toast.error("Ops, algo deu errado!")
+      console.log(error)
     }
-}
+  }
 
   return (
     <UserContext.Provider value={{ deleteUser, setModalIsOpen, modalIsOpen, registerUser }}>
