@@ -53,7 +53,7 @@ const CommonUserCarCard = ({
             height={10000}
             src={frontImage}
             alt="Foto de um carro"
-            className="w-full max-h-[150px]"
+            className="w-full max-h-[150px] object-cover "
           />
         </div>
         <div className="flex flex-col gap-4">

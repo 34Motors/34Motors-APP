@@ -81,7 +81,7 @@ const SellerPage = () => {
           content="Página do anunciante 34 Motors."
         />
       </Head>
-      <div className="h-screen flex flex-col justify-start">
+      <div className={`${!userCars.length ? "h-screen flex flex-col justify-start" : ""}`}>
         <Header />
         <section className="relative">
           <div className="bg-brand-1 w-full h-[360px]"></div>
@@ -129,7 +129,7 @@ const SellerPage = () => {
         >
           {!userCars.length ? (
             <ul className="bg-grey-8 mt-[-4rem] mb-[-20rem] md:mt-[-4rem] md:mb-[-20rem] mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap">
-              <div className="relative bottom-5 md:z-0 md:top-48 2xl:top-56 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12 md:flex-row md:flex-wrap items-center justify-center">
+              <div className="relative bottom-5 md:z-0 md:top-48 2xl:top-56 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12  md:flex-row md:flex-wrap items-center justify-center">
                 <p className="text-3xl font-600 text-grey-1">
                   Este usuário não possui anúncios cadastrados
                 </p>
