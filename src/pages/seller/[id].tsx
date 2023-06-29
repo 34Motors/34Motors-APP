@@ -67,6 +67,11 @@ const SellerPage = () => {
     setCurrentPage(pageNumber);
   };
 
+  const nameSplit = sellerUser.name?.split(" ")
+
+  const userInitials = sellerUser.name?.split(" ")[0][0] === sellerUser.name?.split(" ")[nameSplit.length-1][0] ? "" : sellerUser.name?.split(" ")[nameSplit.length-1][0]
+  const userSecondName = sellerUser.name?.split(" ")[nameSplit.length-1] == sellerUser.name?.split(" ")[0] ? "": sellerUser.name?.split(" ")[nameSplit.length-1]
+
   return (
     <>
       <Head>
@@ -83,7 +88,8 @@ const SellerPage = () => {
           <div className=" w-11/12 mx-auto max-w-[1204px]">
             <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
               <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">
-                {sellerUser.name.split("")[0]}
+                <span className="capitalize">{sellerUser.name.split("")[0]}</span>
+                <span className="capitalize">{userInitials}</span>
               </p>
               <div className="flex gap-2 items-center mb-6">
                 <p className="font-600 text-heading6 text-grey-1 capitalize">
