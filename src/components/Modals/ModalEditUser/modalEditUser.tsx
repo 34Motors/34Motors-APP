@@ -96,7 +96,6 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
       toast.success("Informações de usuário atualizdas com sucesso!")
     } catch (error) {
       toast.error("Não foi possível atualizar as informações do usuário")
-      console.log(error)
     }
 
 
@@ -132,6 +131,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               id="name"
               inputProps={{
                 placeholder: "Exemplo Silva",
+                defaultValue: user.name,
                 ...register("name"),
               }}
             />
@@ -146,6 +146,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               id="email"
               inputProps={{
                 placeholder: "exemplo@mail.com",
+                defaultValue: user.email,
                 ...register("email"),
               }}
             />
@@ -160,6 +161,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               id="cpf"
               inputProps={{
                 placeholder: "100.200.300-40",
+                defaultValue: user.cpf,
                 ...register("cpf"),
               }}
             />
@@ -174,6 +176,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               id="phone"
               inputProps={{
                 placeholder: "00 12345 6789",
+                defaultValue: user.phone,
                 ...register("phone"),
               }}
             />
@@ -188,6 +191,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               id="birthDate"
               inputProps={{
                 placeholder: "DD/MM/AAAA",
+                defaultValue: user.birthDate,
                 ...register("birthDate"),
               }}
             />
