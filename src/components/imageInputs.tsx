@@ -1,58 +1,71 @@
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useRef } from "react";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 import { BiImageAdd, BiCar } from "react-icons/bi";
+import { BsFillPencilFill } from "react-icons/bs";
 
 interface props {
-  h: number;
-  w: number;
+  form: UseFormReturn<FieldValues, any>;
 }
 
-const UploadImageInput = ({ h, w }: props) => {
-  const [images, setImages] = useState<File[]>([] as File[]);
+const SingleImageInput = ({ form }: props) => {
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    watch,
+  } = form;
+  const inputRef = useRef(null);
+  const image = watch("frontImage");
 
-  const onDrop = useCallback((files: File[]) => {
-    setImages([...images, ...files]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const dropzone = useDropzone({
-    onDrop,
-    accept: {
-      "image/jpeg": [".jpg"],
-      "image/png": [".png"],
-      "image/webp": [".webp"],
-    },
-  });
-
-  const { getRootProps, getInputProps } = dropzone;
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    if (file) {
+      setValue("frontImage", file);
+    }
+  };
 
   return (
     <>
       <div
-        {...getRootProps()}
-        className={`flex flex-col items-center justify-center w-[${w}px] h-[${h}px] bg-grey-4 rounded-lg border-2 border-gray-400 cursor-pointer`}
+        className={`flex flex-col items-center justify-center w-full h-[200px] bg-grey-4 rounded-lg border-2 border-gray-400 cursor-pointer`}
       >
-        <label htmlFor="dropzone-file" className="cursor-pointer w-full h-full">
-          <div className="flex justify-center items-center pt-5 pb-6 w-full h-full">
-            <BiCar className="fill-gray-200 w-8 h-8" />
-            <BiImageAdd className="fill-gray-200 w-10 h-10" />
+        <input
+          className="hidden"
+          id="image-input"
+          {...register("frontImage")}
+          ref={inputRef}
+          onChange={handleImageChange}
+          type="file"
+          accept="image/png, image/jpeg, image/jpg"
+        />
+        {image ? (
+          <div className="relative w-full h-[200px] flex items-center justify-center">
+            <Image
+              src={URL.createObjectURL(image)}
+              alt="imagem da capa do veículo"
+              width={10}
+              height={200}
+              className="rounded w-auto h-full"
+            />
+            <label
+              htmlFor="image-input"
+              className="absolute top-[5px] right-[5px] cursor-pointer"
+            >
+              <BsFillPencilFill fill="white" className="h-5 w-5 z-10" />
+            </label>
           </div>
-        </label>
-        <input className="hidden" {...getInputProps()} id="image-input" />
+        ) : (
+          <label htmlFor="image-input" className="cursor-pointer w-full h-full">
+            <div className="flex justify-center items-center pt-5 pb-6 w-full h-full">
+              <BiCar className="fill-gray-200 w-8 h-8" />
+              <BiImageAdd className="fill-gray-200 w-10 h-10" />
+            </div>
+          </label>
+        )}
       </div>
-      {images &&
-        images.map((image, index) => (
-          <Image
-            src={URL.createObjectURL(image)}
-            key={index}
-            width={500}
-            height={500}
-            alt="car"
-          />
-        ))}
     </>
   );
 };
 
-export { UploadImageInput };
+export { SingleImageInput };

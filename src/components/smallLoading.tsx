@@ -1,12 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import LoadingDrift from "@/assets/loading-drift.gif";
+import LoadingCars from "@/assets/loading-cars.gif";
 
-export const LoadingScreen = () => {
+export const SmallLoading = () => {
   return (
     <div className="flex items-center justify-center w-full h-full bg-white">
       <Image
-        src={LoadingDrift}
+        src={LoadingCars}
         alt="Loading"
         loading="eager"
         unoptimized={true}
@@ -14,5 +14,4 @@ export const LoadingScreen = () => {
       />
     </div>
   );
-
 };

@@ -1,22 +1,22 @@
 import { DefaultFieldset } from "@/components/defaultFieldset";
-import { carsAPI } from "@/services/apis";
+import { API, carsAPI } from "@/services/apis";
 import {
   capitalizeFirstLetter,
   formatCurrency,
 } from "@/utils/formatingFunctions";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useForm,
-  useFieldArray,
   UseFormRegister,
   UseFormReturn,
   FieldValues,
-  UseFieldArrayReturn,
+  Form,
 } from "react-hook-form";
-import { BsFillTrashFill } from "react-icons/bs";
 import { createAnnouncementSchema } from "../validator";
-
+import { SmallLoading } from "@/components/smallLoading";
+import { SingleImageInput } from "@/components/imageInputs";
+import { useAuth } from "@/contexts/authContext";
 interface iCar {
   id: string;
   name: string;
@@ -42,10 +42,15 @@ const avaliableBrands = [
 
 const fuels = ["", "Flex", "Hibrido", "Eletrico"];
 
-export const ModalCreateAnnouncementForm = ({}) => {
+interface iFormProps {
+  setPage: (page: number) => void;
+}
+
+export const ModalCreateAnnouncementForm = ({ setPage }: iFormProps) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [models, setModels] = useState<iCar[] | null>(null);
   const [selectedModel, setSelectedModel] = useState<iCar | null>(null);
+  const { token } = useAuth();
 
   async function handleBrandChange(event: any) {
     if (event.target.value == "null") {
@@ -77,18 +82,45 @@ export const ModalCreateAnnouncementForm = ({}) => {
   }
 
   const formHandler = useForm({
-    resolver: zodResolver(createAnnouncementSchema),
     mode: "onTouched",
+    resolver: zodResolver(createAnnouncementSchema),
   });
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isValid },
   } = formHandler;
 
-  function submitForm(data: any) {
-    console.log(data);
+  async function submitForm(data: any) {
+    data.quilometers = +data.quilometers;
+    const { frontImage, ...rest } = data;
+
+    const fd = new FormData();
+    fd.append("frontImage", frontImage);
+
+    if (!frontImage) {
+      // toast.error("Por favor, adicione uma imagem!");
+      return;
+    }
+
+    API.defaults.headers.common.Authorization = `Bearer ${token}`;
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    try {
+      const createdAnnouncement = await API.post("cars", rest);
+      await API.patch(`cars/${createdAnnouncement.data.id}/upload`, fd, config);
+
+      //toast.success("Anúncio cadastrado com sucesso!");
+      setPage(2);
+    } catch (error) {
+      console.log(error);
+      //toast.error(error.response.data.message);
+    }
   }
 
   return (
@@ -101,14 +133,18 @@ export const ModalCreateAnnouncementForm = ({}) => {
           register={register}
         />
       )}
-      {selectedModel && <OtherInputs car={selectedModel} form={formHandler} />}
-      <button
-        type="submit"
-        className="btn-big btn-brand bg-brand-1"
-        disabled={errors ? true : false}
-      >
-        Criar anúncio
-      </button>
+      {selectedModel && (
+        <>
+          <OtherInputs car={selectedModel} form={formHandler} />
+          <button
+            type="submit"
+            className="btn-big btn-brand bg-brand-1"
+            disabled={isValid ? false : true}
+          >
+            Adicionar imagens
+          </button>
+        </>
+      )}
     </form>
   );
 };
@@ -149,7 +185,7 @@ interface SelectModelsProps {
 
 function SelectModel({ models, handleChange, register }: SelectModelsProps) {
   if (models == null) {
-    return <p>Carregando...</p>;
+    return <SmallLoading />;
   }
 
   return (
@@ -264,112 +300,7 @@ function OtherInputs({ car, form }: OtherInputsProps) {
           {...register("description")}
         ></textarea>
       </fieldset>
-      <DefaultFieldset
-        label={"Imagem da capa"}
-        id={"frontImage"}
-        inputProps={{
-          placeholder: "https://example.com/image.png",
-          ...register("frontImage"),
-          className: errors.frontImage
-            ? "default-input-error"
-            : "default-input",
-        }}
-      />
-      <ImageInputs form={form} />
-    </div>
-  );
-}
-
-interface ImageInputsProps {
-  form: UseFormReturn<FieldValues, any>;
-}
-
-function ImageInputs({ form }: ImageInputsProps) {
-  const {
-    register,
-    formState: { errors },
-  } = form;
-
-  const fieldArray = useFieldArray({
-    control: form.control,
-    name: "images",
-  });
-
-  const { fields, append } = fieldArray;
-
-  console.log(fields);
-
-  useEffect(() => {
-    if (fields.length < 1) {
-      append(null);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fields]);
-
-  function addInput() {
-    append(null);
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      {fields.map((field, index) => (
-        <ImageField
-          key={field.id}
-          index={index}
-          form={form}
-          fieldArray={fieldArray}
-        />
-      ))}
-      <button
-        className="font-inter font-600 text-brand-1 disabled:text-grey-2"
-        type="button"
-        onClick={addInput}
-        disabled={errors.images ? true : false}
-      >
-        Adicionar campo para nova imagem
-      </button>
-    </div>
-  );
-}
-
-interface ImageFieldProps {
-  index: number;
-  form: UseFormReturn<FieldValues, any>;
-  fieldArray: UseFieldArrayReturn<FieldValues, "images", "id">;
-}
-
-function ImageField({ index, form, fieldArray }: ImageFieldProps) {
-  const {
-    register,
-    formState: { errors },
-  } = form;
-
-  const { fields, remove } = fieldArray;
-
-  const onRemove = () => {
-    remove(index);
-  };
-
-  const lastIndex = fields.length - 1;
-
-  return (
-    <div className="flex justify-between items-center relative">
-      <DefaultFieldset
-        className="flex w-[93%]"
-        label={`${index + 1}ª Imagem da galeria`}
-        id={`images[${index}]`}
-        inputProps={{
-          type: "text",
-          ...register(`images[${index}]`, { required: true }),
-          className: errors.images ? "default-input-error" : "default-input",
-        }}
-      />
-      {index == lastIndex && index != 0 && (
-        <BsFillTrashFill
-          onClick={onRemove}
-          className="absolute right-1 bottom-3 cursor-pointer"
-        />
-      )}
+      <SingleImageInput form={form} />
     </div>
   );
 }
