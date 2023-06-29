@@ -1,13 +1,24 @@
 import Image from "next/image";
+import Link from "next/link";
+import { FiDollarSign } from "react-icons/fi";
 import { CardDetail } from "./cardDetail";
 import { UserBadge } from "./userBadge";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
-import Link from "next/link";
 import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 
 export const ProductCard = ({ car }: { car: ICarsReturn }) => {
+  const discountBadge =
+    car.price <= parseInt(car.fipePrice) - (parseInt(car.fipePrice) / 100) * 5
+      ? true
+      : false;
+
   return (
-    <li className="box-content w-80 flex flex-col gap-4">
+    <li className="box-content w-80 flex flex-col gap-4 relative">
+      {discountBadge ? (
+        <div className="w-4 h-7 bg-random-7 rounded flex items-center absolute top-0 right-0 z-10">
+          <FiDollarSign className="text-white h-[14px]" />
+        </div>
+      ) : null}
       <Link href={`/announcement/${car.id}`}>
         <div className="w-80 h-[150px] flex items-center justify-center bg-gray-200 relative">
           <Image

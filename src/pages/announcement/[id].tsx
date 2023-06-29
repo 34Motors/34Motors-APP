@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 import Header from "@/components/header";
 import { CardDetail } from "@/components/cardDetail";
@@ -13,45 +16,52 @@ import { API } from "@/services/apis";
 import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import ModalCarImage from "@/components/Modals/modalCarImage";
+import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
+import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
-  const [user, setUser] = useState({} as iUserBody);
+  const [owner, setOwner] = useState({} as iUserBody);
+  const [comments, setComments] = useState([] as commentReturn[]);
   const [loading, setLoading] = useState(true);
+  const [carImage, setCarImage] = useState("");
+  const [openImageModal, setOpenImageModal] = useState(false);
+  const { isLoggedIn, setIsloggedIn, user } = useAuth();
 
   useEffect(() => {
-    if (router.isReady) {
-      const { id } = router.query;
+    const cookies = parseCookies();
+    if (cookies.token) setIsloggedIn(true);
 
-      API.get(`/cars/${id}`).then((carResponse) => {
-        API.get(`/users/${carResponse.data.userId}`).then((response) => {
-          setCar(carResponse.data);
-          setUser(response.data);
-
+    const { id } = router.query;
+    const getPageDependecies = () => {
+      API.get(`/cars/${id}`).then((response) => {
+        API.get(`/comments/${id}`).then((commentResponse) => {
+          setCar(response.data);
+          setOwner(response.data.user);
+          setComments(commentResponse.data);
           setLoading(false);
         });
       });
-    }
+    };
+
+    if (id) getPageDependecies();
   }, [router.query, router.isReady]);
 
-  const [isLoggedIn, setIsloggedIn] = useState(false);
   const disable = isLoggedIn ? false : true;
   let userInitials = "";
 
-  if (user.name) {
-    const userName = user.name.split(" ");
+  if (owner.name) {
+    const userName = owner.name.split(" ");
     userName.forEach((name) => {
       userInitials += name[0];
     });
   }
 
   let carImages: React.JSX.Element[] = [];
-  const [carImage, setCarImage] = useState("");
-  const [isClicked, setIsclicked] = useState(false);
-  const [openImageModal, setOpenImageModal] = useState(false);
+
   const toggleModal = () => {
     setOpenImageModal(!openImageModal);
   };
@@ -78,21 +88,43 @@ const Announcement = () => {
     });
   }
 
+  const { register, handleSubmit, reset } = useForm<commentReturn>({});
+
+  const submit = async (data: commentReturn) => {
+    try {
+      const response = await API.post(`/comments/${car.id}`, data);
+      const commentData: commentReturn = response.data;
+      setComments([...comments, commentData]);
+      reset()
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (loading) {
     return <LoadingScreen />;
   }
 
   return (
     <>
+      <Head>
+        <title>
+          {car.brand} {car.model} - 34 Motors
+        </title>
+        <meta
+          name="description"
+          content="34 Motors é uma aplicação feita em NextJS, como trabalho de conclusão do curso da Kenzie Academy Brasil."
+        />
+      </Head>
       <Header />
       <div className="bg-brand-1 h-[436px] w-full absolute z-0"></div>
       <div className="bg-grey-8">
         <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
           <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
             <Image
+              src={car.frontImage}
               width={351}
               height={355}
-              src={car.frontImage}
               alt={`Foto de um ${car.brand} ${car.model}`}
               className="mt-[70px] mx-auto"
             />
@@ -139,18 +171,18 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
                 {userInitials}
               </div>
               <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
-                {user.name}
+                {owner.name}
               </h6>
               <p className="text-base text-grey-2 font-400 font-inter leading-7 text-center">
-                {user.description}
+                {owner.description}
               </p>
               <Link
-                href={`/seller/${user.id}`}
+                href={`/seller/${owner.id}`}
                 className="bg-grey-0 font-inter font-600 text-base text-white p-2 rounded"
               >
                 Ver todos anúncios
@@ -158,22 +190,24 @@ const Announcement = () => {
             </div>
           </div>
           <div className="bg-grey-10 rounded px-7 py-9 md:col-start-1 md:col-end-3">
-            <CommentsList />
+            <CommentsList comments={comments} />
           </div>
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
-            <UserBadge
-              bg_color="bg-brand-1"
-              initials_color="text-white"
-              name_color="grey-1"
-              name={user.name}
-            />
-            <form className="relative">
+            {user.name && (
+              <UserBadge
+                bg_color="bg-brand-1"
+                initials_color="text-white"
+                name_color="grey-1"
+                name={user.name}
+              />
+            )}
+            <form className="relative" onSubmit={handleSubmit(submit)}>
               <textarea
-                name=""
                 id=""
                 className="w-full h-[128px] p-3 border-solid border-grey-7 border-[1.5px] rounded text-grey-3 font-inter font-400 focus:border-brand-2 focus:border-[1.5px] focus:outline-none"
                 placeholder="Digitar comentário"
                 disabled={disable}
+                {...register("description")}
               ></textarea>
               <button
                 className="absolute bottom-6 right-4 btn-brand p-2 text-sm font-600 font-inter rounded"

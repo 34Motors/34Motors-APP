@@ -37,14 +37,23 @@ const CommonUserCarCard = ({
       href={"/announcement/" + id}
       className="min-w-[320px] h-[280px] md:max-w-[312px] relative"
     >
-      <li>
+      <li className="">
+      <span
+        className={
+          published
+            ? "btn-brand font-500 text-sm py-0 px-2 top-[12px] left-[12px] absolute"
+            : "bg-grey-4 font-500 text-white text-sm py-0 px-2 top-[12px] left-[12px] absolute"
+        }
+      >
+        {published ? "Ativo" : "Inativo"}
+      </span>
         <div className="w-full flex items-center justify-center bg-gray-200">
           <Image
-            width={262}
-            height={150}
+            width={10000}
+            height={10000}
             src={frontImage}
             alt="Foto de um carro"
-            className="w-full"
+            className="w-full max-h-[150px] object-cover "
           />
         </div>
         <div className="flex flex-col gap-4">
