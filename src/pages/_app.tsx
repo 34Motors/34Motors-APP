@@ -6,8 +6,6 @@ import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.min.css';
 export default function App({ Component, pageProps }: AppProps) {
-  const AppComponent = Component as any;
-  
   return (
       <AuthProvider>
         <CarsProvider>
@@ -15,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <ToastContainer
               autoClose={1500}
             />
-            <AppComponent {...pageProps} />
+            <Component {...pageProps} />
           </UserProvider>
         </CarsProvider>
       </AuthProvider>
