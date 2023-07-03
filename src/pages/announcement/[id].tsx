@@ -32,7 +32,7 @@ const Announcement = () => {
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
   const [openImageModal, setOpenImageModal] = useState(false);
-  const { isLoggedIn, setIsloggedIn, user } = useAuth();
+  const { isLoggedIn, setIsloggedIn, user, handleErrors } = useAuth();
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -48,8 +48,7 @@ const Announcement = () => {
         setComments(response.data.comments);
         setLoading(false);
       } catch (error) {
-        toast.error("Esse anúncio não existe");
-        router.push("/404");
+        handleErrors(error);
       }
     };
 
@@ -104,7 +103,7 @@ const Announcement = () => {
       setComments([...comments, commentData]);
       reset();
     } catch (error) {
-      console.log(error);
+      handleErrors(error);
     }
   };
 

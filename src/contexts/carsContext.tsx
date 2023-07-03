@@ -8,6 +8,7 @@ import {
 } from "react";
 import { ICarsReturn, IFilterOption } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
+import { useAuth } from "./authContext";
 
 interface Props {
   children: ReactNode;
@@ -32,19 +33,25 @@ export function CarsProvider({ children }: Props) {
   const [selectedFilters, setSelectedFilters] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const { query } = router;
+  const { handleErrors } = useAuth();
 
   const getAllCars = async () => {
-    const responseCars = await API.get(`cars?${selectedFilters}`);
-    setCars(responseCars.data.cars);
-    setListFilters(responseCars.data.filterOptions);
-    setLoadCars(false);
+    try {
+      const responseCars = await API.get(`cars?${selectedFilters}`);
+      setCars(responseCars.data.cars);
+      setListFilters(responseCars.data.filterOptions);
+      setLoadCars(false);
+    } catch (error) {
+      handleErrors(error);
+      setLoadCars(false);
+    }
   };
 
   useEffect(() => {
     if (loadCars) {
       getAllCars();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadCars]);
 
   return (

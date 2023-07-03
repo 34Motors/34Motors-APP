@@ -17,6 +17,7 @@ import { createAnnouncementSchema } from "../validator";
 import { SmallLoading } from "@/components/smallLoading";
 import { SingleImageInput } from "@/components/imageInputs";
 import { useAuth } from "@/contexts/authContext";
+import { toast } from "react-toastify";
 interface iCar {
   id: string;
   name: string;
@@ -44,9 +45,13 @@ const fuels = ["", "Flex", "Hibrido", "Eletrico"];
 
 interface iFormProps {
   setPage: (page: number) => void;
+  setAnnouncementId: (id: number) => void;
 }
 
-export const ModalCreateAnnouncementForm = ({ setPage }: iFormProps) => {
+export const ModalCreateAnnouncementForm = ({
+  setPage,
+  setAnnouncementId,
+}: iFormProps) => {
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [models, setModels] = useState<iCar[] | null>(null);
   const [selectedModel, setSelectedModel] = useState<iCar | null>(null);
@@ -100,7 +105,7 @@ export const ModalCreateAnnouncementForm = ({ setPage }: iFormProps) => {
     fd.append("frontImage", frontImage);
 
     if (!frontImage) {
-      // toast.error("Por favor, adicione uma imagem!");
+      toast.error("Por favor, adicione uma imagem!");
       return;
     }
 
@@ -113,13 +118,14 @@ export const ModalCreateAnnouncementForm = ({ setPage }: iFormProps) => {
 
     try {
       const createdAnnouncement = await API.post("cars", rest);
+      setAnnouncementId(createdAnnouncement.data.id);
       await API.patch(`cars/${createdAnnouncement.data.id}/upload`, fd, config);
 
-      //toast.success("Anúncio cadastrado com sucesso!");
+      toast.success("Anúncio cadastrado com sucesso!");
       setPage(2);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      //toast.error(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   }
 

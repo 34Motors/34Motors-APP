@@ -4,7 +4,6 @@ import Header from "@/components/header";
 import { Pagination } from "@/components/pagination";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
-import { iUser } from "./interface";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
@@ -12,6 +11,7 @@ import CommonUserCarCard from "@/components/commonUserCard";
 import { useAuth } from "@/contexts/authContext";
 import { ModalCreateAnnouncement } from "@/components/Modals/ModalCreateAnnouncement/ModalCreateAnnouncement";
 import Head from "next/head";
+import { iUserComplete } from "@/interfaces/user.interfaces";
 
 const SellerPage = () => {
   const router = useRouter();
@@ -19,35 +19,39 @@ const SellerPage = () => {
   const cardsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const [userCars, setUserCars] = useState<ICarsReturn[]>([]);
-  const [sellerUser, setSellerUser] = useState<iUser | undefined>();
+  const [sellerUser, setSellerUser] = useState<iUserComplete | undefined>();
   const [loggedUser, setLoggedUser] = useState<boolean>(true);
   const [modalCreateAnnouncement, setModalCreateAnnouncement] = useState(false);
-  const { user } = useAuth();
+  const { user, handleErrors } = useAuth();
   const toggleModalCreateAnnouncement = () =>
     setModalCreateAnnouncement(!modalCreateAnnouncement);
   const paramId = router.query.id;
+
+  const getUserCars = async () => {
+    try {
+      const carResponse = await API.get("/cars");
+      const carData = carResponse.data.cars;
+      const carsFromUser: ICarsReturn[] = carData.filter((elem: any) => {
+        return elem.user.id == paramId;
+      });
+      const response = await API.get("/users/" + paramId);
+      const data = response.data;
+      if (data.id === user.id && data.isSeller === false) router.push("/");
+      setSellerUser(data);
+      setUserCars(carsFromUser);
+    } catch (error) {
+      handleErrors(error);
+    }
+  };
+
   useEffect(() => {
     const cookies = parseCookies();
     if (!cookies.token) {
       setLoggedUser(false);
     }
-    const getUserCars = async () => {
-      try {
-        const carResponse = await API.get("/cars");
-        const carData = carResponse.data.cars;
-        const carsFromUser: ICarsReturn[] = carData.filter((elem: any) => {
-          return elem.user.id == paramId;
-        });
-        const response = await API.get("/users/" + paramId);
-        const data = response.data;
-        if (data.id === user.id && data.isSeller === false) router.push("/");
-        setSellerUser(data);
-        setUserCars(carsFromUser);
-      } catch (error) {
-        router.push("/");
-      }
-    };
+
     if (paramId) getUserCars();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramId, user.id, router]);
   if (!sellerUser) return;
   const handlePageChange = (pageNumber: number) => {

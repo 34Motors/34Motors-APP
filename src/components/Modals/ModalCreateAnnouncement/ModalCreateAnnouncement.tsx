@@ -12,10 +12,9 @@ export const ModalCreateAnnouncement = ({
   toggleModal,
 }: ModalCreateAnnouncementProps) => {
   const [page, setPage] = useState(1);
+  const [announcementId, setAnnouncementId] = useState<number | null>(null);
   const handlePage = (number: number) => setPage(number);
-
-  console.log(page);
-  
+  const handleAnnouncementId = (id: number) => setAnnouncementId(id);
 
   return (
     <ModalBase toggleModal={toggleModal}>
@@ -25,8 +24,19 @@ export const ModalCreateAnnouncement = ({
           <h4 className={`text-body2 font-500 text-grey-0 mb-5 font-inter`}>
             Informações do veículo
           </h4>
-          {page == 1 && <ModalCreateAnnouncementForm setPage={handlePage} />}
-          {page == 2 && <ModalEditImages setPage={handlePage} />}
+          {page == 1 && (
+            <ModalCreateAnnouncementForm
+              setPage={handlePage}
+              setAnnouncementId={handleAnnouncementId}
+            />
+          )}
+          {page == 2 && (
+            <ModalEditImages
+              setPage={handlePage}
+              announcementId={announcementId!}
+              toggleModal={toggleModal}
+            />
+          )}
         </div>
       </div>
     </ModalBase>
