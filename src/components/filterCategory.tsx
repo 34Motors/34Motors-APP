@@ -1,125 +1,208 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
+import { useCarsContext } from "@/contexts/carsContext";
+import { debounce } from "lodash";
+import { ModalFiltroMobile } from "./Modals/ModalFilterMobile";
 
-
-interface FiltroCategoryProps {
-  isMobile: boolean;
-}
-interface Category {
-  id: number;
-  nome: string;
-  var: string[];
-}
-const listCategory: Category[] = [
-  { id: 1, nome: "Ano", var: ["2000", "1997", "2003"] },
-  { id: 2, nome: "Marca", var: ["2000", "1997", "2003"] },
-  { id: 3, nome: "Cor", var: ["2000", "1997", "2003"] },
-  { id: 4, nome: "Modelo", var: ["2000", "1997", "2003"] },
-  { id: 4, nome: "Combustível", var: ["Gasolina", "Etanol", "Diesel"] },
-  { id: 6, nome: "Preço", var: ["Mínimo", "Máximo"] },
-  { id: 7, nome: "km", var: ["Mínimo", "Máximo"] },
-];
 const FiltroCategory = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    listFilters,
+    setIsModalOpen,
+    isModalOpen,
+    setLoadCars,
+    selectedFilters,
+    setSelectedFilters,
+  } = useCarsContext();
+
+  const minPriceRef = useRef<HTMLInputElement>(null);
+  const maxPriceRef = useRef<HTMLInputElement>(null);
+  const minQuilometersRef = useRef<HTMLInputElement>(null);
+  const maxQuilometersRef = useRef<HTMLInputElement>(null);
+
+  const hasPrice = listFilters?.some((filter) =>
+    filter.hasOwnProperty("price")
+  );
+  const hasQuilometers = listFilters?.some((filter) =>
+    filter.hasOwnProperty("quilometers")
+  );
 
   const handleToggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const delayedFilterUpdate = debounce((category: string, value: string) => {
+    handleFilterCars(category, value);
+  }, 600);
+
+  const handleFilterCars = (category: string, value: string) => {
+    const existingFilters = selectedFilters ? selectedFilters.split("&") : [];
+    const updatedFilters = existingFilters.filter(
+      (filter) => !filter.startsWith(category)
+    );
+
+    if (value) {
+      updatedFilters.push(`${category}=${value}`);
+    }
+
+    const concatenatedFilters = updatedFilters.join("&");
+
+    setSelectedFilters(concatenatedFilters);
+    setLoadCars(true);
+  };
+
+  const handleClearFilters = () => {
+    setSelectedFilters("");
+    setLoadCars(true);
+
+    if (minPriceRef.current && maxPriceRef.current) {
+      minPriceRef.current.value = "";
+      maxPriceRef.current.value = "";
+    }
+
+    if (minQuilometersRef.current && maxQuilometersRef.current) {
+      minQuilometersRef.current.value = "";
+      maxQuilometersRef.current.value = "";
+    }
+  };
+
+  const contentFilter = (
+    <div className={`${!isModalOpen && 'tabletMax:hidden'}`}>
+      {listFilters?.map((filter: any, index) => {
+        const category = Object.keys(filter)[0];
+        let translatedCategory = "";
+
+        if (category === "brand") {
+          translatedCategory = "Marca";
+        } else if (category === "model") {
+          translatedCategory = "Modelo";
+        } else if (category === "year") {
+          translatedCategory = "Ano";
+        } else if (category === "color") {
+          translatedCategory = "Color";
+        } else if (category === "fuelType") {
+          translatedCategory = "Combustível";
+        } else if (category === "price" && hasPrice) {
+          translatedCategory = "Preço";
+        } else if (category === "quilometers" && hasQuilometers) {
+          translatedCategory = "Km";
+        }
+
+        if (
+          translatedCategory !== "Km" &&
+          translatedCategory !== "Preço"
+        ) {
+          return (
+            <div key={index}>
+              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+                {translatedCategory}
+              </h4>
+              <div className="overflow-y-auto space-y-1 ml-3">
+                <ul className="overflow-y-auto space-y-1 ml-3">
+                  {Object.values(filter[category]).map(
+                    (categorySpecific: any, i) => (
+                      <li key={i}>
+                        <button
+                          className="font-lexend font-500 text-heading6 text-grey-3"
+                          onClick={() =>
+                            handleFilterCars(category, categorySpecific)
+                          }
+                        >
+                          {categorySpecific}
+                        </button>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+            </div>
+          );
+        }
+
+        if (category === "price" && hasPrice) {
+          return (
+            <div key={index}>
+              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+                Preço
+              </h4>
+              <div className="grid grid-cols-2 gap-6">
+                <input
+                  ref={minPriceRef}
+                  type="text"
+                  placeholder="Mínimo"
+                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  onChange={(e) =>
+                    delayedFilterUpdate("minPrice", e.target.value)
+                  }
+                />
+                <input
+                  ref={maxPriceRef}
+                  type="text"
+                  placeholder="Máximo"
+                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  onChange={(e) =>
+                    delayedFilterUpdate("maxPrice", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          );
+        }
+
+        if (category === "quilometers" && hasQuilometers) {
+          return (
+            <div key={index}>
+              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+                Km
+              </h4>
+              <div className="grid grid-cols-2 gap-6">
+                <input
+                  ref={minQuilometersRef}
+                  type="text"
+                  placeholder="Mínimo"
+                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  onChange={(e) =>
+                    delayedFilterUpdate("minQuilometers", e.target.value)
+                  }
+                />
+                <input
+                  type="text"
+                  ref={maxQuilometersRef}
+                  placeholder="Máximo"
+                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  onChange={(e) =>
+                    delayedFilterUpdate("maxQuilometers", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      })}
+    </div>
+  );
+
   return (
-    <aside className="md:row-start-1 md:col-span-1">
-      <div className="w-full flex justify-center md:hidden">
+    <aside className="min-w-[200px] tabletMax:col-span-4 tabletMax:row-start-2 tabletMin:row-start-1">
+      <div className="w-full flex justify-center tabletMin:hidden">
         <button
-          onClick={handleToggleModal}
+          onClick={() => {
+            handleToggleModal();
+            handleClearFilters();
+          }}
           className="w-full max-w-[279px] btn-big bg-brand-2 text-white my-12 rounded"
         >
           Filtros
         </button>
-        {isModalOpen && (
-          <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white max-w-md p-8 overflow-y-auto w-full h-full">
-              <header className="mt-12 flex justify-between">
-                <p className="text-center  my-3 text-lexend font-500 text-heading7 text-grey-1 mb-4">
-                  Filtro
-                </p>
-                <button
-                  onClick={handleToggleModal}
-                  className="text-center font-500 text-lexend text-heading5 text-grey-4"
-                >
-                  x
-                </button>
-              </header>
-              {listCategory.map((category) => (
-                <div key={category.id}>
-                  <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
-                    {category.nome}
-                  </h4>
-                  {category.nome !== "km" && category.nome !== "Preço" ? (
-                    <div className="overflow-y-auto space-y-1 ml-3">
-                      <ul className="overflow-y-auto space-y-1 ml-3">
-                        {category.var.map((categorySpecific) => (
-                          <li key={categorySpecific}>
-                            <button className="font-lexend font-500 text-heading6 text-grey-3">
-                              {categorySpecific}
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : (
-                    <div className="w-4/5 flex gap-3">
-                      {category.var.map((specificValue) => (
-                        <input
-                          key={specificValue}
-                          type="text"
-                          placeholder={specificValue}
-                          className="w-2/5 font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div className="text-center mt-4">
-                <button className="w-full mt-5 btn-big bg-brand-2 text-white">
-                  Ver Anúncios
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {isModalOpen && <ModalFiltroMobile content={contentFilter} />}
       </div>
-      <div className="sm:hidden">
-        {listCategory.map((category) => (
-          <div key={category.id}>
-            <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
-              {category.nome}
-            </h4>
-            {category.nome !== "km" && category.nome !== "Preço" ? (
-              <ul>
-                {category.var.map((categorySpecific) => (
-                  <li key={categorySpecific}>
-                    <button className="font-lexend font-500 text-heading6 text-grey-3">
-                      {categorySpecific}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="grid grid-cols-2 gap-6">
-                {category.var.map((specificValue) => (
-                  <input
-                    key={specificValue}
-                    type="text"
-                    placeholder={specificValue}
-                    className="font-lexend font-500 text-heading6  bg-grey-6 border-grey-6 text-grey-2 hover:bg-grey-5 hover:border-grey-5 text-center"
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+      <div className="tabletMax:hidden">
+        {contentFilter}
         <div className="w-full flex items-center mt-10">
-          <button className="w-full max-w-[279px] mx-auto btn-big bg-brand-2 text-white rounded">
+          <button
+            className="w-full max-w-[279px] mx-auto btn-big bg-brand-2 text-white rounded"
+            onClick={handleClearFilters}
+          >
             Limpar Filtros
           </button>
         </div>

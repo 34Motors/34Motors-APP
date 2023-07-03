@@ -1,4 +1,5 @@
-import { ReactNode, useRef, useEffect } from "react";
+import Document from "@/pages/_document";
+import { ReactNode, useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface ModalProps {
@@ -9,6 +10,13 @@ interface ModalProps {
 
 const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<Element | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    portalRef.current = document.querySelector<HTMLElement>("body");
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -25,14 +33,17 @@ const ModalBase = ({ toggleModal, blockClosing, children }: ModalProps) => {
       window.removeEventListener("mousedown", handleClick);
     };
   }, [toggleModal]);
-  return createPortal(
-    <div className={`top-0 w-screen h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}>
-      <div ref={blockClosing ? null : ref}>
-        {children}
-      </div>
-    </div>,
-    document.body
-  );
+
+  return mounted && portalRef.current
+    ? createPortal(
+        <div
+          className={`top-0 w-screen z-10 h-screen fixed bg-[rgba(0,0,0,0.5)] flex justify-center items-center overflow-auto`}
+        >
+          <div ref={blockClosing ? null : ref} className="slideIn">{children}</div>
+        </div>,
+        portalRef.current
+      )
+    : null;
 };
 
 export default ModalBase;

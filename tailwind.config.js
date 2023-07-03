@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import { inter, lexend } from "next/font/google";
 module.exports = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,6 +14,8 @@ module.exports = {
           2: "#5126EA",
           3: "#B0A6F0",
           4: "#EDEAFD",
+          5: "#199914",
+          6: "#0a6c06",
         },
         grey: {
           0: "#0B0D0D",
@@ -76,12 +79,18 @@ module.exports = {
         700: "700",
       },
       fontFamily: {
-        lexend: ["Lexend", ""],
-        inter: ["Inter", ""],
+        lexend: [lexend, ""],
+        inter: [inter, ""],
       },
       screens: {
-        "sm": {"max": "769px"}
-      }
+        sm: { max: "769px" },
+        tabletMax: { max: "1062px" },
+        tabletMin: { min: "1063px" },
+        homeList: { max: "1425px" },
+      },
+      dropShadow: {
+        dropDownShadow: "0 4px 40px rgba(0, 0, 0, 0.25)",
+      },
     },
   },
 

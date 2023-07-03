@@ -1,14 +1,53 @@
+import { Input } from "postcss";
 import React from "react";
+import InptMask from "react-input-mask";
 
-export const DefaultFieldset = ({ label, id, inputProps }: any) => {
-  const type = id != "password" ? "text" : "password";
+interface defaultFieldsetProps {
+  className?: string;
+  label: string;
+  id?: string;
+  type?: string;
+  mask?: string;
+  inputProps: object;
+}
+
+const DefaultFieldset = ({
+  className = "",
+  label,
+  id = "",
+  type = "text",
+  mask,
+  inputProps,
+}: defaultFieldsetProps) => {
+  const InputMask = InptMask as any;
+
+  const InputMasked = (
+    <InputMask
+      mask={mask}
+      id={id}
+      className="default-input w-full"
+      type={type}
+      {...inputProps}
+    />
+  );
+
+  const Default = (
+    <input
+      id={id}
+      className="default-input w-full"
+      type={type}
+      {...inputProps}
+    />
+  );
 
   return (
-    <fieldset>
-      <label htmlFor={id} className="default-label">
+    <fieldset className={"flex flex-col gap-2 " + className}>
+      <label className="default-label" htmlFor={id}>
         {label}
       </label>
-      <input id={id} className="default-input" type={type} {...inputProps} />
+      {mask ? InputMasked : Default}
     </fieldset>
   );
 };
+
+export { DefaultFieldset };

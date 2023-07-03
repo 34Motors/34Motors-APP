@@ -3,10 +3,34 @@ import Image from "next/image";
 import logo from "../assets/logo-34-motors-black.png";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import Link from "next/link";
+import { parseCookies } from "nookies";
+import { UserBadge } from "./userBadge";
+import {
+  MenuButtons,
+  MenuModalButtons,
+  UserMenuModalButtons,
+} from "./menuButtons";
+import { iUserComplete } from "@/interfaces/user.interfaces";
+import { useAuth } from "@/contexts/authContext";
 
 const Header = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [navIsOpen, setNavIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
+  const [loggedUser, setLoggedUser] = useState<iUserComplete>({} as iUserComplete);
+  const [loggedToken, setLoggedToken] = useState<string>("");
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const validateUser = () => {
+      const cookies = parseCookies();
+
+      if (cookies.token) {
+        setLoggedUser(user);
+        setLoggedToken(cookies.token);
+      }
+    };
+    validateUser();
+  }, [user]);
 
   const toggleDropdown = () => {
     setNavIsOpen(!navIsOpen);
@@ -28,8 +52,12 @@ const Header = () => {
     <header
       className={`z-10 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
     >
-      <div className={`w-full h-[80px] px-4 mx-auto flex justify-between items-center `}>
-        <Image width={200} src={logo} alt="Logo 34 Motors" />
+      <div
+        className={`w-full h-[80px] px-4 mx-auto flex justify-between items-center `}
+      >
+        <Link href={"/"}>
+          <Image width={200} src={logo} alt="Logo 34 Motors" />
+        </Link>
         {isMobile ? (
           !navIsOpen ? (
             <button onClick={toggleDropdown}>
@@ -40,43 +68,25 @@ const Header = () => {
               <IoMdClose className={`text-black text-3xl`} />
             </button>
           )
+        ) : loggedToken ? (
+          <button onClick={toggleDropdown}>
+            <UserBadge
+              bg_color="bg-brand-1"
+              initials_color="text-white"
+              name_color="grey-2"
+              name={user.name}
+            />
+          </button>
         ) : (
-          <div className="flex items-center gap-11">
-            <div
-              className={`border-l-2 border-grey-6 h-[79px] drop-shadow-md`}
-            ></div>
-            <Link
-              href={"/login"}
-              className={`text-grey-2 text-heading7 font-600`}
-            >
-              Fazer Login
-            </Link>
-            <Link
-              href={"/register"}
-              className={`text-grey-0 border-2 border-grey-4 py-3 px-7 rounded text-heading7 font-600`}
-            >
-              Cadastrar
-            </Link>
-          </div>
+          <MenuButtons />
         )}
-        {navIsOpen && (
-          <ul
-            className={`absolute w-full bg-white right-0 top-20 h-[184px] flex flex-col items-center px-3 py-9 gap-11 text-black`}
-          >
-            <Link
-              href={"/login"}
-              className={`text-grey-2 text-heading7 font-600 `}
-            >
-              Fazer Login
-            </Link>
-            <Link
-              href={"/register"}
-              className={`w-full text-center text-grey-0 border-2 border-grey-4 py-3 px-7 rounded text-heading7 font-600`}
-            >
-              Cadastrar
-            </Link>
-          </ul>
-        )}
+
+        {navIsOpen &&
+          (loggedToken ? (
+            <UserMenuModalButtons isSeller={user?.isSeller} />
+          ) : (
+            <MenuModalButtons />
+          ))}
       </div>
     </header>
   );
