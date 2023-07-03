@@ -5,6 +5,8 @@ import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import { toast } from "react-toastify";
+import { IoLogoWhatsapp } from "react-icons/io";
 
 import Header from "@/components/header";
 import { CardDetail } from "@/components/cardDetail";
@@ -20,7 +22,7 @@ import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
-import { toast } from "react-toastify";
+
 
 const Announcement = () => {
   const router = useRouter();
@@ -110,6 +112,15 @@ const Announcement = () => {
     return <LoadingScreen />;
   }
 
+  const redirectToWhatsApp = (phone: string) => {
+    const phoneNumber = phone;
+    const message = "Olá, tudo bem? Estou interessado em negociar.";
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+
+    window.open(whatsappURL);
+    return false;
+  };
+
   return (
     <>
       <Head>
@@ -151,8 +162,14 @@ const Announcement = () => {
             <button
               className="mb-10 btn-brand p-2 text-sm font-600 font-inter rounded"
               disabled={disable}
+              onClick={() => redirectToWhatsApp(owner.phone)}
             >
               Comprar
+              <IoLogoWhatsapp
+                size={20}
+                color="#ffffff"
+                style={{ marginLeft: "0.5rem" }}
+              />
             </button>
           </div>
 
