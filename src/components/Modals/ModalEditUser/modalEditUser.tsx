@@ -1,15 +1,12 @@
-import { Inter, Lexend } from "next/font/google";
 import ModalBase from "../modalBase";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserData, editUserSchema } from "./validator";
 import { IoMdClose } from "react-icons/io";
-import { useEffect, useState } from "react";
-import { parseCookies, setCookie } from "nookies";
-import { iUserBody } from "@/interfaces/user.interfaces";
+
 import { DefaultFieldset } from "@/components/defaultFieldset";
 import { API } from "@/services/apis";
-import { iUser } from "@/pages/seller/interface";
+import { iUserComplete } from "@/interfaces/user.interfaces";
 import { useAuth } from "@/contexts/authContext";
 import { toast } from "react-toastify";
 
@@ -27,26 +24,11 @@ export interface iEditUserData {
   description?: string | null | undefined;
 }
 
-const inter = Inter({ subsets: ["latin"] });
-const lexend = Lexend({ subsets: ["latin"] });
-
-const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProps) => {
-  const [loggedUser, setLoggedUser] = useState<iUserBody>({} as iUserBody);
-  const [loggedToken, setLoggedToken] = useState<string>("");
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const validateUser = () => {
-      const cookies = parseCookies();
-
-      if (cookies.user) {
-        const userParsed = JSON.parse(cookies.user);
-        setLoggedUser(userParsed);
-        setLoggedToken(cookies.token);
-      }
-    };
-    validateUser();
-  }, [loggedToken]);
+const ModalEditUser = ({
+  toggleModal,
+  toggleModalDeleteUser,
+}: ModalEditUserProps) => {
+  const { user, token, handleUser } = useAuth();
 
   const {
     register,
@@ -57,50 +39,39 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
     mode: "onBlur",
   });
 
-  const onSubmit: SubmitHandler<EditUserData> = async(data) => {
-
-    if(data.name === ""){
+  const onSubmit: SubmitHandler<EditUserData> = async (data) => {
+    if (data.name === "") {
       delete data.name;
     }
-    if(data.description === ""){
+    if (data.description === "") {
       delete data.description;
     }
-    if(data.email === ""){
+    if (data.email === "") {
       delete data.email;
     }
-    if(data.phone === ""){
+    if (data.phone === "") {
       delete data.phone;
     }
-    if(data.cpf === ""){
+    if (data.cpf === "") {
       delete data.cpf;
     }
-    if(data.birthDate === ""){
+    if (data.birthDate === "") {
       delete data.birthDate;
     }
-
-    const cookies = parseCookies()    
-    const cookieUser: iUser = JSON.parse(cookies.user)
-    const token = cookies.token
 
     API.defaults.headers.common.authorization = `Bearer ${token}`;
 
     try {
-      const response = await API.patch("/users/"+cookieUser.id, data)
+      const response = await API.patch(`/users/${user.id}`, data);
 
-      const userToCookie = JSON.stringify(response.data)
+      handleUser(response.data as iUserComplete);
 
-      setCookie(null, "user", userToCookie, {
-        maxAge: 86400,
-        path: "/",
-      })
-      toast.success("informações de usuário atualizdas com sucesso!")
+      toast.success("Informações de usuário atualizadas com sucesso!");
     } catch (error) {
-      toast.error("não foi possível atualizar as informações do usuário")
-      console.log(error)
+      toast.error("Não foi possível atualizar as informações do usuário");
+      console.log(error);
     }
-
-
-  }
+  };
 
   return (
     <ModalBase toggleModal={toggleModal}>
@@ -108,7 +79,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
         className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg h-auto rounded-lg`}
       >
         <div className={`flex justify-between`}>
-          <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>
+          <h3 className={`text-body1 font-500 text-grey-1 font-lexend`}>
             Editar perfil
           </h3>
           <button onClick={toggleModal} className={`text-heading6 text-grey-4`}>
@@ -117,9 +88,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
         </div>
 
         <div>
-          <h4
-            className={`text-body2 font-500 text-grey-0 mb-4 ${inter.className}`}
-          >
+          <h4 className={`text-body2 font-500 text-grey-0 mb-4 font-inter`}>
             Informações pessoais
           </h4>
 
@@ -200,7 +169,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
             <div className={`flex flex-col gap-2`}>
               <label
                 htmlFor="description"
-                className={`default-label ${inter.className}`}
+                className={`default-label font-inter`}
               >
                 Descrição
               </label>
@@ -217,7 +186,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               )}
             </div>
 
-            <div className={`flex justify-end gap-3 ${inter.className}`}>
+            <div className={`flex justify-end gap-3 font-inter`}>
               <button
                 onClick={toggleModal}
                 className={`btn-negative py-3 px-6 rounded text-body2 font-600`}
@@ -226,7 +195,7 @@ const ModalEditUser = ({ toggleModal, toggleModalDeleteUser }: ModalEditUserProp
               </button>
 
               <button
-              onClick={toggleModalDeleteUser}
+                onClick={toggleModalDeleteUser}
                 className={`btn-alert py-3 px-6 rounded  text-body2 font-600`}
               >
                 Excluir perfil
