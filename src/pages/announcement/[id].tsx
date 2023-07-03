@@ -160,7 +160,7 @@ const Announcement = () => {
               </p>
             </div>
             <button
-              className="mb-10 btn-brand p-2 text-sm font-600 font-inter rounded"
+              className="mb-10 btn-brand bg-brand-5 hover:bg-brand-6 hover:border-brand-6 disabled:bg-brand-3 p-2 text-sm font-600 font-inter rounded"
               disabled={disable}
               onClick={() => redirectToWhatsApp(owner.phone)}
             >
