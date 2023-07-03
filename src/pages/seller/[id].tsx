@@ -22,7 +22,7 @@ const SellerPage = () => {
   const [sellerUser, setSellerUser] = useState<iUser | undefined>();
   const [loggedUser, setLoggedUser] = useState<boolean>(true);
   const [modalCreateAnnouncement, setModalCreateAnnouncement] = useState(false);
-  const { user } = useAuth();
+  const { user, handleErrors } = useAuth();
   const toggleModalCreateAnnouncement = () =>
     setModalCreateAnnouncement(!modalCreateAnnouncement);
   const paramId = router.query.id;
@@ -40,7 +40,7 @@ const SellerPage = () => {
       setSellerUser(data);
       setUserCars(carsFromUser);
     } catch (error) {
-      router.push("/");
+      handleErrors(error);
     }
   };
 
@@ -51,7 +51,7 @@ const SellerPage = () => {
     }
 
     if (paramId) getUserCars();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paramId, user.id, router]);
   if (!sellerUser) return;
   const handlePageChange = (pageNumber: number) => {

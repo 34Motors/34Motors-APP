@@ -11,10 +11,9 @@ import { setCookie, destroyCookie, parseCookies } from "nookies";
 import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
 import { LoginData } from "@/schemas/login/login.schema";
-import { AxiosResponse } from "axios";
+import { AxiosResponse, isAxiosError } from "axios";
 import { iUserComplete } from "@/interfaces/user.interfaces";
 import { toast } from "react-toastify";
-import { set } from "lodash";
 import { LoadingScreen } from "@/components/loadingScreen";
 
 interface iProps {
@@ -29,6 +28,8 @@ interface AuthProviderData {
   loading: boolean;
   isLoggedIn: boolean;
   setIsloggedIn: Dispatch<SetStateAction<boolean>>;
+  getUser: (bearerToken: string) => void;
+  handleErrors: (error: any) => void;
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
@@ -38,23 +39,39 @@ export function AuthProvider({ children }: iProps) {
   const [user, setUser] = useState<iUserComplete>({} as iUserComplete);
   const [loading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsloggedIn] = useState(false);
+  const [serverOff, setServerOff] = useState(false);
   const router: NextRouter = useRouter();
+
+  async function verifyServerIsUp() {
+    try {
+      setLoading(true);
+      await API.post("/login");
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK") {
+        router.push("/500");
+        return;
+      } else {
+        router.push("/");
+        return;
+      }
+    }
+  }
 
   const getUser = async (bearerToken: string) => {
     API.defaults.headers.common.authorization = `Bearer ${bearerToken}`;
+    setToken(bearerToken);
     try {
       const response: AxiosResponse<any, any> = await API.get("/users");
       setUser(response.data);
       setLoading(false);
     } catch (error: any) {
-      if (error.response.status === 401) {
-        logout();
-      }
+      handleErrors(error);
     }
   };
 
   useEffect(() => {
     const validateUser = async () => {
+      await verifyServerIsUp();
       const cookies: { [key: string]: string } = parseCookies();
       const cookieToken: string = cookies.token;
 
@@ -63,6 +80,7 @@ export function AuthProvider({ children }: iProps) {
         return;
       }
 
+
       setToken(cookieToken);
       await getUser(cookieToken);
     };
@@ -70,15 +88,22 @@ export function AuthProvider({ children }: iProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   const login = async (userData: LoginData) => {
     try {
       const response = await API.post("/login", userData);
+
       setCookie(null, "token", response.data.token, {
         maxAge: 86400,
         path: "/",
       });
+
       setToken(response.data.token);
       setIsloggedIn(true);
+
       await getUser(response.data.token);
       toast.success("Login realizado com sucesso");
       router.push("/");
@@ -98,13 +123,44 @@ export function AuthProvider({ children }: iProps) {
     setLoading(false);
   }
 
-  if (loading) {
-    return <LoadingScreen />;
+  function handleErrors(error: any) {
+    if (isAxiosError(error)) {
+      if (error.code === "ERR_NETWORK") {
+        router.push("/500");
+        setLoading(false);
+        return;
+      }
+
+      if (error.response!.status === 401) {
+        toast.error("Seu login expirou, faça o login novamente");
+        logout();
+        return;
+      }
+
+      if (error.response?.status) {
+        router.push("/404");
+        return;
+      }
+
+      toast.error(error.response!.data.message);
+    }
+
+    console.error(error);
   }
 
   return (
     <AuthContext.Provider
-      value={{ login, token, user, logout, loading, isLoggedIn, setIsloggedIn }}
+      value={{
+        login,
+        token,
+        user,
+        logout,
+        loading,
+        isLoggedIn,
+        setIsloggedIn,
+        handleErrors,
+        getUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -28,7 +28,7 @@ const UserContext = createContext<iUserProvider>({} as iUserProvider);
 
 export function UserProvider({ children }: Props) {
   const router = useRouter();
-  const { logout } = useAuth();
+  const { logout, handleErrors } = useAuth();
 
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
@@ -47,11 +47,7 @@ export function UserProvider({ children }: Props) {
       toast.success("usuário deletado com sucesso!");
       logout();
     } catch (error: any) {
-      if (error.response.data) {
-        toast.error(error.response.data.message);
-      }
-      
-      console.log(error);
+      handleErrors(error);
     }
   };
 
@@ -68,10 +64,7 @@ export function UserProvider({ children }: Props) {
       await API.post("/users", data);
       setModalIsOpen(true);
     } catch (error: any) {
-      if (error.response.data) {
-        toast.error(error.response.data.message);
-      }
-      console.log(error);
+      handleErrors(error);
     }
   };
 
