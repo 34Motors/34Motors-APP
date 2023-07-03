@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+
 import { setCookie, destroyCookie, parseCookies } from "nookies";
 import { NextRouter, useRouter } from "next/router";
 import { API } from "@/services/apis";
@@ -30,6 +31,7 @@ interface AuthProviderData {
   setIsloggedIn: Dispatch<SetStateAction<boolean>>;
   getUser: (bearerToken: string) => void;
   handleErrors: (error: any) => void;
+  handleUser: (user: iUserComplete) => void;
 }
 
 const AuthContext = createContext<AuthProviderData>({} as AuthProviderData);
@@ -39,7 +41,6 @@ export function AuthProvider({ children }: iProps) {
   const [user, setUser] = useState<iUserComplete>({} as iUserComplete);
   const [loading, setLoading] = useState<boolean>(true);
   const [isLoggedIn, setIsloggedIn] = useState(false);
-  const [serverOff, setServerOff] = useState(false);
   const router: NextRouter = useRouter();
 
   async function verifyServerIsUp() {
@@ -56,6 +57,8 @@ export function AuthProvider({ children }: iProps) {
       }
     }
   }
+
+  const handleUser = async (user: iUserComplete) => setUser(user);
 
   const getUser = async (bearerToken: string) => {
     API.defaults.headers.common.authorization = `Bearer ${bearerToken}`;
@@ -79,7 +82,6 @@ export function AuthProvider({ children }: iProps) {
         setLoading(false);
         return;
       }
-
 
       setToken(cookieToken);
       await getUser(cookieToken);
@@ -154,6 +156,7 @@ export function AuthProvider({ children }: iProps) {
         login,
         token,
         user,
+        handleUser,
         logout,
         loading,
         isLoggedIn,
