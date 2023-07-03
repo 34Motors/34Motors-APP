@@ -4,7 +4,6 @@ import Header from "@/components/header";
 import { Pagination } from "@/components/pagination";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
-import { iUser } from "./interface";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
 import { useRouter } from "next/router";
@@ -12,6 +11,7 @@ import CommonUserCarCard from "@/components/commonUserCard";
 import { useAuth } from "@/contexts/authContext";
 import { ModalCreateAnnouncement } from "@/components/Modals/ModalCreateAnnouncement/ModalCreateAnnouncement";
 import Head from "next/head";
+import { iUserComplete } from "@/interfaces/user.interfaces";
 
 const SellerPage = () => {
   const router = useRouter();
@@ -19,7 +19,7 @@ const SellerPage = () => {
   const cardsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const [userCars, setUserCars] = useState<ICarsReturn[]>([]);
-  const [sellerUser, setSellerUser] = useState<iUser | undefined>();
+  const [sellerUser, setSellerUser] = useState<iUserComplete | undefined>();
   const [loggedUser, setLoggedUser] = useState<boolean>(true);
   const [modalCreateAnnouncement, setModalCreateAnnouncement] = useState(false);
   const { user, handleErrors } = useAuth();

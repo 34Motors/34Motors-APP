@@ -1,7 +1,7 @@
 import register from "@/pages/register";
 import { DefaultFieldset } from "./defaultFieldset";
 import { iUserBody } from "@/interfaces/user.interfaces";
-import { registerSchema } from "@/pages/register/schema";
+import { registerSchema } from "@/schemas/register/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ export const RegisterForm = () => {
   const submit = (data: iUserBody) => {
     data.cep = removeNonDigits(data.cep);
     data.phone = removeNonDigits(data.phone).substring(2);
-    data.cpf = removeNonDigits(data.cpf)
+    data.cpf = removeNonDigits(data.cpf);
 
     registerUser(data);
   };
