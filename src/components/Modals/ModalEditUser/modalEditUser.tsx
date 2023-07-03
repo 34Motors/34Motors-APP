@@ -76,7 +76,7 @@ const ModalEditUser = ({
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg h-auto rounded-lg`}
+        className={`my-20 flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg h-auto rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 text-grey-1 font-lexend`}>
@@ -101,6 +101,7 @@ const ModalEditUser = ({
               id="name"
               inputProps={{
                 placeholder: "Exemplo Silva",
+                defaultValue: user.name,
                 ...register("name"),
               }}
             />
@@ -115,6 +116,7 @@ const ModalEditUser = ({
               id="email"
               inputProps={{
                 placeholder: "exemplo@mail.com",
+                defaultValue: user.email,
                 ...register("email"),
               }}
             />
@@ -129,6 +131,7 @@ const ModalEditUser = ({
               id="cpf"
               inputProps={{
                 placeholder: "100.200.300-40",
+                defaultValue: user.cpf,
                 ...register("cpf"),
               }}
             />
@@ -143,6 +146,7 @@ const ModalEditUser = ({
               id="phone"
               inputProps={{
                 placeholder: "00 12345 6789",
+                defaultValue: user.phone,
                 ...register("phone"),
               }}
             />
@@ -157,6 +161,7 @@ const ModalEditUser = ({
               id="birthDate"
               inputProps={{
                 placeholder: "DD/MM/AAAA",
+                defaultValue: user.birthDate,
                 ...register("birthDate"),
               }}
             />
