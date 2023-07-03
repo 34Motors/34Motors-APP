@@ -8,7 +8,7 @@
 
 @layer components {
   .modal-window {
-    @apply flex flex-col gap-6 bg-grey-whiteFixed p-5 shadow-xl w-[90vw] max-w-lg rounded-lg;
+    @apply flex flex-col gap-6 bg-grey-whiteFixed p-5 shadow-xl w-[90vw] max-w-[550px] rounded-lg;
   }
 
   .modal-title {
