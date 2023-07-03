@@ -31,7 +31,7 @@ export const CommentCard = ({ comment }: { comment: commentReturn }) => {
           bg_color="bg-brand-1"
           initials_color="text-white"
           name_color="grey-1"
-          name={comment.user.name}
+          name={comment.user?.name}
         />
         <span className="text-grey-3 text-xs font-inter">•</span>
         <span className="text-grey-3 text-xs font-inter">{dateDiff}</span>
