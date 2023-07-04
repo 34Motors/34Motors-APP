@@ -7,6 +7,7 @@ interface commentReturn {
   user: {
     id: number;
     name: string;
+    userColor: string;
   };
 }
 
