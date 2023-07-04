@@ -251,6 +251,7 @@ export const RegisterForm = () => {
           inputProps={{
             placeholder: "Digite uma senha",
             ...register("password"),
+            type: "password",
           }}
         />
         {errors.password?.message && (
@@ -264,6 +265,7 @@ export const RegisterForm = () => {
           inputProps={{
             placeholder: "Confirme sua senha",
             ...register("confirmPassword"),
+            type: "password",
           }}
         />
         {errors.confirmPassword?.message && (
