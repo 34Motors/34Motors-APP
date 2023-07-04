@@ -1,13 +1,8 @@
-interface commentReturn {
-  id: number;
-  description: string;
-  postDate: Date;
-  userId: number;
-  carId: number;
-  user: {
-    id: number;
-    name: string;
-  };
-}
+import { commentSchema } from "@/schemas/commentSchema";
+import { DeepPartial } from "react-hook-form";
+import { z } from "zod";
 
-export type { commentReturn };
+type commentReturn = z.infer<typeof commentSchema>
+type editComment = DeepPartial<commentReturn>
+
+export type { commentReturn, editComment };
