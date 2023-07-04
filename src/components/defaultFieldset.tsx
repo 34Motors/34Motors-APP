@@ -8,6 +8,7 @@ interface defaultFieldsetProps {
   id?: string;
   type?: string;
   mask?: string;
+  onBlur?: any;
   inputProps: object;
 }
 
