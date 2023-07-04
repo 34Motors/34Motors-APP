@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="Imagem do projeto" src="https://github.com/34Motors/34Motors-APP/blob/feat/readmi-app/src/assets/Capa%2034%20Motors.jpg" />
+<img alt="Imagem do projeto" src="https://github.com/34Motors/34Motors-APP/blob/fix/readmi/src/assets/Capa%2034%20Motors.jpg" />
 </div>
 
 <div align="center">
@@ -37,7 +37,7 @@
 
 <h2 id="Como acessar"> :computer_mouse: Como acessar?</h2>
 
-<a href="www.34motors.vercel.app">Para conferir e utilizar o projeto clique aqui</a>.
+<a href="www.34-motors.vercel.app">Para conferir e utilizar o projeto clique aqui</a>.
 <p>Após fazer um clone do projeto na sua máquina local, deve inicializar com yarn, ou npm install para instalar todas as dependências do projeto.</p>
 
 <h2 id="descricao">:pencil2: Descrição</h2>
@@ -112,7 +112,7 @@ Senha: 12345678
 <a href="https://github.com/34Motors/34Motors-API">Clique aqui</a> para acessar o repositório da api do projeto.
 <br/>
 
- >Interagir com o site por meio<a href="www.34motors.vercel.app"> da Vercel</a>.
+ >Interagir com o site por meio<a href="www.34-motors.vercel.app"> da Vercel</a>.
 
 <h2 id="doc">:page_facing_up: Documentação da API </h2>
 
