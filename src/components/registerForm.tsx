@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "@/contexts/userContext";
-import { removeNonDigits } from "@/utils/formatingFunctions";
+import { getRandomIntInclusive, removeNonDigits } from "@/utils/formatingFunctions";
 
 export const RegisterForm = () => {
   const { registerUser } = useUserContext();
@@ -26,7 +26,12 @@ export const RegisterForm = () => {
     data.phone = removeNonDigits(data.phone).substring(2);
     data.cpf = removeNonDigits(data.cpf);
 
-    registerUser(data);
+    const userData = {
+      ...data,
+      userColor : getRandomIntInclusive()
+    }
+    
+    registerUser(userData);
   };
 
   return (
