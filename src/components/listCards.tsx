@@ -19,7 +19,7 @@ export const ListCards: React.FC<ListCardsProps> = ({
   ));
   
   return (
-    <ul className="w-full flex items-start mt-4 gap-3 sm:gap-x-4 lg:gap-x-14 overflow-x-auto md:overflow-hidden md:grid homeList:grid-cols-2 xl:grid-cols-3 md:col-span-3 xl:col-span-3">
+    <ul className="w-full flex items-start mt-4 gap-3 sm:gap-x-4 lg:gap-x-14 overflow-x-auto md:overflow-hidden md:grid md:grid-rows-3 md:gap-y-14 h-full homeList:grid-cols-2 xl:grid-cols-3 md:col-span-3 xl:col-span-3">
         {renderedCards}
     </ul>
   );
