@@ -40,6 +40,7 @@ interface iCarsProvider {
         user: {
           id: number;
           name: string;
+          userColor: string;
         };
         postDate: Date;
       }[]

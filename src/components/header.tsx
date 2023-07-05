@@ -32,7 +32,6 @@ const Header = () => {
     };
   }, []);
 
-
   return (
     <header
       className={`z-50 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
