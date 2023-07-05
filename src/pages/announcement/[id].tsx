@@ -22,17 +22,17 @@ import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
-
+import { useCarsContext } from "@/contexts/carsContext";
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [owner, setOwner] = useState({} as iUserBody);
-  const [comments, setComments] = useState([] as commentReturn[]);
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
   const [openImageModal, setOpenImageModal] = useState(false);
   const { isLoggedIn, setIsloggedIn, user, handleErrors } = useAuth();
+  const { comments, setComments, getAllComments } = useCarsContext();
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -45,8 +45,8 @@ const Announcement = () => {
         const response = await API.get(`/cars/${id}`);
         setCar(response.data);
         setOwner(response.data.user);
-        setComments(response.data.comments);
         setLoading(false);
+        getAllComments(id as string);
       } catch (error) {
         handleErrors(error);
       }
