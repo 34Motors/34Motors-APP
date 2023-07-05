@@ -65,7 +65,7 @@ const FiltroCategory = () => {
   };
 
   const contentFilter = (
-    <div className={`${!isModalOpen && 'tabletMax:hidden'}`}>
+    <div className={`${!isModalOpen && "tabletMax:hidden"}`}>
       {listFilters?.map((filter: any, index) => {
         const category = Object.keys(filter)[0];
         let translatedCategory = "";
@@ -86,10 +86,7 @@ const FiltroCategory = () => {
           translatedCategory = "Km";
         }
 
-        if (
-          translatedCategory !== "Km" &&
-          translatedCategory !== "Preço"
-        ) {
+        if (translatedCategory !== "Km" && translatedCategory !== "Preço") {
           return (
             <div key={index}>
               <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
@@ -106,7 +103,7 @@ const FiltroCategory = () => {
                             handleFilterCars(category, categorySpecific)
                           }
                         >
-                          {categorySpecific}
+                          {categorySpecific.split(" ").slice(0, 2).join(" ")}
                         </button>
                       </li>
                     )
