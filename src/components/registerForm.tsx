@@ -11,15 +11,37 @@ import { getRandomIntInclusive, removeNonDigits } from "@/utils/formatingFunctio
 export const RegisterForm = () => {
   const { registerUser } = useUserContext();
 
+  const [cepErrorMessage, setCepErrorMessage] = useState<string>("");
   const {
     register,
     handleSubmit,
+    setValue,
+    setFocus,
     formState: { errors },
   } = useForm<iUserBody>({
     resolver: zodResolver(registerSchema),
   });
   const [isSeller, setIsSeller] = useState<boolean>(true);
   const [buttonColor, setButtonColor] = useState<boolean>(false);
+
+  const checkCEP = async (e: any) => {
+    const cep = e.target.value.replace(/\D/g, "");
+    if (cep) {
+      fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.erro) {
+            setValue("state", data.uf);
+            setValue("city", data.localidade);
+            setValue("street", data.logradouro);
+            setFocus("number");
+            setCepErrorMessage("");
+          } else {
+            setCepErrorMessage("CEP inválido ou não encontrado.");
+          }
+        });
+    }
+  };
 
   const submit = (data: iUserBody) => {
     data.cep = removeNonDigits(data.cep);
@@ -128,11 +150,16 @@ export const RegisterForm = () => {
           label="CEP"
           mask="99999-999"
           id="cep"
+          onBlur={checkCEP}
           inputProps={{
             placeholder: "Digitar seu cep",
             ...register("cep"),
+            onBlur: checkCEP,
           }}
         />
+        {cepErrorMessage && (
+          <small className="text-alert-1 my-[-22px]">{cepErrorMessage}</small>
+        )}
         {errors.cep?.message && (
           <small className="text-alert-1 my-[-22px]">
             {errors.cep.message}
@@ -143,13 +170,9 @@ export const RegisterForm = () => {
             <DefaultFieldset
               label="Estado"
               id="state"
-              mask="aa"
               inputProps={{
                 placeholder: "Digite seu estado",
                 ...register("state"),
-                onChange: (e: any) => {
-                  e.target.value = e.target.value.toUpperCase();
-                },
               }}
             />
             {errors.state?.message && (
