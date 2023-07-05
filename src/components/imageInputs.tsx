@@ -1,14 +1,16 @@
+import { set } from "lodash";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FieldValues, UseFormReturn } from "react-hook-form";
 import { BiImageAdd, BiCar } from "react-icons/bi";
 import { BsFillPencilFill } from "react-icons/bs";
 
 interface props {
   form: UseFormReturn<FieldValues, any>;
+  imageUrl?: string;
 }
 
-const SingleImageInput = ({ form }: props) => {
+const SingleImageInput = ({ form, imageUrl }: props) => {
   const {
     register,
     setValue,
@@ -17,11 +19,13 @@ const SingleImageInput = ({ form }: props) => {
   } = form;
   const inputRef = useRef(null);
   const image = watch("frontImage");
+  const [src, setSrc] = useState(imageUrl);
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
     if (file) {
       setValue("frontImage", file);
+      setSrc(URL.createObjectURL(file));
     }
   };
 
@@ -39,12 +43,12 @@ const SingleImageInput = ({ form }: props) => {
           type="file"
           accept="image/png, image/jpeg, image/jpg"
         />
-        {image ? (
+        {src ? (
           <div className="relative w-full h-[200px] flex items-center justify-center">
             <Image
-              src={URL.createObjectURL(image)}
+              src={src}
               alt="imagem da capa do veículo"
-              width={10}
+              width={200}
               height={200}
               className="rounded w-auto h-full"
             />

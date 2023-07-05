@@ -18,6 +18,7 @@ import { SmallLoading } from "@/components/smallLoading";
 import { SingleImageInput } from "@/components/imageInputs";
 import { useAuth } from "@/contexts/authContext";
 import { toast } from "react-toastify";
+import { useCarsContext } from "@/contexts/carsContext";
 interface iCar {
   id: string;
   name: string;
@@ -55,7 +56,8 @@ export const ModalCreateAnnouncementForm = ({
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [models, setModels] = useState<iCar[] | null>(null);
   const [selectedModel, setSelectedModel] = useState<iCar | null>(null);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
+  const { getAllCars, getSellerAnnouncements } = useCarsContext();
 
   async function handleBrandChange(event: any) {
     if (event.target.value == "null") {
@@ -122,6 +124,8 @@ export const ModalCreateAnnouncementForm = ({
       await API.patch(`cars/${createdAnnouncement.data.id}/upload`, fd, config);
 
       toast.success("Anúncio cadastrado com sucesso!");
+      getAllCars();
+      getSellerAnnouncements(user!.id);
       setPage(2);
     } catch (error: any) {
       console.log(error);

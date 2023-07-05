@@ -27,6 +27,7 @@ interface AuthProviderData {
   user: iUserComplete;
   logout: () => void;
   loading: boolean;
+  toggleLoading: (state: boolean) => void;
   isLoggedIn: boolean;
   setIsloggedIn: Dispatch<SetStateAction<boolean>>;
   getUser: (bearerToken: string) => void;
@@ -43,50 +44,41 @@ export function AuthProvider({ children }: iProps) {
   const [isLoggedIn, setIsloggedIn] = useState(false);
   const router: NextRouter = useRouter();
 
-  async function verifyServerIsUp() {
-    try {
-      setLoading(true);
-      await API.post("/login");
-    } catch (error: any) {
-      if (error.code === "ERR_NETWORK") {
-        router.push("/500");
-        return;
-      } else {
-        router.push("/");
-        return;
-      }
-    }
+  async function toggleLoading(state: boolean) {
+    setLoading(state);
   }
 
   const handleUser = async (user: iUserComplete) => setUser(user);
 
-  const getUser = async (bearerToken: string) => {
+  async function getUser(bearerToken: string) {
     API.defaults.headers.common.authorization = `Bearer ${bearerToken}`;
-    setToken(bearerToken);
     try {
       const response: AxiosResponse<any, any> = await API.get("/users");
+      setToken(bearerToken);
       setUser(response.data);
+      setIsloggedIn(true);
       setLoading(false);
     } catch (error: any) {
       handleErrors(error);
     }
-  };
+  }
+
+  async function validateUser() {
+    const cookies = parseCookies();
+    const cookieToken = cookies.token;
+
+    if (!cookieToken) {
+      setLoading(false);
+      return;
+    }
+
+    await getUser(cookieToken);
+  }
 
   useEffect(() => {
-    const validateUser = async () => {
-      await verifyServerIsUp();
-      const cookies: { [key: string]: string } = parseCookies();
-      const cookieToken: string = cookies.token;
-
-      if (!cookieToken) {
-        setLoading(false);
-        return;
-      }
-
-      setToken(cookieToken);
-      await getUser(cookieToken);
-    };
-    validateUser();
+    (async () => {
+      await validateUser();
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -139,7 +131,7 @@ export function AuthProvider({ children }: iProps) {
         return;
       }
 
-      if (error.response?.status) {
+      if (error.response!.status === 404) {
         router.push("/404");
         return;
       }
@@ -159,6 +151,7 @@ export function AuthProvider({ children }: iProps) {
         handleUser,
         logout,
         loading,
+        toggleLoading,
         isLoggedIn,
         setIsloggedIn,
         handleErrors,

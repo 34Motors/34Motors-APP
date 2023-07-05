@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createAnnouncementSchema } from "../ModalCreateAnnouncement/validator";
+import { createAnnouncementSchema } from "../../ModalCreateAnnouncement/validator";
 
 export const editAnnouncementSchema = createAnnouncementSchema.partial();
 
