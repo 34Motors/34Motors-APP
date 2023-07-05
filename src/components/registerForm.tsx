@@ -47,12 +47,12 @@ export const RegisterForm = () => {
     data.cep = removeNonDigits(data.cep);
     data.phone = removeNonDigits(data.phone).substring(2);
     data.cpf = removeNonDigits(data.cpf);
-
+    
     const userData = {
       ...data,
+      isSeller,
       userColor : getRandomIntInclusive()
     }
-    
     registerUser(userData);
   };
 

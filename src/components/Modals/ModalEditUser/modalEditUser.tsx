@@ -28,7 +28,7 @@ const ModalEditUser = ({
   toggleModal,
   toggleModalDeleteUser,
 }: ModalEditUserProps) => {
-  const { user, token, handleUser } = useAuth();
+  const { user, token, handleUser, getUser } = useAuth();
 
   const {
     register,
@@ -68,6 +68,7 @@ const ModalEditUser = ({
       handleUser(response.data as iUserComplete);
 
       toast.success("Informações de usuário atualizadas com sucesso!");
+      getUser(token!);
     } catch (error) {
       toast.error("Não foi possível atualizar as informações do usuário");
       console.log(error);
@@ -182,6 +183,7 @@ const ModalEditUser = ({
               <textarea
                 id="description"
                 placeholder="Conte um pouco sobre você..."
+                defaultValue={user.description}
                 {...register("description")}
                 className={`default-input`}
               />

@@ -3,34 +3,18 @@ import Image from "next/image";
 import logo from "../assets/logo-34-motors-black.png";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
 import Link from "next/link";
-import { parseCookies } from "nookies";
 import { UserBadge } from "./userBadge";
 import {
   MenuButtons,
   MenuModalButtons,
   UserMenuModalButtons,
 } from "./menuButtons";
-import { iUserComplete } from "@/interfaces/user.interfaces";
 import { useAuth } from "@/contexts/authContext";
 
 const Header = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [navIsOpen, setNavIsOpen] = useState<boolean>(false);
-  const [loggedUser, setLoggedUser] = useState<iUserComplete>({} as iUserComplete);
-  const [loggedToken, setLoggedToken] = useState<string>("");
-  const { user } = useAuth();
-
-  useEffect(() => {
-    const validateUser = () => {
-      const cookies = parseCookies();
-
-      if (cookies.token) {
-        setLoggedUser(user);
-        setLoggedToken(cookies.token);
-      }
-    };
-    validateUser();
-  }, [user]);
+  const { user, isLoggedIn } = useAuth();
 
   const toggleDropdown = () => {
     setNavIsOpen(!navIsOpen);
@@ -50,7 +34,7 @@ const Header = () => {
 
   return (
     <header
-      className={`z-10 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
+      className={`z-50 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
     >
       <div
         className={`w-full h-[80px] px-4 mx-auto flex justify-between items-center `}
@@ -68,7 +52,7 @@ const Header = () => {
               <IoMdClose className={`text-black text-3xl`} />
             </button>
           )
-        ) : loggedToken ? (
+        ) : isLoggedIn ? (
           <button onClick={toggleDropdown}>
             <UserBadge
               bg_color={user.userColor}
@@ -82,7 +66,7 @@ const Header = () => {
         )}
 
         {navIsOpen &&
-          (loggedToken ? (
+          (isLoggedIn ? (
             <UserMenuModalButtons isSeller={user?.isSeller} />
           ) : (
             <MenuModalButtons />

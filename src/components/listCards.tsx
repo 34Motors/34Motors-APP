@@ -13,9 +13,11 @@ export const ListCards: React.FC<ListCardsProps> = ({
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = cars.slice(indexOfFirstCard, indexOfLastCard)
+
   const renderedCards = currentCards.map((car) => (
     <ProductCard key={car.id} car={car} />
   ));
+  
   return (
     <ul className="w-full flex items-start mt-4 gap-3 sm:gap-x-4 lg:gap-x-14 overflow-x-auto md:overflow-hidden md:grid homeList:grid-cols-2 xl:grid-cols-3 md:col-span-3 xl:col-span-3">
         {renderedCards}

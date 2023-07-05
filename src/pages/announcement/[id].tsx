@@ -136,13 +136,13 @@ const Announcement = () => {
       <div className="bg-brand-1 h-[436px] w-full absolute z-0"></div>
       <div className="bg-grey-8">
         <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
-          <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
+          <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 flex justify-center items-center">
             <Image
               src={car.frontImage}
-              width={351}
-              height={355}
+              width={1920}
+              height={1080}
               alt={`Foto de um ${car.brand} ${car.model}`}
-              className="mt-[70px] mx-auto"
+              className="w-[90%] h-[90%] object-contain rounded"
             />
           </div>
 
@@ -193,7 +193,7 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] capitalize bg-random-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize badge-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
                 {userInitials.toUpperCase()}
               </div>
