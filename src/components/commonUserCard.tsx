@@ -3,38 +3,34 @@ import carImage from "../assets/img/MaseratiExample.png";
 import { CardDetail } from "./cardDetail";
 import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 import Link from "next/link";
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
 
-interface iCarCarProps {
-  model: string;
-  brand: string;
-  year: string;
-  quilometers: string;
-  price: number;
-  description: string;
-  frontImage: string;
-  published: boolean;
-  id: number;
-  user: string;
+interface iCardProps {
+  car: ICarsReturn;
 }
 
-const CommonUserCarCard = ({
-  frontImage,
-  published,
-  model,
-  brand,
-  description,
-  quilometers,
-  year,
-  id,
-  price,
-  user,
-}: iCarCarProps) => {
-  const nameSplit = user?.split(" ");
+const CommonUserCarCard = ({ car }: iCardProps) => {
+  const {
+    model,
+    brand,
+    year,
+    quilometers,
+    price,
+    description,
+    frontImage,
+    published,
+    id,
+    user,
+  } = car;
+
+  const { name } = user;
+
+  const nameSplit = name.split(" ");
 
   const userInitials =
-    user?.split(" ")[0][0] === user?.split(" ")[nameSplit.length - 1][0]
+    name.split(" ")[0][0] === name.split(" ")[nameSplit.length - 1][0]
       ? ""
-      : user?.split(" ")[nameSplit.length - 1][0];
+      : name.split(" ")[nameSplit.length - 1][0];
   return (
     <Link
       href={"/announcement/" + id}
@@ -68,10 +64,10 @@ const CommonUserCarCard = ({
           </p>
           <div className="flex items-center gap-2 font-500">
             <span className="p-0 m-0 capitalize flex items-center justify-center text-white bg-brand-1 text-sm  w-8 h-8 rounded-full">
-              <span className="capitalize">{user.split("")[0]}</span>
+              <span className="capitalize">{name.split("")[0]}</span>
               <span className="capitalize">{userInitials}</span>
             </span>
-            <p className="text-grey-2 capitalize">{user}</p>
+            <p className="text-grey-2 capitalize">{name}</p>
           </div>
           <div className=" flex justify-between items-center">
             <div className="flex gap-3">
