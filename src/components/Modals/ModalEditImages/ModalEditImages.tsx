@@ -99,7 +99,7 @@ export const ModalEditImages = ({
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="flex flex-wrap gap-4 items-center">
-        {images.length &&
+        {images.length < 6 &&
           images.map((image) => (
             <div
               key={image.id}
