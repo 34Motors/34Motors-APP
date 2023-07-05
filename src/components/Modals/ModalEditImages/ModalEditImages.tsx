@@ -28,8 +28,6 @@ export const ModalEditImages = ({
   const inputRef = useRef(null);
   const { token } = useAuth();
 
-  console.log(images);
-
   useEffect(() => {
     async function effect() {
       await getImages();
@@ -101,26 +99,27 @@ export const ModalEditImages = ({
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="flex flex-wrap gap-4 items-center">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            className="relative flex flex-col items-center  max-w-[150px] h-[100px] bg-grey-2 rounded-lg border-2 border-grey-2 p-1"
-          >
-            <Image
-              src={image.imageUrl}
-              alt="Imagens complementares do carro"
-              width={1920}
-              height={1080}
-              className="rounded-lg h-full"
-            />
-            <BiTrash
-              fill="red"
-              className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
-              title="Excluir imagem"
-              onClick={() => handleDeleteImage(image.id)}
-            />
-          </div>
-        ))}
+        {images.length &&
+          images.map((image) => (
+            <div
+              key={image.id}
+              className="relative flex flex-col items-center  max-w-[150px] h-[100px] bg-grey-2 rounded-lg border-2 border-grey-2 p-1"
+            >
+              <Image
+                src={image.imageUrl}
+                alt="Imagens complementares do carro"
+                width={1920}
+                height={1080}
+                className="rounded-lg h-full"
+              />
+              <BiTrash
+                fill="red"
+                className="absolute top-2 right-2 w-6 h-6 cursor-pointer"
+                title="Excluir imagem"
+                onClick={() => handleDeleteImage(image.id)}
+              />
+            </div>
+          ))}
         {images.length < 6 && (
           <div
             className={`flex flex-col items-center justify-center w-[150px] h-[100px] bg-grey-4 rounded-lg border-2 border-gray-400`}

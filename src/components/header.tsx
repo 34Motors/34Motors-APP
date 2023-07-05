@@ -47,7 +47,7 @@ const Header = () => {
       window.removeEventListener("resize", checkIsMobile);
     };
   }, []);
-  console.log(user.userColor)
+
 
   return (
     <header

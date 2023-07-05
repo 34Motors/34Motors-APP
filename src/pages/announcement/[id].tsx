@@ -192,7 +192,7 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] capitalize bg-random-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize badge-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
                 {userInitials.toUpperCase()}
               </div>

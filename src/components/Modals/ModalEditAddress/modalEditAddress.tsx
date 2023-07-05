@@ -8,8 +8,6 @@ import { useAuth } from "@/contexts/authContext";
 import { API } from "@/services/apis";
 import { toast } from "react-toastify";
 
-
-
 interface ModalEditAddressProps {
   toggleModal: () => void;
 }
@@ -33,10 +31,10 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
         data,
         headers
       );
-      toast.success("Endereço atualizado com sucesso!")
+      toast.success("Endereço atualizado com sucesso!");
     } catch (error) {
-      toast.error("Não foi possível atualizar o endereço!")
-      console.log(error)
+      toast.error("Não foi possível atualizar o endereço!");
+      console.log(error);
     }
   };
 
