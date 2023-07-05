@@ -20,8 +20,8 @@ const CarImageComponent = ({
       id={id}
     >
       <Image
-        width={90}
-        height={54}
+        width={500}
+        height={500}
         src={carImage.imageUrl}
         alt="Foto de um carro"
         id={id}

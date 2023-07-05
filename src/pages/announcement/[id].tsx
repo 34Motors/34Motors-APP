@@ -20,7 +20,6 @@ import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
-import { toast } from "react-toastify";
 
 const Announcement = () => {
   const router = useRouter();
@@ -124,13 +123,13 @@ const Announcement = () => {
       <div className="bg-brand-1 h-[436px] w-full absolute z-0"></div>
       <div className="bg-grey-8">
         <main className="grid gap-4 grid-cols-1 w-11/12 mx-auto my-10 relative z-1 md:grid-cols-3 md:max-w-6xl">
-          <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 ">
+          <div className="bg-grey-10 rounded h-[355px] md:col-start-1 md:col-end-3 flex justify-center items-center">
             <Image
               src={car.frontImage}
-              width={351}
-              height={355}
+              width={1920}
+              height={1080}
               alt={`Foto de um ${car.brand} ${car.model}`}
-              className="mt-[70px] mx-auto"
+              className="w-[90%] h-[90%] object-contain rounded"
             />
           </div>
 
