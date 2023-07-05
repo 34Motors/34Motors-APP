@@ -53,7 +53,6 @@
 - [x] React icons
 - [x] Zod
 - [x] React toastify
-- [x] React Router DOM
 - [x] Axios
 
 <h2 id="Ferramentas">:wrench: Ferramentas utilizadas</h2>
