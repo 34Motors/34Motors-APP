@@ -41,6 +41,7 @@ const ResetPassword = () => {
             inputProps={{
               placeholder: "Digite uma nova senha",
               ...register("password"),
+              type: "password"
             }}
           />
           <DefaultFieldset
@@ -49,6 +50,7 @@ const ResetPassword = () => {
             inputProps={{
               placeholder: "Confirme a nova senha",
               ...register("confirmPassword"),
+              type: "password"
             }}
           />
 
