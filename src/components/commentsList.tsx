@@ -3,7 +3,7 @@ import { CommentCard } from "./commentCard";
 
 export const CommentsList = ({ comments }: { comments: commentReturn[] }) => {
   const commentsToRender = comments.map((comment) => (
-    <CommentCard key={comment.id} comment={comment} />
+    <CommentCard key={comment.id} commentData={comment} />
   ));
 
   return (
