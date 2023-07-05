@@ -29,6 +29,7 @@ export const ModalEditAnnouncement = ({
           <FormEditAnnouncement
             announcement={announcement}
             setPage={handlePage}
+            toggleModal={toggleModal}
           />
         )}
         {page == 2 && (
@@ -39,7 +40,11 @@ export const ModalEditAnnouncement = ({
           />
         )}
         {page == 3 && (
-          <ConfirmDelete id={announcement.id} setPage={handlePage} />
+          <ConfirmDelete
+            announcement={announcement}
+            setPage={handlePage}
+            toggleModal={toggleModal}
+          />
         )}
       </div>
     </ModalBase>

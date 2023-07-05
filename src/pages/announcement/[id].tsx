@@ -19,7 +19,7 @@ import { CarImage, ICarsReturn } from "@/interfaces/cars.interfaces";
 import { iUserBody } from "@/interfaces/user.interfaces";
 import ModalCarImage from "@/components/Modals/modalCarImage";
 import { commentReturn } from "@/interfaces/comment.interfaces";
-import { formatCurrency } from "@/utils/formatingFunctions";
+import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
 import { useCarsContext } from "@/contexts/carsContext";
@@ -33,7 +33,7 @@ const Announcement = () => {
   const [openImageModal, setOpenImageModal] = useState(false);
   const { isLoggedIn, setIsloggedIn, user, handleErrors } = useAuth();
   const { comments, setComments, getAllComments } = useCarsContext();
-  
+
   useEffect(() => {
     const cookies = parseCookies();
     if (cookies.token) setIsloggedIn(true);
@@ -100,7 +100,7 @@ const Announcement = () => {
     try {
       const response = await API.post(`/comments/${car.id}`, data);
       const commentData: commentReturn = response.data;
-      console.log(commentData)
+      console.log(commentData);
       setComments([...comments, commentData]);
       reset();
     } catch (error) {
@@ -152,7 +152,7 @@ const Announcement = () => {
             </h6>
             <div className="mb-6">
               <div className="flex gap-3 mb-8">
-                <CardDetail text={`${car.quilometers} KM`} />
+                <CardDetail text={`${formatNumber(car.quilometers)} KM`} />
                 <CardDetail text={car.year} />
               </div>
               <p className="text-heading7 text-grey-1 font-500 font-lexend">
