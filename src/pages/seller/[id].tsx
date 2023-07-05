@@ -12,62 +12,83 @@ import { useAuth } from "@/contexts/authContext";
 import { ModalCreateAnnouncement } from "@/components/Modals/ModalCreateAnnouncement/ModalCreateAnnouncement";
 import Head from "next/head";
 import { iUserComplete } from "@/interfaces/user.interfaces";
+import { ModalEditAnnouncement } from "@/components/Modals/ModalEditAnnouncement/ModalEditAnnouncement";
+import { toast } from "react-toastify";
+import { LoadingScreen } from "@/components/loadingScreen";
+import { useCarsContext } from "@/contexts/carsContext";
 
 const SellerPage = () => {
   const router = useRouter();
   const arr = [1, 12, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
   const cardsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
-  const [userCars, setUserCars] = useState<ICarsReturn[]>([]);
-  const [sellerUser, setSellerUser] = useState<iUserComplete | undefined>();
-  const [loggedUser, setLoggedUser] = useState<boolean>(true);
+  const [sellerUser, setSellerUser] = useState<iUserComplete>(
+    {} as iUserComplete
+  );
   const [modalCreateAnnouncement, setModalCreateAnnouncement] = useState(false);
-  const { user, handleErrors } = useAuth();
+  const [modalEditAnnouncement, setModalEditAnnouncement] = useState(false);
+  const [announcementToEdit, setAnnouncementToEdit] = useState(
+    {} as ICarsReturn
+  );
+  const [loading, setLoading] = useState(true);
+  const { user, handleErrors, token, isLoggedIn } = useAuth();
+  const { getSellerAnnouncements, sellerAnnouncements } = useCarsContext();
+
+  API.defaults.headers.common.Authorization = `Bearer ${token}`;
+
   const toggleModalCreateAnnouncement = () =>
     setModalCreateAnnouncement(!modalCreateAnnouncement);
+
+  const toggleModalEditAnnouncement = () => {
+    setModalEditAnnouncement(!modalEditAnnouncement);
+  };
+
+  const handleEdit = (announcement: ICarsReturn) => {
+    setAnnouncementToEdit(announcement);
+    toggleModalEditAnnouncement();
+  };
+
   const paramId = router.query.id;
 
-  const getUserCars = async () => {
+  async function getUserFromParams() {
     try {
-      const carResponse = await API.get("/cars");
-      const carData = carResponse.data.cars;
-      const carsFromUser: ICarsReturn[] = carData.filter((elem: any) => {
-        return elem.user.id == paramId;
-      });
-      const response = await API.get("/users/" + paramId);
-      const data = response.data;
-      if (data.id === user.id && data.isSeller === false) router.push("/");
-      setSellerUser(data);
-      setUserCars(carsFromUser);
+      const response = await API.get(`/users/${paramId}`);
+      const seller: iUserComplete = response.data;
+
+      if (!seller.isSeller) {
+        router.push("/");
+        toast.error("Este usuário não é um anunciante.");
+        return;
+      }
+
+      setSellerUser(seller);
     } catch (error) {
       handleErrors(error);
     }
-  };
+  }
 
   useEffect(() => {
-    const cookies = parseCookies();
-    if (!cookies.token) {
-      setLoggedUser(false);
+    if (paramId) {
+      (async () => {
+        await Promise.all([
+          getUserFromParams(),
+          getSellerAnnouncements(+paramId),
+        ]);
+        setLoading(false);
+      })();
     }
 
-    if (paramId) getUserCars();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramId, user.id, router]);
-  if (!sellerUser) return;
+  }, [paramId]);
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  const nameSplit = sellerUser.name?.split(" ");
-  const userInitials =
-    sellerUser.name?.split(" ")[0][0] ===
-    sellerUser.name?.split(" ")[nameSplit.length - 1][0]
-      ? ""
-      : sellerUser.name?.split(" ")[nameSplit.length - 1][0];
-  const userSecondName =
-    sellerUser.name?.split(" ")[nameSplit.length - 1] ==
-    sellerUser.name?.split(" ")[0]
-      ? ""
-      : sellerUser.name?.split(" ")[nameSplit.length - 1];
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <>
       <Head>
@@ -76,7 +97,9 @@ const SellerPage = () => {
       </Head>
       <div
         className={`${
-          !userCars.length ? "h-screen flex flex-col justify-start" : ""
+          !sellerAnnouncements.length
+            ? "h-screen flex flex-col justify-start"
+            : ""
         }`}
       >
         <Header />
@@ -101,19 +124,13 @@ const SellerPage = () => {
                     ? sellerUser.description
                     : "Este usuário não possui descrição"}
                 </p>
-                {loggedUser ? (
-                  user!.id == sellerUser.id ? (
-                    <button
-                      onClick={toggleModalCreateAnnouncement}
-                      className="btn-big btn-outline-brand w-[200px]"
-                    >
-                      Criar anuncio
-                    </button>
-                  ) : (
-                    ""
-                  )
-                ) : (
-                  ""
+                {user && user!.id == sellerUser.id && (
+                  <button
+                    onClick={toggleModalCreateAnnouncement}
+                    className="btn-big btn-outline-brand w-[200px]"
+                  >
+                    Criar anuncio
+                  </button>
                 )}
               </div>
             </div>
@@ -121,10 +138,10 @@ const SellerPage = () => {
         </section>
         <main
           className={`bg-grey-8 w-full mx-auto h-full mb-72 ${
-            !userCars.length ? "mb-72" : "mt-[-10rem]"
+            !sellerAnnouncements.length ? "mb-72" : "mt-[-10rem]"
           }  flex flex-col justify-between md:mt-[-200px] `}
         >
-          {!userCars.length ? (
+          {!sellerAnnouncements.length ? (
             <ul className="bg-grey-8 mt-[-4rem] mb-[-20rem] md:mt-[-4rem] md:mb-2 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap">
               <div className="relative bottom-5 md:z-0 md:top-48 2xl:top-56 mt-52 w-full border border-grey-1 p-4 max-w-[1204px] bg-grey-8 mx-auto flex text-center flex-col gap-12  md:flex-row md:flex-wrap items-center justify-center ">
                 <p className="text-3xl font-600 text-grey-1">
@@ -136,59 +153,27 @@ const SellerPage = () => {
             <div className="w-11/12 md:mt-10 mx-auto">
               <ul
                 className={`mt-80 h-fit md:mt-72 ${
-                  userCars.length < 16 ? "mb-10" : ""
+                  sellerAnnouncements.length < 16 ? "mb-10" : ""
                 } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
               >
-                {loggedUser === false
-                  ? userCars.map((elem, index) => (
-                      <CommonUserCarCard
-                        key={index}
-                        description={elem.description}
-                        brand={elem.brand}
-                        id={elem.id}
-                        model={elem.model}
-                        price={elem.price}
-                        quilometers={elem.quilometers}
-                        year={elem.year}
-                        published={elem.published}
-                        user={elem.user.name}
-                        frontImage={elem.frontImage}
-                      />
-                    ))
-                  : String(user!.id) !== paramId
-                  ? userCars.map((elem) => (
-                      <CommonUserCarCard
-                        key={elem.id + Math.random()}
-                        description={elem.description}
-                        brand={elem.brand}
-                        id={elem.id}
-                        model={elem.model}
-                        price={elem.price}
-                        quilometers={elem.quilometers}
-                        year={elem.year}
-                        published={elem.published}
-                        user={elem.user.name}
-                        frontImage={elem.frontImage}
-                      />
-                    ))
-                  : userCars.map((elem) => (
+                {sellerAnnouncements.map((elem: ICarsReturn, i: number) => {
+
+                  if (isLoggedIn && elem.userId == user!.id) {
+                    return (
                       <SellerCarCard
-                        key={elem.id + Math.random()}
-                        description={elem.description}
-                        brand={elem.brand}
-                        id={elem.id}
-                        model={elem.model}
-                        price={elem.price}
-                        quilometers={elem.quilometers}
-                        year={elem.year}
-                        published={elem.published}
-                        frontImage={elem.frontImage}
+                        key={i}
+                        car={elem}
+                        handleEdit={handleEdit}
                       />
-                    ))}
+                    );
+                  } else {
+                    return <CommonUserCarCard key={i} car={elem} />;
+                  }
+                })}
               </ul>
             </div>
           )}
-          {userCars.length > 16 && (
+          {sellerAnnouncements.length > 16 && (
             <div className="col-span-4 mb-[62.5px] mt-[62.5px]">
               <Pagination
                 totalPages={Math.ceil(arr.length / cardsPerPage)}
@@ -202,6 +187,12 @@ const SellerPage = () => {
         {modalCreateAnnouncement && (
           <ModalCreateAnnouncement
             toggleModal={toggleModalCreateAnnouncement}
+          />
+        )}
+        {modalEditAnnouncement && (
+          <ModalEditAnnouncement
+            toggleModal={toggleModalEditAnnouncement}
+            announcement={announcementToEdit}
           />
         )}
       </div>
