@@ -101,6 +101,8 @@ export const ModalCreateAnnouncementForm = ({
 
   async function submitForm(data: any) {
     data.quilometers = +data.quilometers;
+    data.brand = capitalizeFirstLetter(data.brand);
+    data.model = capitalizeFirstLetter(data.model);
     const { frontImage, ...rest } = data;
 
     const fd = new FormData();

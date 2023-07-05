@@ -1,19 +1,32 @@
 import { useAuth } from "@/contexts/authContext";
+import { useCarsContext } from "@/contexts/carsContext";
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
+import { get } from "lodash";
 import { toast } from "react-toastify";
 
 interface ConfirmDeleteProps {
-  id: number;
+  announcement: ICarsReturn;
   setPage: (page: number) => void;
+  toggleModal: () => void;
 }
 
-const ConfirmDelete = ({ id, setPage }: ConfirmDeleteProps) => {
+const ConfirmDelete = ({
+  announcement,
+  setPage,
+  toggleModal,
+}: ConfirmDeleteProps) => {
   const { token } = useAuth();
+  const { getAllCars, getSellerAnnouncements } = useCarsContext();
 
   async function handleDelete() {
     try {
       API.defaults.headers.common.Authorization = `Bearer ${token}`;
-      await API.delete(`/cars/${id}`);
+      await API.delete(`/cars/${announcement.id}`);
+      getAllCars();
+      getSellerAnnouncements(announcement.userId);
+      toggleModal();
+      toast.success("Anúncio excluído com sucesso");
     } catch (error) {
       toast.error("Não foi possível excluir");
     }

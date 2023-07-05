@@ -3,26 +3,63 @@ import { SingleImageInput } from "@/components/imageInputs";
 import { useAuth } from "@/contexts/authContext";
 import { useCarsContext } from "@/contexts/carsContext";
 import { ICarsReturn } from "@/interfaces/cars.interfaces";
+import { API } from "@/services/apis";
 import {
   capitalizeFirstLetter,
+  cleanObject,
   formatCurrency,
 } from "@/utils/formatingFunctions";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface FormEditAnnouncementProps {
   announcement: ICarsReturn;
   setPage: (page: number) => void;
+  toggleModal: () => void;
 }
 
 export const FormEditAnnouncement = ({
   announcement,
   setPage,
+  toggleModal,
 }: FormEditAnnouncementProps) => {
   const { token, user } = useAuth();
   const { getAllCars, getSellerAnnouncements } = useCarsContext();
 
-  function submit(data: any) {
-    console.log(data);
+  async function submit(data: any) {
+    cleanObject(data);
+
+    data.quilometers = +data.quilometers;
+    data.price = +data.price;
+
+    const { frontImage, ...rest } = data;
+
+    API.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+    try {
+      await API.patch(`/cars/${announcement.id}`, rest);
+
+      if (frontImage) {
+        const fd = new FormData();
+        fd.append("frontImage", frontImage);
+
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        };
+
+        await API.patch(`cars/${announcement.id}/upload`, fd, config);
+      }
+
+      getAllCars();
+      getSellerAnnouncements(announcement.userId);
+      toggleModal();
+      toast.success("Anúncio atualizado com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao atualizar o anúncio");
+    }
   }
 
   const formHandler = useForm({
@@ -40,14 +77,14 @@ export const FormEditAnnouncement = ({
       <DefaultFieldset
         label="Marca"
         inputProps={{
-          value: capitalizeFirstLetter(announcement.brand),
+          defaultValue: capitalizeFirstLetter(announcement.brand),
           readOnly: true,
         }}
       />
       <DefaultFieldset
         label="Modelo"
         inputProps={{
-          value: capitalizeFirstLetter(announcement.model),
+          defaultValue: capitalizeFirstLetter(announcement.model),
           readOnly: true,
         }}
       />
@@ -55,14 +92,14 @@ export const FormEditAnnouncement = ({
         <DefaultFieldset
           label="Ano"
           inputProps={{
-            value: announcement.year,
+            defaultValue: announcement.year,
             readOnly: true,
           }}
         />
         <DefaultFieldset
           label="Combustivel"
           inputProps={{
-            value: announcement.fuelType,
+            defaultValue: announcement.fuelType,
             readOnly: true,
           }}
         />
@@ -71,14 +108,14 @@ export const FormEditAnnouncement = ({
         <DefaultFieldset
           label="Quilometragem"
           inputProps={{
-            value: announcement.quilometers,
+            defaultValue: announcement.quilometers,
             ...register("quilometers"),
           }}
         />
         <DefaultFieldset
           label="Cor"
           inputProps={{
-            value: announcement.color,
+            defaultValue: announcement.color,
             readOnly: true,
           }}
         />
@@ -87,14 +124,14 @@ export const FormEditAnnouncement = ({
         <DefaultFieldset
           label="Preço tabela FIPE"
           inputProps={{
-            value: formatCurrency(announcement.fipePrice),
+            defaultValue: formatCurrency(announcement.fipePrice),
             readOnly: true,
           }}
         />
         <DefaultFieldset
           label="Valor"
           inputProps={{
-            value: announcement.price,
+            defaultValue: announcement.price,
             ...register("price"),
           }}
         />
@@ -107,7 +144,7 @@ export const FormEditAnnouncement = ({
           className={
             errors.description ? "default-input-error" : "default-input"
           }
-          value={announcement.description}
+          defaultValue={announcement.description}
           id="description"
           cols={10}
           {...register("description")}
@@ -116,7 +153,7 @@ export const FormEditAnnouncement = ({
       <SingleImageInput form={formHandler} imageUrl={announcement.frontImage} />
 
       <div className="flex justify-between">
-        <button className="btn-big btn-alert" onClick={() => setPage(3)}>
+        <button className="btn-big btn-alert p-2" onClick={() => setPage(3)}>
           Excluir anúncio
         </button>
         <button onClick={() => setPage(2)} className="btn-big btn-outline">

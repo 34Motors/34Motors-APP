@@ -18,3 +18,11 @@ export function getRandomIntInclusive() {
   const max = Math.floor(12);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function cleanObject(obj: Record<string, any>): void {
+  for (const key in obj) {
+    if (typeof obj[key] === "undefined" || obj[key] === "") {
+      delete obj[key];
+    }
+  }
+}
