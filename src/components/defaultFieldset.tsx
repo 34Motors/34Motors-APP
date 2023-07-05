@@ -1,4 +1,3 @@
-import { Input } from "postcss";
 import React from "react";
 import InptMask from "react-input-mask";
 
