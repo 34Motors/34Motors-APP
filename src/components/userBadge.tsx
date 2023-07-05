@@ -19,10 +19,10 @@ export const UserBadge = ({
   return (
     <div className="flex gap-2 items-center font-inter font-500">
       <div
-        className={`h-8 w-8 ${bg_color} ${initials_color}  text-sm rounded-full p-2 flex items-center justify-center capitalize`}
+        className={`h-8 w-8 bg-random-${bg_color} ${initials_color}  text-sm rounded-full p-2 flex items-center justify-center `}
       >
-        <span>{name?.split("")[0]}</span> 
-        <span>{userInitials}</span>
+        <span className={`bg-random-${bg_color} capitalize`}>{name?.split("")[0]}</span> 
+        <span className={`bg-random-${bg_color} capitalize`}>{userInitials}</span>
       </div>
       <p className={`text-sm text-${name_color} capitalize`}>{name?.split(" ")[0]} {userSecondName}</p>
     </div>

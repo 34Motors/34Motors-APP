@@ -6,14 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUserContext } from "@/contexts/userContext";
-import { removeNonDigits } from "@/utils/formatingFunctions";
+import { getRandomIntInclusive, removeNonDigits } from "@/utils/formatingFunctions";
 
 export const RegisterForm = () => {
   const { registerUser } = useUserContext();
 
+  const [cepErrorMessage, setCepErrorMessage] = useState<string>("");
   const {
     register,
     handleSubmit,
+    setValue,
+    setFocus,
     formState: { errors },
   } = useForm<iUserBody>({
     resolver: zodResolver(registerSchema),
@@ -21,12 +24,36 @@ export const RegisterForm = () => {
   const [isSeller, setIsSeller] = useState<boolean>(true);
   const [buttonColor, setButtonColor] = useState<boolean>(false);
 
+  const checkCEP = async (e: any) => {
+    const cep = e.target.value.replace(/\D/g, "");
+    if (cep) {
+      fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.erro) {
+            setValue("state", data.uf);
+            setValue("city", data.localidade);
+            setValue("street", data.logradouro);
+            setFocus("number");
+            setCepErrorMessage("");
+          } else {
+            setCepErrorMessage("CEP inválido ou não encontrado.");
+          }
+        });
+    }
+  };
+
   const submit = (data: iUserBody) => {
     data.cep = removeNonDigits(data.cep);
     data.phone = removeNonDigits(data.phone).substring(2);
     data.cpf = removeNonDigits(data.cpf);
 
-    registerUser(data);
+    const userData = {
+      ...data,
+      userColor : getRandomIntInclusive()
+    }
+    
+    registerUser(userData);
   };
 
   return (
@@ -123,11 +150,16 @@ export const RegisterForm = () => {
           label="CEP"
           mask="99999-999"
           id="cep"
+          onBlur={checkCEP}
           inputProps={{
             placeholder: "Digitar seu cep",
             ...register("cep"),
+            onBlur: checkCEP,
           }}
         />
+        {cepErrorMessage && (
+          <small className="text-alert-1 my-[-22px]">{cepErrorMessage}</small>
+        )}
         {errors.cep?.message && (
           <small className="text-alert-1 my-[-22px]">
             {errors.cep.message}
@@ -138,13 +170,9 @@ export const RegisterForm = () => {
             <DefaultFieldset
               label="Estado"
               id="state"
-              mask="aa"
               inputProps={{
                 placeholder: "Digite seu estado",
                 ...register("state"),
-                onChange: (e: any) => {
-                  e.target.value = e.target.value.toUpperCase();
-                },
               }}
             />
             {errors.state?.message && (
@@ -251,6 +279,7 @@ export const RegisterForm = () => {
           inputProps={{
             placeholder: "Digite uma senha",
             ...register("password"),
+            type: "password",
           }}
         />
         {errors.password?.message && (
@@ -264,6 +293,7 @@ export const RegisterForm = () => {
           inputProps={{
             placeholder: "Confirme sua senha",
             ...register("confirmPassword"),
+            type: "password",
           }}
         />
         {errors.confirmPassword?.message && (

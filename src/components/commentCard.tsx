@@ -46,7 +46,7 @@ export const CommentCard = ({ commentData }: { commentData: commentReturn }) => 
     <li className="relative max-w-2xl">
       <div className="flex items-center gap-2 mb-3">
         <UserBadge
-          bg_color="bg-brand-1"
+          bg_color={comment.user?.userColor}
           initials_color="text-white"
           name_color="grey-1"
           name={commentData.user?.name}

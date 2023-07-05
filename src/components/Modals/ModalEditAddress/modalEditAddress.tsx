@@ -89,7 +89,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
+        className={`my-20 flex flex-col gap-10 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 text-grey-1 ${lexend.className}`}>
@@ -141,7 +141,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="state"
                   placeholder="Digite o seu estado"
-                  defaultValue={`${user.address.state}`}
+                  defaultValue={`${user.address?.state}`}
                   {...register("state")}
                   className={`default-input w-full`}
                 />
@@ -161,7 +161,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="city"
                   placeholder="Digite a sua cidade"
-                  defaultValue={`${user.address.city}`}
+                  defaultValue={`${user.address?.city}`}
                   {...register("city")}
                   className={`default-input w-full`}
                 />
@@ -181,7 +181,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 type="text"
                 id="street"
                 placeholder="Digite a sua rua"
-                defaultValue={`${user.address.street}`}
+                defaultValue={`${user.address?.street}`}
                 {...register("street")}
                 className={`default-input`}
               />
@@ -202,7 +202,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                   type="text"
                   id="number"
                   placeholder="Digite o seu número"
-                  defaultValue={`${user.address.number}`}
+                  defaultValue={`${user.address?.number}`}
                   {...register("number")}
                   className={`default-input w-full`}
                 />
@@ -221,7 +221,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
                 <input
                   type="text"
                   id="complement"
-                  defaultValue={`${user.address.complement}`}
+                  defaultValue={`${user.address?.complement}`}
                   placeholder="Digite o complemento"
                   {...register("complement")}
                   className={`default-input w-full`}

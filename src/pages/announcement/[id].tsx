@@ -192,9 +192,9 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] capitalize bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize bg-random-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
-                {userInitials}
+                {userInitials.toUpperCase()}
               </div>
               <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
                 {owner.name}
@@ -216,7 +216,7 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
             {user.name && (
               <UserBadge
-                bg_color="bg-brand-1"
+                bg_color={String(user.userColor)}
                 initials_color="text-white"
                 name_color="grey-1"
                 name={user.name}

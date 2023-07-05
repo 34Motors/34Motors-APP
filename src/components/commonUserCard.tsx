@@ -13,8 +13,10 @@ interface iCarCarProps {
   description: string;
   frontImage: string;
   published: boolean;
+  userColor:string
   id: number;
   user: string;
+
 }
 
 const CommonUserCarCard = ({
@@ -28,6 +30,7 @@ const CommonUserCarCard = ({
   id,
   price,
   user,
+  userColor,
 }: iCarCarProps) => {
   const nameSplit = user?.split(" ");
 
@@ -67,7 +70,7 @@ const CommonUserCarCard = ({
             {description}
           </p>
           <div className="flex items-center gap-2 font-500">
-            <span className="p-0 m-0 capitalize flex items-center justify-center text-white bg-brand-1 text-sm  w-8 h-8 rounded-full">
+            <span className={`p-0 m-0 capitalize flex items-center justify-center text-white bg-random-${userColor} text-sm  w-8 h-8 rounded-full`}>
               <span className="capitalize">{user.split("")[0]}</span>
               <span className="capitalize">{userInitials}</span>
             </span>

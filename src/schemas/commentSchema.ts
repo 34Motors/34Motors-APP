@@ -9,6 +9,7 @@ const commentSchema = z.object({
   user: z.object({
     id: z.number(),
     name: z.string(),
+    userColor: z.string(),
   }),
 });
 

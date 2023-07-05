@@ -60,12 +60,12 @@ const SellerPage = () => {
   const nameSplit = sellerUser.name?.split(" ");
   const userInitials =
     sellerUser.name?.split(" ")[0][0] ===
-    sellerUser.name?.split(" ")[nameSplit.length - 1][0]
+      sellerUser.name?.split(" ")[nameSplit.length - 1][0]
       ? ""
       : sellerUser.name?.split(" ")[nameSplit.length - 1][0];
   const userSecondName =
     sellerUser.name?.split(" ")[nameSplit.length - 1] ==
-    sellerUser.name?.split(" ")[0]
+      sellerUser.name?.split(" ")[0]
       ? ""
       : sellerUser.name?.split(" ")[nameSplit.length - 1];
   return (
@@ -75,16 +75,15 @@ const SellerPage = () => {
         <meta name="description" content="Página do anunciante 34 Motors." />
       </Head>
       <div
-        className={`${
-          !userCars.length ? "h-screen flex flex-col justify-start" : ""
-        }`}
+        className={`${!userCars.length ? "h-screen flex flex-col justify-start" : ""
+          }`}
       >
         <Header />
         <section className="relative">
           <div className="bg-brand-1 w-full h-[360px]"></div>
           <div className="w-11/12 mx-auto max-w-[1204px]">
             <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
-              <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">
+              <p className={`p-0 m-0 flex items-center justify-center text-white bg-random-${sellerUser.userColor} text-heading2  w-[104px] h-[104px] rounded-full mb-6 capitalize`}>
                 {sellerUser.name.split("")[0]}
               </p>
               <div className="flex flex-col gap-2 mb-6">
@@ -120,9 +119,8 @@ const SellerPage = () => {
           </div>
         </section>
         <main
-          className={`bg-grey-8 w-full mx-auto h-full mb-72 ${
-            !userCars.length ? "mb-72" : "mt-[-10rem]"
-          }  flex flex-col justify-between md:mt-[-200px] `}
+          className={`bg-grey-8 w-full mx-auto h-full mb-72 ${!userCars.length ? "mb-72" : "mt-[-10rem]"
+            }  flex flex-col justify-between md:mt-[-200px] `}
         >
           {!userCars.length ? (
             <ul className="bg-grey-8 mt-[-4rem] mb-[-20rem] md:mt-[-4rem] md:mb-2 mx-auto w-11/12 flex flex-col gap-12 md:flex-row md:flex-wrap">
@@ -135,28 +133,28 @@ const SellerPage = () => {
           ) : (
             <div className="w-11/12 md:mt-10 mx-auto">
               <ul
-                className={`mt-80 h-fit md:mt-72 ${
-                  userCars.length < 16 ? "mb-10" : ""
-                } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
+                className={`mt-80 h-fit md:mt-72 ${userCars.length < 16 ? "mb-10" : ""
+                  } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
               >
                 {loggedUser === false
                   ? userCars.map((elem, index) => (
-                      <CommonUserCarCard
-                        key={index}
-                        description={elem.description}
-                        brand={elem.brand}
-                        id={elem.id}
-                        model={elem.model}
-                        price={elem.price}
-                        quilometers={elem.quilometers}
-                        year={elem.year}
-                        published={elem.published}
-                        user={elem.user.name}
-                        frontImage={elem.frontImage}
-                      />
-                    ))
+                    <CommonUserCarCard
+                      key={index}
+                      description={elem.description}
+                      brand={elem.brand}
+                      id={elem.id}
+                      model={elem.model}
+                      price={elem.price}
+                      quilometers={elem.quilometers}
+                      year={elem.year}
+                      published={elem.published}
+                      user={elem.user.name}
+                      userColor={elem.user.userColor}
+                      frontImage={elem.frontImage}
+                    />
+                  ))
                   : String(user!.id) !== paramId
-                  ? userCars.map((elem) => (
+                    ? userCars.map((elem) => (
                       <CommonUserCarCard
                         key={elem.id + Math.random()}
                         description={elem.description}
@@ -169,9 +167,9 @@ const SellerPage = () => {
                         published={elem.published}
                         user={elem.user.name}
                         frontImage={elem.frontImage}
-                      />
+                        userColor={elem.user.userColor} />
                     ))
-                  : userCars.map((elem) => (
+                    : userCars.map((elem) => (
                       <SellerCarCard
                         key={elem.id + Math.random()}
                         description={elem.description}
