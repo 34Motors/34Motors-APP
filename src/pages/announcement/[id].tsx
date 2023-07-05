@@ -5,6 +5,8 @@ import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import { toast } from "react-toastify";
+import { IoLogoWhatsapp } from "react-icons/io";
 
 import Header from "@/components/header";
 import { CardDetail } from "@/components/cardDetail";
@@ -20,16 +22,17 @@ import { commentReturn } from "@/interfaces/comment.interfaces";
 import { formatCurrency } from "@/utils/formatingFunctions";
 import { useAuth } from "@/contexts/authContext";
 import { LoadingScreen } from "@/components/loadingScreen";
+import { useCarsContext } from "@/contexts/carsContext";
 
 const Announcement = () => {
   const router = useRouter();
   const [car, setCar] = useState({} as ICarsReturn);
   const [owner, setOwner] = useState({} as iUserBody);
-  const [comments, setComments] = useState([] as commentReturn[]);
   const [loading, setLoading] = useState(true);
   const [carImage, setCarImage] = useState("");
   const [openImageModal, setOpenImageModal] = useState(false);
   const { isLoggedIn, setIsloggedIn, user, handleErrors } = useAuth();
+  const { comments, setComments, getAllComments } = useCarsContext();
 
   useEffect(() => {
     const cookies = parseCookies();
@@ -42,8 +45,8 @@ const Announcement = () => {
         const response = await API.get(`/cars/${id}`);
         setCar(response.data);
         setOwner(response.data.user);
-        setComments(response.data.comments);
         setLoading(false);
+        getAllComments(id as string);
       } catch (error) {
         handleErrors(error);
       }
@@ -108,6 +111,15 @@ const Announcement = () => {
     return <LoadingScreen />;
   }
 
+  const redirectToWhatsApp = (phone: string) => {
+    const phoneNumber = phone;
+    const message = "Olá, tudo bem? Estou interessado em negociar.";
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+
+    window.open(whatsappURL);
+    return false;
+  };
+
   return (
     <>
       <Head>
@@ -147,10 +159,16 @@ const Announcement = () => {
               </p>
             </div>
             <button
-              className="mb-10 btn-brand p-2 text-sm font-600 font-inter rounded"
+              className="mb-10 btn-brand bg-brand-5 hover:bg-brand-6 hover:border-brand-6 disabled:bg-brand-3 p-2 text-sm font-600 font-inter rounded"
               disabled={disable}
+              onClick={() => redirectToWhatsApp(owner.phone)}
             >
               Comprar
+              <IoLogoWhatsapp
+                size={20}
+                color="#ffffff"
+                style={{ marginLeft: "0.5rem" }}
+              />
             </button>
           </div>
 
@@ -174,9 +192,9 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid justify-center md:row-start-2 md:col-start-3 md:row-span-1">
             <div className="flex flex-col items-center justify-center gap-7">
               <div
-                className={`h-[77px] w-[77px] capitalize bg-brand-1 text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
+                className={`h-[77px] w-[77px] capitalize badge-${owner.userColor} text-white text-[26px] font-500 font-inter rounded-full p-2 flex items-center justify-center`}
               >
-                {userInitials}
+                {userInitials.toUpperCase()}
               </div>
               <h6 className="text-heading6 text-grey-1 font-lexend font-600 mb-8">
                 {owner.name}
@@ -198,7 +216,7 @@ const Announcement = () => {
           <div className="bg-grey-10 rounded p-7 grid gap-6 md:col-start-1 md:col-end-3">
             {user.name && (
               <UserBadge
-                bg_color="bg-brand-1"
+                bg_color={String(user.userColor)}
                 initials_color="text-white"
                 name_color="grey-1"
                 name={user.name}

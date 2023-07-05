@@ -5,11 +5,13 @@ import {
   createContext,
   useState,
   useEffect,
-  use,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { ICarsReturn, IFilterOption } from "@/interfaces/cars.interfaces";
 import { API } from "@/services/apis";
 import { useAuth } from "./authContext";
+import { commentReturn } from "@/interfaces/comment.interfaces";
 
 interface Props {
   children: ReactNode;
@@ -26,6 +28,24 @@ interface iCarsProvider {
   getSellerAnnouncements: (sellerId: number) => void;
   sellerAnnouncements: ICarsReturn[];
   getAllCars: () => void;
+  getAllComments: (id: string) => Promise<void>;
+  comments: commentReturn[];
+  setComments: Dispatch<
+    SetStateAction<
+      {
+        description: string;
+        id: number;
+        carId: number;
+        userId: number;
+        user: {
+          id: number;
+          name: string;
+        };
+        postDate: Date;
+      }[]
+    >
+  >;
+  reloadComments: (carId: Number) => Promise<void>;
 }
 
 const CarsContext = createContext<iCarsProvider>({} as iCarsProvider);
@@ -36,6 +56,7 @@ export function CarsProvider({ children }: Props) {
     [] as ICarsReturn[]
   );
   const [loadCars, setLoadCars] = useState(true);
+  const [comments, setComments] = useState([] as commentReturn[]);
   const [listFilters, setListFilters] = useState<IFilterOption[]>([]);
   const [selectedFilters, setSelectedFilters] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,6 +83,21 @@ export function CarsProvider({ children }: Props) {
       handleErrors(error);
     }
   }
+        
+  const getAllComments = async (id: string) => {
+    try {
+      const comment = await API.get(`/comments/${id}`);
+      setComments(comment.data);
+    } catch (error) {
+      handleErrors(error);
+    }
+  };
+
+  const reloadComments = async (carId: Number) => {
+    const newcommentsList = await API.get(`/comments/${carId}`);
+
+    setComments(newcommentsList.data);
+  };
 
   useEffect(() => {
     if (loadCars) {
@@ -83,6 +119,10 @@ export function CarsProvider({ children }: Props) {
         selectedFilters,
         setSelectedFilters,
         getAllCars,
+        getAllComments,
+        comments,
+        reloadComments,
+        setComments
       }}
     >
       {children}

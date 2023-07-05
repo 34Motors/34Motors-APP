@@ -4,27 +4,38 @@ interface UserBadgeProps {
   name_color: string;
   name: string;
 }
+
+
 export const UserBadge = ({
   bg_color,
   initials_color,
   name_color,
   name,
 }: UserBadgeProps) => {
+  const nameSplit = name?.split(" ");
 
-  const nameSplit = name?.split(" ")
-
-  const userInitials = name?.split(" ")[0][0] === name?.split(" ")[nameSplit.length-1][0] ? "" : name?.split(" ")[nameSplit.length-1][0]
-  const userSecondName = name?.split(" ")[nameSplit.length-1] == name?.split(" ")[0] ? "": name?.split(" ")[nameSplit.length-1]
+  const userInitials =
+    name?.split(" ")[0][0] === name?.split(" ")[nameSplit.length - 1][0]
+      ? ""
+      : name?.split(" ")[nameSplit.length - 1][0];
+  const userSecondName =
+    name?.split(" ")[nameSplit.length - 1] == name?.split(" ")[0]
+      ? ""
+      : name?.split(" ")[nameSplit.length - 1];
 
   return (
-    <div className="flex gap-2 items-center font-inter font-500">
+    <div className={`flex gap-2 items-center font-inter font-500`}>
       <div
-        className={`h-8 w-8 ${bg_color} ${initials_color}  text-sm rounded-full p-2 flex items-center justify-center capitalize`}
+        className={`h-8 w-8 badge-${bg_color} ${initials_color}  text-sm rounded-full p-2 flex items-center justify-center `}
       >
-        <span>{name?.split("")[0]}</span> 
-        <span>{userInitials}</span>
+        <span className={`badge-${bg_color} capitalize`}>
+          {name?.split("")[0]}
+        </span>
+        <span className={`badge-${bg_color} capitalize`}>{userInitials}</span>
       </div>
-      <p className={`text-sm text-${name_color} capitalize`}>{name?.split(" ")[0]} {userSecondName}</p>
+      <p className={`text-sm text-${name_color} capitalize`}>
+        {name?.split(" ")[0]} {userSecondName}
+      </p>
     </div>
   );
 };

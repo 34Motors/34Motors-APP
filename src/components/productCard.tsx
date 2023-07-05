@@ -37,7 +37,7 @@ export const ProductCard = ({ car }: { car: ICarsReturn }) => {
             {car.description}
           </p>
           <UserBadge
-            bg_color="bg-brand-1"
+            bg_color={car.user.userColor}
             initials_color="text-white"
             name_color="grey-2"
             name={car.user.name}

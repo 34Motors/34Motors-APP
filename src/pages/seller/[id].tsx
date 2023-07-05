@@ -107,7 +107,9 @@ const SellerPage = () => {
           <div className="bg-brand-1 w-full h-[360px]"></div>
           <div className="w-11/12 mx-auto max-w-[1204px]">
             <div className="absolute bg-white top-0 mt-[75px] z-[5] w-11/12 max-w-[1204px] rounded border py-[40px] px-[29px] mx-auto">
-              <p className="p-0 m-0 flex items-center justify-center text-white bg-brand-1 text-heading2  w-[104px] h-[104px] rounded-full mb-6">
+              <p
+                className={`p-0 m-0 flex items-center justify-center text-white badge-${sellerUser.userColor} text-heading2  w-[104px] h-[104px] rounded-full mb-6 capitalize`}
+              >
                 {sellerUser.name.split("")[0]}
               </p>
               <div className="flex flex-col gap-2 mb-6">
@@ -157,7 +159,6 @@ const SellerPage = () => {
                 } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
               >
                 {sellerAnnouncements.map((elem: ICarsReturn, i: number) => {
-
                   if (isLoggedIn && elem.userId == user!.id) {
                     return (
                       <SellerCarCard

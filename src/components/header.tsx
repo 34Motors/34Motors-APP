@@ -32,6 +32,7 @@ const Header = () => {
     };
   }, []);
 
+
   return (
     <header
       className={`z-10 w-full px-4 bg-grey-10 h-[80px] sticky top-0 border-b-2 border-grey-6`}
@@ -55,7 +56,7 @@ const Header = () => {
         ) : isLoggedIn ? (
           <button onClick={toggleDropdown}>
             <UserBadge
-              bg_color="bg-brand-1"
+              bg_color={user.userColor}
               initials_color="text-white"
               name_color="grey-2"
               name={user.name}

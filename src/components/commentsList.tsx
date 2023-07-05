@@ -2,8 +2,9 @@ import { commentReturn } from "@/interfaces/comment.interfaces";
 import { CommentCard } from "./commentCard";
 
 export const CommentsList = ({ comments }: { comments: commentReturn[] }) => {
+
   const commentsToRender = comments.map((comment) => (
-    <CommentCard key={comment.id} comment={comment} />
+    <CommentCard key={comment.id+Math.random()} commentData={comment} />
   ));
 
   return (

@@ -61,6 +61,7 @@ const ModalEditUser = ({
 
     API.defaults.headers.common.authorization = `Bearer ${token}`;
 
+    toggleModal();
     try {
       const response = await API.patch(`/users/${user.id}`, data);
 
