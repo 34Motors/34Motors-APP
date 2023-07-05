@@ -33,7 +33,7 @@ const Announcement = () => {
   const [openImageModal, setOpenImageModal] = useState(false);
   const { isLoggedIn, setIsloggedIn, user, handleErrors } = useAuth();
   const { comments, setComments, getAllComments } = useCarsContext();
-
+  
   useEffect(() => {
     const cookies = parseCookies();
     if (cookies.token) setIsloggedIn(true);
@@ -100,6 +100,7 @@ const Announcement = () => {
     try {
       const response = await API.post(`/comments/${car.id}`, data);
       const commentData: commentReturn = response.data;
+      console.log(commentData)
       setComments([...comments, commentData]);
       reset();
     } catch (error) {

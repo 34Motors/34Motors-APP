@@ -83,6 +83,7 @@ module.exports = {
         inter: [inter, ""],
       },
       screens: {
+        lt: {max: "365px"},
         sm: { max: "769px" },
         tabletMax: { max: "1062px" },
         tabletMin: { min: "1063px" },
