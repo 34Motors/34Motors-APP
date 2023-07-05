@@ -6,6 +6,6 @@ export const carsAPI = axios.create({
 });
 
 export const API = axios.create({
-  baseURL: "http://localhost:4002",
+  baseURL: "https://34motors-api-production.up.railway.app",
   timeout: 15000,
 });
