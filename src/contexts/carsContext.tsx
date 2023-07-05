@@ -25,6 +25,9 @@ interface iCarsProvider {
   setLoadCars: (value: boolean) => void;
   setIsModalOpen: (value: boolean) => void;
   isModalOpen: boolean;
+  getSellerAnnouncements: (sellerId: number) => void;
+  sellerAnnouncements: ICarsReturn[];
+  getAllCars: () => void;
   getAllComments: (id: string) => Promise<void>;
   comments: commentReturn[];
   setComments: Dispatch<
@@ -49,12 +52,14 @@ const CarsContext = createContext<iCarsProvider>({} as iCarsProvider);
 
 export function CarsProvider({ children }: Props) {
   const [cars, setCars] = useState([] as ICarsReturn[]);
+  const [sellerAnnouncements, setSellerAnnouncements] = useState(
+    [] as ICarsReturn[]
+  );
   const [loadCars, setLoadCars] = useState(true);
   const [comments, setComments] = useState([] as commentReturn[]);
   const [listFilters, setListFilters] = useState<IFilterOption[]>([]);
   const [selectedFilters, setSelectedFilters] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
   const { handleErrors } = useAuth();
 
   const getAllCars = async () => {
@@ -69,6 +74,16 @@ export function CarsProvider({ children }: Props) {
     }
   };
 
+  async function getSellerAnnouncements(sellerId: number) {
+    try {
+      const response = await API.get(`cars/seller/${sellerId}`);
+      const sellerAnnouncements = response.data;
+      setSellerAnnouncements(sellerAnnouncements);
+    } catch (error) {
+      handleErrors(error);
+    }
+  }
+        
   const getAllComments = async (id: string) => {
     try {
       const comment = await API.get(`/comments/${id}`);
@@ -99,8 +114,11 @@ export function CarsProvider({ children }: Props) {
         isModalOpen,
         setLoadCars,
         listFilters,
+        getSellerAnnouncements,
+        sellerAnnouncements,
         selectedFilters,
         setSelectedFilters,
+        getAllCars,
         getAllComments,
         comments,
         reloadComments,

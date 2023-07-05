@@ -2,30 +2,25 @@ import Image from "next/image";
 import { CardDetail } from "./cardDetail";
 import { formatCurrency, formatNumber } from "@/utils/formatingFunctions";
 import Link from "next/link";
-
-interface iCarCarProps {
-  published: boolean;
-  model: string;
-  brand: string;
-  year: string;
-  quilometers: string;
-  id: number;
-  price: number;
-  description: string;
-  frontImage: string;
+import { ICarsReturn } from "@/interfaces/cars.interfaces";
+interface iSellerCardProps {
+  car: ICarsReturn;
+  handleEdit: (car: ICarsReturn) => void;
 }
 
-const SellerCarCard = ({
-  frontImage,
-  published,
-  model,
-  brand,
-  description,
-  quilometers,
-  year,
-  id,
-  price,
-}: iCarCarProps) => {
+const SellerCarCard = ({ car, handleEdit }: iSellerCardProps) => {
+  const {
+    frontImage,
+    published,
+    model,
+    brand,
+    description,
+    quilometers,
+    year,
+    id,
+    price,
+  } = car;
+
   return (
     <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
       <div className="w-full flex items-center justify-center bg-gray-200">
@@ -54,7 +49,10 @@ const SellerCarCard = ({
           </p>
         </div>
         <div className="flex items-center justify-start gap-2">
-          <button className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded">
+          <button
+            className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded"
+            onClick={() => handleEdit(car)}
+          >
             Editar
           </button>
           <Link
@@ -62,7 +60,7 @@ const SellerCarCard = ({
             className="border-[1.5px] py-[12px] px-[20px] border-grey-0 text-grey-0 rounded"
           >
             {" "}
-            ver detalhes
+            Ver detalhes
           </Link>
         </div>
       </div>
