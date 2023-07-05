@@ -4,6 +4,7 @@ export interface iUserBody {
   complement?: string;
   description?: string;
   password: string;
+  userColor: number;
   confirmPassword: string;
   cpf: string;
   birthDate: string;
@@ -25,6 +26,7 @@ export interface iUserComplete {
   description?: string;
   password: string;
   confirmPassword: string;
+  userColor: string;
   cpf: string;
   birthDate: string;
   phone: string;

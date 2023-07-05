@@ -47,6 +47,7 @@ const Header = () => {
       window.removeEventListener("resize", checkIsMobile);
     };
   }, []);
+  console.log(user.userColor)
 
   return (
     <header
@@ -71,7 +72,7 @@ const Header = () => {
         ) : loggedToken ? (
           <button onClick={toggleDropdown}>
             <UserBadge
-              bg_color="bg-brand-1"
+              bg_color={user.userColor}
               initials_color="text-white"
               name_color="grey-2"
               name={user.name}

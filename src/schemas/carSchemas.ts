@@ -24,7 +24,7 @@ const createCarBody = z.object({
 
 const returnCar = createCarBody.extend({
   id: z.number(),
-  user: z.object({ id: z.number(), name: z.string() }),
+  user: z.object({ id: z.number(), name: z.string(), userColor:z.string() }),
 });
 
 export { createCarBody, returnCar };

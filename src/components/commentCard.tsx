@@ -21,6 +21,7 @@ const diffDates = (start: number, end: number): string => {
 };
 
 export const CommentCard = ({ comment }: { comment: commentReturn }) => {
+
   const commentDate = new Date(comment.postDate);
   const dateDiff = diffDates(commentDate.getTime(), Date.now());
   
@@ -28,7 +29,7 @@ export const CommentCard = ({ comment }: { comment: commentReturn }) => {
     <li>
       <div className="flex items-center gap-2 mb-3">
         <UserBadge
-          bg_color="bg-brand-1"
+          bg_color={comment.user?.userColor}
           initials_color="text-white"
           name_color="grey-1"
           name={comment.user?.name}
