@@ -35,7 +35,7 @@ const ModalEditAddress = ({ toggleModal }: ModalEditAddressProps) => {
       getUser(token!);
     } catch (error) {
       toast.error("Não foi possível atualizar o endereço!");
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -71,7 +71,7 @@ const ModalEditUser = ({
       getUser(token!);
     } catch (error) {
       toast.error("Não foi possível atualizar as informações do usuário");
-      console.log(error);
+      console.error(error);
     }
   };
 

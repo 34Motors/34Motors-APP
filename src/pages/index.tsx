@@ -12,7 +12,7 @@ import Footer from "@/components/footer";
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const { cars } = useCarsContext();
-  
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
@@ -46,7 +46,7 @@ export default function Home() {
         </div>
       </section>
       <main className="w-11/12 mx-auto my-12 px-5 grid grid-cols-1 gap-y-6 md:grid-cols-2 tabletMin:grid-cols-4 tabletMin:px-4 tabletMin:gap-16">
-        {cars.length ? (
+        {cars.length > 0 ? (
           <>
             <ListCards currentPage={currentPage} cardsPerPage={12} />
             <FiltroCategory />

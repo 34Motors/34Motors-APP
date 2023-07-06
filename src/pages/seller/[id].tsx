@@ -152,10 +152,10 @@ const SellerPage = () => {
               </div>
             </ul>
           ) : (
-            <div className="w-11/12 md:mt-10 mx-auto">
+            <div className="w-11/12 pt-6 md:mt-10 mx-auto">
               <ul
                 className={`mt-80 h-fit md:mt-72 ${
-                  sellerAnnouncements.length < 16 ? "mb-10" : ""
+                  sellerAnnouncements.length < 16 ? "mb-[-10px]" : ""
                 } list-none w-11/12 bg-grey-8 mx-auto flex flex-col gap-32 md:flex-row md:flex-wrap items-center justify-center`}
               >
                 {sellerAnnouncements.map((elem: ICarsReturn, i: number) => {

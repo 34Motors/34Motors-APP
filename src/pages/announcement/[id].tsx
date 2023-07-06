@@ -100,7 +100,6 @@ const Announcement = () => {
     try {
       const response = await API.post(`/comments/${car.id}`, data);
       const commentData: commentReturn = response.data;
-      console.log(commentData);
       setComments([...comments, commentData]);
       reset();
     } catch (error) {

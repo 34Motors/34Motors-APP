@@ -21,7 +21,7 @@ const ResetPassword = () => {
       await API.patch("/users/recover/" + token, data);
       router.push("/login");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

@@ -15,7 +15,7 @@ export const ModalFiltroMobile = ({ content }: ModalFiltroMobileProps) => {
   return (
     <>
       {isModalOpen && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-10">
           <div className="bg-white max-w-md p-8 overflow-y-auto w-full h-full">
             <header className="mt-12 flex justify-between">
               <p className="text-center  my-3 text-lexend font-500 text-heading7 text-grey-1 mb-4">
