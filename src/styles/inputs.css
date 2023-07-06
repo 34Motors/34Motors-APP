@@ -1,0 +1,19 @@
+@tailwind components;
+
+@layer components {
+  .default-input {
+    @apply flex items-center px-4 py-2 bg-grey-10 border-2 rounded font-inter font-500 text-grey-1 hover:border-brand-1 focus:border-brand-1 focus:text-grey-1 focus:outline-brand-1 placeholder:text-grey-3 read-only:border-grey-7 read-only:text-grey-3 read-only:focus:outline-grey-7 read-only:focus:text-grey-3 read-only:hover:border-grey-7 read-only:font-600 read-only:bg-grey-7;
+  }
+
+  .default-select {
+    @apply flex items-center px-4 py-2 bg-grey-10 border-2 font-inter font-500 rounded text-grey-1 hover:border-brand-1 focus:border-brand-1 focus:text-grey-1 focus:outline-brand-1;
+  }
+
+  .default-label {
+    @apply text-inputLabel font-500 text-grey-1;
+  }
+
+  .default-input-error{
+    @apply flex items-center px-4 py-2 bg-grey-10 border-2 rounded font-inter font-500 text-grey-1 outline-alert-1 border-alert-1
+  } 
+}
