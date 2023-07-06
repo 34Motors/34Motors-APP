@@ -31,7 +31,6 @@ export const CommentCard = ({
 }: {
   commentData: commentReturn;
 }) => {
-  console.log(commentData, "fora do edit");
   const commentDate = new Date(commentData.postDate);
   const dateDiff = diffDates(commentDate.getTime(), Date.now());
 
@@ -47,7 +46,6 @@ export const CommentCard = ({
   };
 
   const editComment = async (comment: editComment) => {
-    console.log(commentData, "dentro do edit");
     API.defaults.headers.common.authorization = `Bearer ${token}`;
 
     try {
@@ -59,7 +57,7 @@ export const CommentCard = ({
     } catch (error) {
       toast.error("Não foi possível atualizar o comentário");
 
-      console.log(error);
+      console.error(error);
     }
   };
 

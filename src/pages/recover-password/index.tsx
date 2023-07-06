@@ -18,11 +18,10 @@ const SendRecoverEmail = () => {
       await API.post("/users/recover", data);
       router.push("/");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-  
   return (
     <div className="flex flex-col justify-between items-center h-screen">
       <Header />

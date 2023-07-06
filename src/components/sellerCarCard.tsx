@@ -22,18 +22,18 @@ const SellerCarCard = ({ car, handleEdit }: iSellerCardProps) => {
   } = car;
 
   return (
-    <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative">
-      <div className="w-full flex items-center justify-center bg-gray-200">
+    <li className="w-[312px] md:w-[40%] md:max-w-[312px] relative h-[280px]">
+      <div className="w-full h-[150px] flex items-center justify-center bg-gray-200">
         <Image
           width={262}
           height={150}
           src={frontImage}
           alt="Foto de um carro"
-          className="w-full object-cover"
+          className="w-full h-full object-cover"
         />
       </div>
       <div className="flex flex-col gap-4">
-        <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4">
+        <h6 className="font-lexend font-600 text-heading7 text-grey-1 capitalize mt-4 h-12">
           {brand} - {model}
         </h6>
         <p className="text-sm h-12 overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">

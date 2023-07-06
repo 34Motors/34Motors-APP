@@ -89,16 +89,16 @@ const FiltroCategory = () => {
         if (translatedCategory !== "Km" && translatedCategory !== "Preço") {
           return (
             <div key={index}>
-              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+              <h4 className="my-3 font-lexend font-600 text-[24px] text-black">
                 {translatedCategory}
               </h4>
-              <div className="overflow-y-auto space-y-1 ml-3">
-                <ul className="overflow-y-auto space-y-1 ml-3">
+              <div className="overflow-y-auto space-y-1 ml-1">
+                <ul className="overflow-y-auto space-y-1 ml-1">
                   {Object.values(filter[category]).map(
                     (categorySpecific: any, i) => (
                       <li key={i}>
                         <button
-                          className="font-lexend font-500 text-heading6 text-grey-3"
+                          className="font-lexend font-500 text-[16px] text-grey-3"
                           onClick={() =>
                             handleFilterCars(category, categorySpecific)
                           }
@@ -117,7 +117,7 @@ const FiltroCategory = () => {
         if (category === "price" && hasPrice) {
           return (
             <div key={index}>
-              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+              <h4 className="my-3 font-lexend font-600 text-[24px] text-black">
                 Preço
               </h4>
               <div className="grid grid-cols-2 gap-6">
@@ -147,7 +147,7 @@ const FiltroCategory = () => {
         if (category === "quilometers" && hasQuilometers) {
           return (
             <div key={index}>
-              <h4 className="my-3 font-lexend font-600 text-heading4 text-black">
+              <h4 className="my-3 font-lexend font-600 text-[24px] text-black">
                 Km
               </h4>
               <div className="grid grid-cols-2 gap-6">
@@ -155,7 +155,7 @@ const FiltroCategory = () => {
                   ref={minQuilometersRef}
                   type="text"
                   placeholder="Mínimo"
-                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  className="font-lexend font-500 text-[24px] text-grey-3 btn-negative text-center"
                   onChange={(e) =>
                     delayedFilterUpdate("minQuilometers", e.target.value)
                   }
@@ -164,7 +164,7 @@ const FiltroCategory = () => {
                   type="text"
                   ref={maxQuilometersRef}
                   placeholder="Máximo"
-                  className="font-lexend font-500 text-heading6 text-grey-3 btn-negative text-center"
+                  className="font-lexend font-500 text-[24px] text-grey-3 btn-negative text-center"
                   onChange={(e) =>
                     delayedFilterUpdate("maxQuilometers", e.target.value)
                   }

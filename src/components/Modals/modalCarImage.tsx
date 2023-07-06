@@ -18,7 +18,7 @@ const ModalCarImage = ({ toggleModal, carImage }: ModalCarImageProps) => {
   return (
     <ModalBase toggleModal={toggleModal}>
       <div
-        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl min-w-[33%] max-w-lg rounded-lg`}
+        className={`flex flex-col gap-8 bg-grey-whiteFixed p-5 shadow-xl w-[90%] max-w-[800px] rounded-lg`}
       >
         <div className={`flex justify-between`}>
           <h3 className={`text-body1 font-500 ${lexend.className}`}>
@@ -28,9 +28,9 @@ const ModalCarImage = ({ toggleModal, carImage }: ModalCarImageProps) => {
             <IoMdClose />
           </button>
         </div>
-        <div className={`flex items-center justify-center`}>
+        <div className={`flex items-center justify-center w-full`}>
           <div
-            className={`flex items-center justify-center w-[466px] rounded bg-grey-7`}
+            className={`flex items-center justify-center w-full rounded bg-grey-7`}
           >
             <Image
               src={carImage!}

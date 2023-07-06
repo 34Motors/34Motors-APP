@@ -58,6 +58,7 @@ export const ModalCreateAnnouncementForm = ({
   const [selectedModel, setSelectedModel] = useState<iCar | null>(null);
   const { token, user } = useAuth();
   const { getAllCars, getSellerAnnouncements } = useCarsContext();
+  const [loading, setLoading] = useState(false);
 
   async function handleBrandChange(event: any) {
     if (event.target.value == "null") {
@@ -100,6 +101,7 @@ export const ModalCreateAnnouncementForm = ({
   } = formHandler;
 
   async function submitForm(data: any) {
+    setLoading(true);
     data.quilometers = +data.quilometers;
     data.brand = capitalizeFirstLetter(data.brand);
     data.model = capitalizeFirstLetter(data.model);
@@ -128,11 +130,16 @@ export const ModalCreateAnnouncementForm = ({
       toast.success("Anúncio cadastrado com sucesso!");
       getAllCars();
       getSellerAnnouncements(user!.id);
+      setLoading(false);
       setPage(2);
     } catch (error: any) {
-      console.log(error);
+      console.error(error);
       toast.error(error.response.data.message);
     }
+  }
+
+  if (loading) {
+    return <SmallLoading />;
   }
 
   return (
@@ -206,7 +213,7 @@ function SelectModel({ models, handleChange, register }: SelectModelsProps) {
         Modelo
       </label>
       <select
-        className="default-select"
+        className="default-select w-full"
         id="model"
         {...register("model")}
         onChange={handleChange}
@@ -255,7 +262,7 @@ function OtherInputs({ car, form }: OtherInputsProps) {
           }}
         />
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between w-full">
         <DefaultFieldset
           label={"Quilometragem"}
           id={"quilometers"}
@@ -264,8 +271,8 @@ function OtherInputs({ car, form }: OtherInputsProps) {
             placeholder: "Quilometragem",
             ...register("quilometers"),
             className: errors.quilometers
-              ? "default-input-error"
-              : "default-input",
+              ? "default-input-error w-full"
+              : "default-input w-full",
           }}
         />
         <DefaultFieldset
@@ -274,13 +281,15 @@ function OtherInputs({ car, form }: OtherInputsProps) {
           inputProps={{
             placeholder: "Cor",
             ...register("color"),
-            className: errors.color ? "default-input-error" : "default-input",
+            className: errors.color
+              ? "default-input-error w-full"
+              : "default-input w-full",
           }}
         />
       </div>
       <div className="flex justify-between">
         <DefaultFieldset
-          label={"Preço tabela FIPE"}
+          label={"Tabela FIPE"}
           id={"fipePrice"}
           inputProps={{
             value: formatCurrency(car.value),
@@ -295,7 +304,9 @@ function OtherInputs({ car, form }: OtherInputsProps) {
             type: "number",
             placeholder: "Valor",
             ...register("price"),
-            className: errors.price ? "default-input-error" : "default-input",
+            className: errors.price
+              ? "default-input-error w-full"
+              : "default-input w-full",
           }}
         />
       </div>

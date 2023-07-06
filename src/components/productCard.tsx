@@ -13,9 +13,9 @@ export const ProductCard = ({ car }: { car: ICarsReturn }) => {
       : false;
 
   return (
-    <li className="box-content w-80 flex flex-col gap-4 relative">
+    <li className="box-content w-80 flex flex-col gap-2 relative">
       {discountBadge ? (
-        <div className="w-4 h-7 bg-random-7 rounded flex items-center absolute top-0 right-0 z-10">
+        <div className="w-4 h-7 bg-random-7 rounded flex items-center absolute top-0 right-0 z-[1]" title="Este carro está 5% abaixo da FIPE">
           <FiDollarSign className="text-white h-[14px]" />
         </div>
       ) : null}
@@ -29,11 +29,11 @@ export const ProductCard = ({ car }: { car: ICarsReturn }) => {
             className="object-cover h-full w-full mix-blend-multiply"
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <h6 className="font-lexend font-600 text-heading7 text-grey-1">
+        <div className="flex flex-col gap-2">
+          <h6 className="font-lexend font-600 text-heading7 text-grey-1 h-12 overflow-ellipsis">
             {`${car.brand} ${car.model}`}
           </h6>
-          <p className="w-72 h-12 text-sm overflow-hidden text-ellipsis text-grey-2 leading-6 font-inter font-400">
+          <p className="w-72 h-12 text-sm overflow-hidden text-grey-2 leading-6 font-inter font-400">
             {car.description}
           </p>
           <UserBadge
